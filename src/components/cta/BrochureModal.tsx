@@ -113,7 +113,7 @@ export function BrochureModal({ placement, onClose }: { placement: string | null
             <TextField label="Email" type="email" autoComplete="email" error={errors.email?.message} {...form.register('email')} id="brosur-email" />
             <ConsentField id="brosur-consent" privacyHref={site.privacyHref} error={errors.consent?.message} {...form.register('consent')} />
             <Honeypot {...form.register('website')} />
-            <Turnstile siteKey={site.turnstileSiteKey} onToken={(token) => form.setValue('turnstileToken', token)} />
+            <Turnstile siteKey={site.turnstileSiteKey} resetKey={form.formState.submitCount} onToken={(token) => form.setValue('turnstileToken', token)} />
             <Button type="submit" disabled={pending} className="w-full">
               {pending ? 'Menyimpan…' : 'Unduh brosur'}
               <Icon name="download" size={18} strokeWidth={2.5} />

@@ -117,6 +117,13 @@ export type UploadedDocument = {
   kind: string
 }
 
+export type PmbSubmissionData = {
+  regNumber: string
+  name: string
+  waveName: string
+  documents: { name: string; status: 'saved' | 'failed'; message?: string }[]
+}
+
 const MAGIC: Record<string, (b: Buffer) => boolean> = {
   'application/pdf': (b) => b.subarray(0, 4).toString('latin1') === '%PDF',
   'image/png': (b) => b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47,
@@ -129,7 +136,7 @@ export async function submitPmbApplication(
   payload: Payload,
   input: PmbApplicationInput,
   documents: UploadedDocument[] = [],
-): Promise<ServiceResult<{ regNumber: string; name: string; waveName: string }>> {
+): Promise<ServiceResult<PmbSubmissionData>> {
   try {
     const [wave, track, settings] = await Promise.all([
       payload
@@ -240,9 +247,10 @@ export async function submitPmbApplication(
       })
     })
 
+    const documentResults: PmbSubmissionData['documents'] = []
     for (const doc of accepted) {
-      await followUp(`menyimpan dokumen ${doc.name}`, () =>
-        payload.create({
+      try {
+        await payload.create({
           collection: 'pmb-documents',
           overrideAccess: true,
           depth: 0,
@@ -252,8 +260,12 @@ export async function submitPmbApplication(
             application: saved.id,
           } as never,
           file: { data: doc.data, mimetype: doc.type, name: doc.name, size: doc.size },
-        }),
-      )
+        })
+        documentResults.push({ name: doc.name, status: 'saved' })
+      } catch (error) {
+        payload.logger.error({ err: error, msg: `Pendaftaran ${saved.regNumber}: dokumen gagal disimpan` })
+        documentResults.push({ name: doc.name, status: 'failed', message: 'Belum tersimpan. Hubungi tim PMB dengan nomor pendaftaran ini.' })
+      }
     }
 
     await sendApplicationEmail(payload, saved as never)
@@ -264,6 +276,7 @@ export async function submitPmbApplication(
       regNumber: String(saved.regNumber),
       name: input.fullName,
       waveName: waveDoc.name ?? '',
+      documents: documentResults,
     })
   } catch (error) {
     payload.logger.error({ err: error, msg: 'Pendaftaran PMB gagal disimpan' })

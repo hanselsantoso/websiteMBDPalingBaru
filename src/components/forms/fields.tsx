@@ -211,28 +211,41 @@ declare global {
 }
 
 /** Cloudflare Turnstile, rendered only when a site key is configured in the CMS. */
-export function Turnstile({ siteKey, onToken }: { siteKey: string | null; onToken: (token: string) => void }) {
+export function Turnstile({ siteKey, onToken, resetKey = 0 }: { siteKey: string | null; onToken: (token: string) => void; resetKey?: number }) {
   const ref = useRef<HTMLDivElement>(null)
+  const onTokenRef = useRef(onToken)
+  useEffect(() => { onTokenRef.current = onToken }, [onToken])
   useEffect(() => {
     if (!siteKey || !ref.current) return
+    let disposed = false
     let widgetId: string | null = null
+    onTokenRef.current('')
     const mount = () => {
-      if (window.turnstile && ref.current && !widgetId) {
-        widgetId = window.turnstile.render(ref.current, { sitekey: siteKey, callback: onToken, language: 'id' })
+      if (!disposed && window.turnstile && ref.current && widgetId === null) {
+        widgetId = window.turnstile.render(ref.current, {
+          sitekey: siteKey, language: 'id',
+          callback: (token: string) => onTokenRef.current(token),
+          'expired-callback': () => onTokenRef.current(''),
+          'error-callback': () => onTokenRef.current(''),
+        })
       }
     }
-    if (window.turnstile) mount()
-    else {
-      const script = document.createElement('script')
+    let script = document.querySelector<HTMLScriptElement>('script[data-arus-turnstile]')
+    if (!window.turnstile && !script) {
+      script = document.createElement('script')
+      script.dataset.arusTurnstile = 'true'
       script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
       script.async = true
-      script.onload = mount
       document.head.appendChild(script)
     }
+    script?.addEventListener('load', mount)
+    mount()
     return () => {
-      if (widgetId) window.turnstile?.remove(widgetId)
+      disposed = true
+      script?.removeEventListener('load', mount)
+      if (widgetId !== null) window.turnstile?.remove(widgetId)
     }
-  }, [siteKey, onToken])
+  }, [siteKey, resetKey])
   if (!siteKey) return null
   return <div ref={ref} className="min-h-[65px]" />
 }

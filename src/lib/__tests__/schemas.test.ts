@@ -6,6 +6,7 @@ import {
   pmbApplicationSchema,
   pmbStatusSchema,
   quizAttemptSchema,
+  quizLeadSchema,
 } from '../schemas'
 
 const validContact = {
@@ -18,6 +19,10 @@ const validContact = {
 }
 
 describe('form schemas', () => {
+  it('preserves the quiz lead captcha token for server verification', () => {
+    const parsed = quizLeadSchema.parse({ attemptId: 'attempt-1', name: 'Sari', phone: '081234567890', consent: true, turnstileToken: 'verified-token' })
+    expect(parsed).toMatchObject({ turnstileToken: 'verified-token' })
+  })
   it('accepts a valid contact message', () => {
     expect(contactSchema.safeParse(validContact).success).toBe(true)
   })

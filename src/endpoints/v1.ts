@@ -26,7 +26,7 @@ import {
   submitPmbApplication,
   submitQuizAttempt,
 } from '@/server/services/forms'
-import { sendApplicationEmail } from '@/server/services/messages'
+import { sendTemplateTest } from '@/server/services/messages'
 import type { ServiceResult } from '@/server/services/result'
 import { searchSite } from '@/server/services/search'
 
@@ -35,7 +35,9 @@ import { searchSite } from '@/server/services/search'
 const PUBLIC_CACHE = 'public, max-age=0, s-maxage=300, stale-while-revalidate=600'
 
 const respond = (status: number, body: unknown, cache = 'no-store') =>
-  Response.json(body, { status, headers: { 'Cache-Control': cache } })
+  status === 204
+    ? new Response(null, { status, headers: { 'Cache-Control': cache } })
+    : Response.json(body, { status, headers: { 'Cache-Control': cache } })
 
 const ok = (data: unknown, meta: Record<string, unknown> = {}, cache?: string) =>
   respond(200, { data, meta, error: null }, cache)
@@ -382,28 +384,7 @@ export const v1Endpoints: Endpoint[] = [
       const permissions = await requireAdmin(req)
       if (!permissions || !can(permissions, 'pmb', 'ubah'))
         return fail(403, 'forbidden', 'Kamu tidak memiliki izin mengirim tes.')
-      const template = (await req.payload.findByID({
-        collection: 'message-templates',
-        id: String(req.routeParams?.id ?? ''),
-        depth: 0,
-        overrideAccess: true,
-        req,
-      })) as { statusKey?: string; channel?: string }
-      const email = (req.user as { email?: string }).email
-      if (template.channel !== 'email' || !email)
-        return fail(400, 'not_email', 'Tes kirim hanya untuk template email.')
-      await sendApplicationEmail(
-        req.payload,
-        {
-          id: 'tes',
-          fullName: 'Calon Mahasiswa (tes)',
-          email,
-          regNumber: 'MBD-0000-0000',
-          status: template.statusKey,
-        },
-        req,
-      )
-      return ok({ sentTo: email })
+      return fromService(await sendTemplateTest(req, String(req.routeParams?.id ?? '')))
     },
   },
 ]

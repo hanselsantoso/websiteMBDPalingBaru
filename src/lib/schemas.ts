@@ -176,6 +176,7 @@ export const quizLeadSchema = z
     phone: phoneField,
     consent: consentField,
     website: honeypotField,
+    turnstileToken: z.string().optional(),
   })
   .extend(utmSchema.shape)
 

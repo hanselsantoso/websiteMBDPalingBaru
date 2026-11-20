@@ -136,7 +136,7 @@ export function ContactForm() {
       />
       <Honeypot {...form.register('website')} />
       <Turnstile
-        siteKey={site.turnstileSiteKey}
+        siteKey={site.turnstileSiteKey} resetKey={form.formState.submitCount}
         onToken={(token) => form.setValue('turnstileToken', token)}
       />
       <Button type="submit" disabled={pending} className="w-full sm:w-fit">
@@ -286,7 +286,7 @@ export function ConsultationForm() {
       />
       <Honeypot {...form.register('website')} />
       <Turnstile
-        siteKey={site.turnstileSiteKey}
+        siteKey={site.turnstileSiteKey} resetKey={form.formState.submitCount}
         onToken={(token) => form.setValue('turnstileToken', token)}
       />
       <Button type="submit" disabled={pending} className="w-full sm:w-fit">

@@ -9,6 +9,39 @@ const findEndpoint = (path: string, method = 'get') => {
 }
 
 describe('v1Endpoints', () => {
+  it('returns an empty 204 when analytics requests exceed the limit', async () => {
+    const handler = findEndpoint('/v1/events', 'post')
+    const req = { headers: new Headers({ 'x-real-ip': '198.51.100.203' }), json: async () => ({}), payload: {} } as unknown as PayloadRequest
+    for (let i = 0; i < 60; i++) expect((await handler(req)).status).toBe(422)
+    const response = await handler(req)
+    expect(response.status).toBe(204)
+    expect(await response.text()).toBe('')
+    expect(response.headers.get('cache-control')).toBe('no-store')
+  })
+
+  it('sends the selected email template and reports provider failure', async () => {
+    const delivered: { subject: string; text: string; to: string }[] = []
+    let providerFails = false
+    const selected = { id: 'template-b', channel: 'email', statusKey: 'baru', subject: 'Selected {{nama}}', body: 'Selected body {{nomor_pendaftaran}}' }
+    const req = {
+      user: { id: 'admin-1', collection: 'admins', email: 'admin@example.test', role: { key: 'super-admin' } },
+      context: {}, routeParams: { id: 'template-b' },
+      payload: {
+        findByID: async () => selected,
+        find: async () => ({ docs: [{ ...selected, id: 'template-a', subject: 'Wrong template', body: 'Wrong body' }] }),
+        sendEmail: async (message: typeof delivered[number]) => { if (providerFails) throw new Error('Provider unavailable'); delivered.push(message) },
+        logger: { warn: vi.fn(), error: vi.fn() },
+      },
+    } as unknown as PayloadRequest
+    const handler = findEndpoint('/v1/admin/message-templates/:id/test', 'post')
+    const success = await handler(req)
+    expect(success.status).toBe(200)
+    expect(delivered[0]).toMatchObject({ to: 'admin@example.test', subject: 'Selected Calon Mahasiswa (tes)', text: 'Selected body MBD-0000-0000' })
+    providerFails = true
+    const failed = await handler(req)
+    expect(failed.status).toBeGreaterThanOrEqual(400)
+    expect(await failed.json()).toMatchObject({ data: null, error: { code: 'email_failed' } })
+  })
   it('strips custom scripts and turnstile keys from /v1/site while keeping public analytics IDs', async () => {
     const handler = findEndpoint('/v1/site', 'get')
     const req = {

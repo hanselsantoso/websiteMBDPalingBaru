@@ -17,6 +17,7 @@ import {
   type PmbStatusInput,
 } from '@/lib/schemas'
 import { cn, formatDateTime } from '@/lib/utils'
+import type { PmbSubmissionData } from '@/server/services/forms'
 import { FailureNote, SuccessPanel } from './Feedback'
 import { ConsentField, ErrorSummary, Honeypot, SelectField, TextField, Turnstile } from './fields'
 
@@ -55,11 +56,7 @@ export function PmbForm({
   const [files, setFiles] = useState<File[]>([])
   const [fileError, setFileError] = useState<string | null>(null)
   const [serverError, setServerError] = useState<string | null>(null)
-  const [result, setResult] = useState<{
-    regNumber: string
-    name: string
-    waveName: string
-  } | null>(null)
+  const [result, setResult] = useState<PmbSubmissionData | null>(null)
   const [copied, setCopied] = useState(false)
   const [pending, startTransition] = useTransition()
   const form = useForm<PmbApplicationInput>({
@@ -182,6 +179,17 @@ export function PmbForm({
             {successBody ||
               'Simpan nomor ini. Tim PMB akan menghubungimu lewat WhatsApp untuk verifikasi.'}
           </p>
+          {result.documents.some((document) => document.status === 'failed') ? (
+            <div role="alert" className="max-w-md rounded-xl border-2 border-warning bg-white p-4 text-left text-navy">
+              <p className="font-semibold">Pendaftaran tersimpan, tetapi beberapa dokumen belum tersimpan.</p>
+              <ul className="mt-2 list-disc pl-5">
+                {result.documents.filter((document) => document.status === 'failed').map((document, index) => (
+                  <li key={`${document.name}-${index}`}>{document.name}</li>
+                ))}
+              </ul>
+              <p className="mt-2">Hubungi tim PMB dengan nomor di atas untuk melengkapi dokumen. Tidak perlu mengirim pendaftaran ulang.</p>
+            </div>
+          ) : null}
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               href="/pmb#cek-status"
@@ -430,7 +438,7 @@ export function PmbForm({
             </ConsentField>
             <Honeypot {...form.register('website')} />
             <Turnstile
-              siteKey={site.turnstileSiteKey}
+              siteKey={site.turnstileSiteKey} resetKey={form.formState.submitCount}
               onToken={(token) => form.setValue('turnstileToken', token)}
             />
           </div>

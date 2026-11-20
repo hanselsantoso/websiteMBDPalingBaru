@@ -122,6 +122,31 @@ describe('forms service', () => {
     consent: true,
   }
 
+  it('reports a failed document while preserving the saved registration', async () => {
+    let registrations = 0
+    const savedFiles: string[] = []
+    const payload = {
+      logger: { error: vi.fn(), warn: vi.fn() },
+      findByID: async ({ collection }: { collection: string }) => collection === 'pmb-waves' ? { id: 'w1', name: 'Gelombang 1', status: 'dibuka' } : { id: 't1', name: 'Reguler', isActive: true },
+      findGlobal: async () => ({ documentUploadEnabled: true, maxDocumentMb: 2 }),
+      find: async () => ({ docs: [] }),
+      create: async ({ collection, file }: { collection: string; file?: { name: string } }) => {
+        if (collection === 'pmb-applications') { registrations++; return { id: 'app-1', regNumber: 'MBD-2026-0001' } }
+        if (collection === 'pmb-documents') {
+          if (file?.name === 'failed.pdf') throw new Error('Storage unavailable')
+          savedFiles.push(file!.name)
+        }
+        return { id: 'saved-1' }
+      },
+      update: async () => ({}),
+    } as unknown as Payload
+    const documents = ['saved.pdf', 'failed.pdf'].map((name) => ({ name, type: 'application/pdf', data: Buffer.from('%PDF-1.7 test'), size: 13, kind: 'rapor' }))
+    const result = await submitPmbApplication(payload, validPmb, documents)
+    expect(result).toMatchObject({ ok: true, data: { regNumber: 'MBD-2026-0001', documents: [{ name: 'saved.pdf', status: 'saved' }, { name: 'failed.pdf', status: 'failed' }] } })
+    expect(registrations).toBe(1)
+    expect(savedFiles).toEqual(['saved.pdf'])
+  })
+
   it('validates PMB wave/track, checks document magic bytes, retries regNumber collisions, and survives follow-up errors', async () => {
     let createAttempts = 0
     const payload = {
@@ -169,7 +194,7 @@ describe('forms service', () => {
     ])
     expect(goodPdf).toEqual({
       ok: true,
-      data: { regNumber: 'MBD-2026-0001', name: 'Budi Santoso', waveName: 'Gelombang 1' },
+      data: { regNumber: 'MBD-2026-0001', name: 'Budi Santoso', waveName: 'Gelombang 1', documents: [{ name: 'rapor.pdf', status: 'saved' }] },
     })
     expect(createAttempts).toBe(2)
   })

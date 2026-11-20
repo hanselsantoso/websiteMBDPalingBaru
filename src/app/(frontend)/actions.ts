@@ -81,7 +81,7 @@ export async function submitPmbAction(formData: FormData) {
       data: Buffer.from(await file.arrayBuffer()),
     })),
   )
-  return guarded(pmbApplicationSchema, raw, 'pmb', { regNumber: '', name: '', waveName: '' }, async (input) =>
+  return guarded(pmbApplicationSchema, raw, 'pmb', { regNumber: '', name: '', waveName: '', documents: [] } as forms.PmbSubmissionData, async (input) =>
     forms.submitPmbApplication(await getPayloadClient(), input, documents),
   )
 }

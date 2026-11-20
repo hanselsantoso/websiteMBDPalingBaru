@@ -8,7 +8,7 @@ import { useEffect, useRef, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { submitQuizAction, submitQuizLeadAction } from '@/app/(frontend)/actions'
 import { PrimaryCta, SecondaryActions } from '@/components/cta/CtaLinks'
-import { ConsentField, Honeypot, TextField } from '@/components/forms/fields'
+import { ConsentField, Honeypot, TextField, Turnstile } from '@/components/forms/fields'
 import { FailureNote } from '@/components/forms/Feedback'
 import { Siasat } from '@/components/mascot/Siasat'
 import { CountUp } from '@/components/motion/Interactive'
@@ -46,8 +46,7 @@ function LeadCapture({ attemptId, heading }: { attemptId: string; heading?: stri
         className="flex items-center gap-3 rounded-2xl border-2 border-navy bg-lime p-4 font-semibold text-navy"
         role="status"
       >
-        <Icon name="check" size={20} strokeWidth={2.5} /> Siap! Hasil dan brosurnya akan kami kirim
-        lewat WhatsApp.
+        <Icon name="check" size={20} strokeWidth={2.5} /> Permintaan tersimpan. Tim PMB akan menindaklanjutinya lewat WhatsApp.
       </p>
     )
   }
@@ -68,7 +67,7 @@ function LeadCapture({ attemptId, heading }: { attemptId: string; heading?: stri
       })}
       className="grid gap-4 rounded-[28px] border-2 border-navy bg-white p-6"
     >
-      <h3 className="text-xl font-bold">{heading || 'Mau hasil ini dikirim ke WhatsApp-mu?'}</h3>
+      <h3 className="text-xl font-bold">{heading || 'Mau dibantu tim PMB lewat WhatsApp?'}</h3>
       <FailureNote message={serverError} />
       <div className="grid gap-4 sm:grid-cols-2">
         <TextField
@@ -95,8 +94,9 @@ function LeadCapture({ attemptId, heading }: { attemptId: string; heading?: stri
         {...form.register('consent')}
       />
       <Honeypot {...form.register('website')} />
+      <Turnstile siteKey={site.turnstileSiteKey} resetKey={form.formState.submitCount} onToken={(token) => form.setValue('turnstileToken', token)} />
       <Button type="submit" disabled={pending} className="w-full sm:w-fit">
-        {pending ? 'Menyimpan…' : 'Kirim ke WhatsApp'} <Icon name="whatsapp" size={18} />
+        {pending ? 'Menyimpan…' : 'Minta dihubungi'} <Icon name="whatsapp" size={18} />
       </Button>
     </form>
   )

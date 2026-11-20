@@ -1,6 +1,8 @@
 import type { Payload, PayloadRequest } from 'payload'
 import { applicationStatusLabel, renderTemplate } from '@/lib/domain/templates'
 import { siteUrl } from '@/lib/preview'
+import type { MessageTemplate } from '@/payload-types'
+import { failure, success, type ServiceResult } from './result'
 
 type ApplicationLike = {
   id: string | number
@@ -63,4 +65,31 @@ export async function sendApplicationEmail(payload: Payload, application: Applic
 
 export async function sendStatusMessage(req: PayloadRequest, application: ApplicationLike) {
   await sendApplicationEmail(req.payload, application, req)
+}
+
+/** Tests exactly the editor-selected template; delivery failures reach the caller. */
+export async function sendTemplateTest(
+  req: PayloadRequest,
+  templateId: MessageTemplate['id'],
+): Promise<ServiceResult<{ sentTo: string }>> {
+  try {
+    const template = await req.payload.findByID({ collection: 'message-templates', id: templateId, depth: 0, overrideAccess: false, user: req.user, req })
+    const email = req.user?.email
+    if (template.channel !== 'email' || !email) return failure('not_email', 'Tes kirim hanya untuk template email.')
+    if (!template.body?.trim()) return failure('empty_template', 'Isi template email masih kosong.')
+    const variables = {
+      nama: 'Calon Mahasiswa (tes)', nomor_pendaftaran: 'MBD-0000-0000',
+      gelombang: 'Gelombang (tes)', jalur: 'Jalur (tes)',
+      status: applicationStatusLabel(template.statusKey), tautan_status: `${siteUrl()}/pmb#cek-status`,
+    }
+    await req.payload.sendEmail({
+      to: email,
+      subject: renderTemplate(template.subject || 'Info pendaftaran S1 Manajemen Bisnis Digital ISTTS', variables),
+      text: renderTemplate(template.body, variables),
+    })
+    return success({ sentTo: email })
+  } catch (error) {
+    req.payload.logger.warn({ err: error, msg: 'Tes email template gagal dikirim' })
+    return failure('email_failed', 'Email tes belum terkirim. Periksa konfigurasi email dan coba lagi.')
+  }
 }
