@@ -12,6 +12,7 @@ import type {
   QuizLeadInput,
 } from '@/lib/schemas'
 import { signDownload } from '@/server/tokens'
+import { buildUploadPolicy, validateUploadMetadata } from '@/lib/upload-policy'
 import { recordEvent } from './events'
 import { upsertLead } from './leads'
 import { sendApplicationEmail } from './messages'
@@ -167,9 +168,13 @@ export async function submitPmbApplication(
       maxDocumentMb?: number
     } | null
     const accepted: UploadedDocument[] = []
+    if (documents.length && !settingsDoc?.documentUploadEnabled) return failure('upload_disabled', 'Unggah dokumen belum tersedia. Hubungi tim PMB untuk melengkapi dokumen.')
     if (documents.length && settingsDoc?.documentUploadEnabled) {
-      const maxBytes = (settingsDoc.maxDocumentMb || 2) * 1024 * 1024
-      for (const doc of documents.slice(0, 4)) {
+      const policy = buildUploadPolicy(settingsDoc.maxDocumentMb || 2)
+      const metadataError = validateUploadMetadata(documents, policy)
+      if (metadataError) return failure('invalid_document', metadataError, { documents: metadataError })
+      const maxBytes = policy.maxFileBytes
+      for (const doc of documents) {
         if (!MAGIC[doc.type]?.(doc.data)) {
           return failure('invalid_document', 'Format dokumen tidak didukung.', {
             documents: `${doc.name}: unggah PDF, JPG, atau PNG.`,

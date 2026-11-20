@@ -6,7 +6,7 @@ import { PrimaryCta, SecondaryActions } from '@/components/cta/CtaLinks'
 import { Siasat } from '@/components/mascot/Siasat'
 import { Fin, Wave } from '@/components/patterns/Patterns'
 import { Icon } from '@/components/ui/Icon'
-import { isActivePath } from '@/lib/links'
+import { isActivePath, isExternalHref } from '@/lib/links'
 import { cn } from '@/lib/utils'
 import type { NavItem } from './Header'
 import { Wordmark } from './Wordmark'
@@ -60,6 +60,8 @@ export function MobileDrawer({
                 <li key={item.href + item.label} className="anim-rise" style={{ ['--rise-delay' as string]: `${index * 40}ms` }}>
                   <Link
                     href={item.href}
+                    target={item.newTab || isExternalHref(item.href) ? '_blank' : undefined}
+                    rel={item.newTab || isExternalHref(item.href) ? 'noopener noreferrer' : undefined}
                     onClick={onClose}
                     aria-current={active ? 'page' : undefined}
                     className={cn(
@@ -75,7 +77,7 @@ export function MobileDrawer({
                     <ul className="mb-2 ml-11 grid gap-1">
                       {item.children.map((child) => (
                         <li key={child.href + child.label}>
-                          <Link href={child.href} onClick={onClose} className="inline-flex min-h-11 items-center text-lg font-semibold text-white/80 hover:text-lime">
+                          <Link href={child.href} target={child.newTab || isExternalHref(child.href) ? '_blank' : undefined} rel={child.newTab || isExternalHref(child.href) ? 'noopener noreferrer' : undefined} onClick={onClose} className="inline-flex min-h-11 items-center text-lg font-semibold text-white/80 hover:text-lime">
                             {child.label}
                           </Link>
                         </li>

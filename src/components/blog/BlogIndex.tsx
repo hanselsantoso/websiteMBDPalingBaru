@@ -1,70 +1,102 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import type { BlogPage } from '@/lib/blog-pagination'
 import { PostCard } from '@/components/cards/Cards'
 import { SelectField } from '@/components/forms/fields'
 import { Icon } from '@/components/ui/Icon'
 import { cn } from '@/lib/utils'
 
-type Doc = Record<string, any>
-
 export function BlogIndex({
-  posts,
+  initialPage,
   categories,
+  tags,
   pageSize = 9,
 }: {
-  posts: Doc[]
+  initialPage: BlogPage
   categories: { name: string; slug: string }[]
+  tags: { name: string; slug: string }[]
   pageSize?: number
 }) {
   const [category, setCategory] = useState('')
   const [tag, setTag] = useState('')
   const [query, setQuery] = useState('')
-  const [limit, setLimit] = useState(pageSize)
+  const [page, setPage] = useState(initialPage)
+  const [ready, setReady] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const requestRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     setCategory(params.get('kategori') ?? '')
     setTag(params.get('tag') ?? '')
     setQuery(params.get('q') ?? '')
+    setReady(true)
   }, [])
 
   useEffect(() => {
+    if (!ready) return
+    requestRef.current?.abort()
     const params = new URLSearchParams()
     if (category) params.set('kategori', category)
     if (tag) params.set('tag', tag)
     if (query) params.set('q', query)
     const search = params.toString()
     window.history.replaceState(null, '', search ? `?${search}` : window.location.pathname)
-    setLimit(pageSize)
-  }, [category, tag, query, pageSize])
+    setError('')
+    if (!category && !tag && !query) { setPage(initialPage); setLoading(false); return }
+    const controller = new AbortController()
+    requestRef.current = controller
+    setLoading(true)
+    params.set('page', '1')
+    params.set('limit', String(pageSize))
+    const timer = setTimeout(async () => {
+      try {
+        const response = await fetch(`/blog/data?${params}`, { signal: controller.signal })
+        if (!response.ok) throw new Error('request_failed')
+        const result = await response.json() as BlogPage
+        if (!controller.signal.aborted) setPage(result)
+      } catch {
+        if (!controller.signal.aborted) setError('Artikel belum dapat dimuat. Ubah filter atau coba lagi.')
+      } finally {
+        if (!controller.signal.aborted) setLoading(false)
+      }
+    }, 300)
+    return () => { clearTimeout(timer); controller.abort() }
+  }, [category, tag, query, pageSize, ready, initialPage])
 
-  const tagOptions = useMemo(() => {
-    const map = new Map<string, string>()
-    posts.forEach((post) =>
-      ((post.tags as Doc[]) ?? []).forEach((item) => item?.slug && map.set(item.slug, item.name)),
-    )
-    return [...map.entries()].map(([value, label]) => ({ value, label }))
-  }, [posts])
+  useEffect(() => () => requestRef.current?.abort(), [])
 
-  const q = query.trim().toLowerCase()
-  const filtering = Boolean(category || tag || q)
-  const results = posts.filter(
-    (post) =>
-      (!category || post.category?.slug === category) &&
-      (!tag || ((post.tags as Doc[]) ?? []).some((item) => item?.slug === tag)) &&
-      (!q ||
-        String(post.title).toLowerCase().includes(q) ||
-        String(post.excerpt ?? '')
-          .toLowerCase()
-          .includes(q)),
-  )
+  const loadMore = async () => {
+    if (loading || !page.hasNextPage) return
+    requestRef.current?.abort()
+    const controller = new AbortController()
+    requestRef.current = controller
+    setLoading(true)
+    setError('')
+    const params = new URLSearchParams({ page: String(page.page + 1), limit: String(pageSize), kategori: category, tag, q: query })
+    try {
+      const response = await fetch(`/blog/data?${params}`, { signal: controller.signal })
+      if (!response.ok) throw new Error('request_failed')
+      const next = await response.json() as BlogPage
+      if (!controller.signal.aborted) setPage((previous) => ({ ...next, docs: [...previous.docs, ...next.docs.filter((post) => !previous.docs.some((existing) => existing.id === post.id))] }))
+    } catch {
+      if (!controller.signal.aborted) setError('Artikel berikutnya belum dapat dimuat. Coba lagi.')
+    } finally {
+      if (!controller.signal.aborted) setLoading(false)
+    }
+  }
+
+  const tagOptions = tags.map((tag) => ({ value: tag.slug, label: tag.name }))
+  const filtering = Boolean(category || tag || query.trim())
+  const results = page.docs
   const featured = !filtering ? (results.find((post) => post.featured) ?? results[0]) : null
   const list = results.filter((post) => post !== featured)
-  const visible = list.slice(0, limit)
+  const visible = list
 
   return (
-    <div className="container-arus">
+    <div className="container-arus" aria-busy={loading}>
       <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
         <div role="group" aria-label="Kategori artikel" className="flex flex-wrap gap-2">
           {[{ name: 'Semua', slug: '' }, ...categories].map((item) => (
@@ -116,8 +148,9 @@ export function BlogIndex({
         </div>
       </div>
       <p className="sr-only" aria-live="polite">
-        {filtering ? `${results.length} artikel ditemukan.` : ''}
+        {loading ? 'Memuat artikel…' : filtering ? `${page.totalDocs} artikel ditemukan.` : ''}
       </p>
+      {error ? <p role="alert" className="mt-4 text-danger">{error}</p> : null}
 
       {featured ? (
         <div className="mt-10">
@@ -135,10 +168,10 @@ export function BlogIndex({
         </ul>
       ) : null}
 
-      {!results.length ? (
+      {!loading && !results.length ? (
         <div className="mt-10 rounded-[28px] border-2 border-dashed border-navy p-10 text-center">
           <p className="text-lg font-semibold">
-            {posts.length
+            {initialPage.docs.length
               ? `Belum ada artikel untuk “${query || category || tag}”.`
               : 'Artikel pertama segera terbit.'}
           </p>
@@ -158,14 +191,15 @@ export function BlogIndex({
         </div>
       ) : null}
 
-      {list.length > limit ? (
+      {page.hasNextPage ? (
         <div className="mt-10 flex justify-center">
           <button
             type="button"
-            onClick={() => setLimit((value) => value + pageSize)}
+            onClick={loadMore}
+            disabled={loading}
             className="pill border-2 border-navy bg-white text-navy hover:bg-ink-50"
           >
-            Muat lebih banyak
+            {loading ? 'Memuat…' : 'Muat lebih banyak'}
           </button>
         </div>
       ) : null}

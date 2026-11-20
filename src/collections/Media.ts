@@ -96,6 +96,7 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
+    staticDir: process.env.MEDIA_DIR || '.local-data/media',
     focalPoint: true,
     crop: true,
     mimeTypes: MEDIA_MIME_TYPES,

@@ -1,5 +1,8 @@
 import path from 'path'
-import { buildFigmaConfig } from '@payloadcms/figma'
+import { buildConfig } from 'payload'
+import { postgresAdapter } from '@payloadcms/db-postgres'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { en } from '@payloadcms/translations/languages/en'
@@ -23,14 +26,35 @@ import { seoGroupFields } from './fields'
 import { Branding, Navigation, PmbSettings, SiteSettings } from './globals'
 import { assertBrandContrast } from './lib/brand/tokens'
 import { pathForDoc, siteUrl } from './lib/preview'
+import { readServerEnvironment } from './server/environment'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const runtime = readServerEnvironment()
 
 // Fail fast in development and during builds if the default design tokens break WCAG AA.
 assertBrandContrast()
 
-export default buildFigmaConfig({
+export default buildConfig({
+  secret: runtime.secret,
+  serverURL: runtime.siteURL,
+  db: postgresAdapter({ pool: { connectionString: runtime.databaseURL }, idType: 'uuid', push: false }),
+  editor: lexicalEditor(),
+  email: process.env.SMTP_HOST && process.env.EMAIL_FROM_ADDRESS
+    ? nodemailerAdapter({
+        defaultFromAddress: process.env.EMAIL_FROM_ADDRESS,
+        defaultFromName: 'Arus Digital',
+        transportOptions: {
+          host: process.env.SMTP_HOST,
+          port: Number(process.env.SMTP_PORT || 587),
+          secure: process.env.SMTP_SECURE === 'true',
+          ...(process.env.SMTP_USER ? { auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD } } : {}),
+        },
+      })
+    : () => ({
+        name: 'unconfigured', defaultFromAddress: 'noreply@localhost', defaultFromName: 'Arus Digital',
+        sendEmail: async () => { throw new Error('Email belum dikonfigurasi.') },
+      }),
   admin: {
     user: Admins.slug,
     constrainWidth: true,
@@ -142,5 +166,4 @@ export default buildFigmaConfig({
       fields: ({ defaultFields }) => [...defaultFields, ...seoGroupFields()],
     }),
   ],
-  figma: {},
 })

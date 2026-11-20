@@ -38,10 +38,12 @@ describe('rateLimit', () => {
 })
 
 describe('verifyCaptcha & guardForm', () => {
-  it('passes when Turnstile is not configured on both sides', async () => {
-    expect(await verifyCaptcha(fakePayload('site-key'), undefined, '1.1.1.1')).toBe(true)
-    vi.stubEnv('TURNSTILE_SECRET_KEY', 'secret')
+  it('allows disabled captcha but rejects partially configured protection', async () => {
+    vi.stubEnv('TURNSTILE_SECRET_KEY', '')
     expect(await verifyCaptcha(fakePayload(null), undefined, '1.1.1.1')).toBe(true)
+    expect(await verifyCaptcha(fakePayload('site-key'), undefined, '1.1.1.1')).toBe(false)
+    vi.stubEnv('TURNSTILE_SECRET_KEY', 'secret')
+    expect(await verifyCaptcha(fakePayload(null), undefined, '1.1.1.1')).toBe(false)
   })
 
   it('verifies the token with Cloudflare when both keys are set', async () => {

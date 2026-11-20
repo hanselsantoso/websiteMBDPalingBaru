@@ -37,10 +37,12 @@ async function turnstileSiteKey(payload: Payload): Promise<string | null> {
   }
 }
 
-/** Verifies Cloudflare Turnstile only when both the site key (CMS) and secret (env) are configured. */
+/** Disabled only when both keys are absent; partial configuration fails closed. */
 export async function verifyCaptcha(payload: Payload, token: string | undefined, ip: string): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY
-  if (!secret || !(await turnstileSiteKey(payload))) return true
+  const siteKey = await turnstileSiteKey(payload)
+  if (!secret && !siteKey) return true
+  if (!secret || !siteKey) return false
   if (!token) return false
   try {
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {

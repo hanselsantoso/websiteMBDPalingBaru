@@ -1,5 +1,4 @@
 import { getPayload, type Where } from 'payload'
-import config from '@payload-config'
 import type { Config } from '@/payload-types'
 
 type CollectionSlug = keyof Config['collections']
@@ -25,6 +24,7 @@ type FindOneOptions = {
  * Use this in server components and route handlers.
  */
 export async function getPayloadClient() {
+  const { default: config } = await import('@payload-config')
   const payloadConfig = await config
   return getPayload({ config: payloadConfig })
 }

@@ -18,6 +18,7 @@ import {
 } from '@/lib/schemas'
 import { cn, formatDateTime } from '@/lib/utils'
 import type { PmbSubmissionData } from '@/server/services/forms'
+import { buildUploadPolicy, validateUploadMetadata } from '@/lib/upload-policy'
 import { FailureNote, SuccessPanel } from './Feedback'
 import { ConsentField, ErrorSummary, Honeypot, SelectField, TextField, Turnstile } from './fields'
 
@@ -30,7 +31,6 @@ const STEPS: { title: string; fields: (keyof PmbApplicationInput)[] }[] = [
   { title: 'Persetujuan', fields: ['consent'] },
 ]
 
-const ACCEPT = ['application/pdf', 'image/jpeg', 'image/png']
 
 export function PmbForm({
   tracks,
@@ -107,12 +107,10 @@ export function PmbForm({
 
   const onFiles = (list: FileList | null) => {
     setFileError(null)
-    const picked = Array.from(list ?? []).slice(0, 4)
-    const invalid = picked.find(
-      (file) => !ACCEPT.includes(file.type) || file.size > maxDocumentMb * 1024 * 1024,
-    )
+    const picked = Array.from(list ?? [])
+    const invalid = validateUploadMetadata(picked, buildUploadPolicy(maxDocumentMb))
     if (invalid) {
-      setFileError(`${invalid.name}: unggah PDF, JPG, atau PNG maksimal ${maxDocumentMb} MB.`)
+      setFileError(`${invalid} Batas per dokumen: ${maxDocumentMb} MB.`)
       return
     }
     setFiles(picked)

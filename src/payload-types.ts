@@ -703,8 +703,6 @@ export interface Media {
   _h_folders?: (string | null) | Folder;
   _h_tags?: (string | Tag)[] | null;
   uploadedBy?: (string | null) | Admin;
-  prefix?: string | null;
-  _objectKey?: string | null;
   createdBy?: {
     relationTo: 'admins';
     value: string | Admin;
@@ -767,11 +765,6 @@ export interface Admin {
   name?: string | null;
   role?: (string | null) | Role;
   status?: ('aktif' | 'nonaktif') | null;
-  figmaHandle?: string | null;
-  figmaImageUrl?: string | null;
-  userGroups?: string[] | null;
-  makePermission?: ('view' | 'edit') | null;
-  email?: string | null;
   createdBy?: {
     relationTo: 'admins';
     value: string | Admin;
@@ -782,6 +775,24 @@ export interface Admin {
   } | null;
   updatedAt: string;
   createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+        refreshCount?: number | null;
+        refreshedAt?: string | null;
+      }[]
+    | null;
+  password?: string | null;
   collection: 'admins';
 }
 /**
@@ -1835,8 +1846,6 @@ export interface PmbDocument {
   label?: string | null;
   type?: ('rapor' | 'ijazah' | 'identitas' | 'foto' | 'prestasi' | 'lainnya') | null;
   application?: (string | null) | PmbApplication;
-  prefix?: string | null;
-  _objectKey?: string | null;
   createdBy?: {
     relationTo: 'admins';
     value: string | Admin;
@@ -3142,8 +3151,6 @@ export interface MediaSelect<T extends boolean = true> {
   _h_folders?: T;
   _h_tags?: T;
   uploadedBy?: T;
-  prefix?: T;
-  _objectKey?: T;
   createdBy?: T;
   updatedBy?: T;
   updatedAt?: T;
@@ -3633,8 +3640,6 @@ export interface PmbDocumentsSelect<T extends boolean = true> {
   label?: T;
   type?: T;
   application?: T;
-  prefix?: T;
-  _objectKey?: T;
   createdBy?: T;
   updatedBy?: T;
   updatedAt?: T;
@@ -3732,15 +3737,27 @@ export interface AdminsSelect<T extends boolean = true> {
   name?: T;
   role?: T;
   status?: T;
-  figmaHandle?: T;
-  figmaImageUrl?: T;
-  userGroups?: T;
-  makePermission?: T;
-  email?: T;
   createdBy?: T;
   updatedBy?: T;
   updatedAt?: T;
   createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  resetPasswordRequestedAt?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+        refreshCount?: T;
+        refreshedAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -1,4 +1,5 @@
-import type { Payload } from 'payload'
+import type { Payload, Where } from 'payload'
+import type { BlogPage, BlogPageInput } from './blog-pagination'
 
 /**
  * Plain Payload reads shared by Next.js pages (through the cached wrappers in
@@ -171,6 +172,23 @@ export async function fetchPosts(payload: Payload, limit = 60): Promise<AnyDoc[]
     },
   })
   return result.docs as AnyDoc[]
+}
+
+export async function fetchPostsPage(payload: Payload, input: BlogPageInput): Promise<BlogPage> {
+  const and: Where[] = [{ _status: { equals: 'published' } }]
+  if (input.category) and.push({ 'category.slug': { equals: input.category } })
+  if (input.tag) and.push({ 'tags.slug': { equals: input.tag } })
+  if (input.query) and.push({ or: [{ title: { like: input.query } }, { excerpt: { like: input.query } }] })
+  const result = await payload.find({
+    collection: 'posts', page: input.page, limit: input.limit, depth: 1,
+    sort: ['-featured', '-publishedAt', 'id'], where: { and }, overrideAccess: false,
+    select: { title: true, slug: true, excerpt: true, cover: true, category: true, tags: true, featured: true, publishedAt: true, readingMinutes: true, authorName: true },
+  })
+  return { docs: result.docs, page: result.page || input.page, totalPages: result.totalPages, totalDocs: result.totalDocs, hasNextPage: result.hasNextPage }
+}
+
+export async function fetchPostTags(payload: Payload) {
+  return (await payload.find({ collection: 'post-tags', pagination: false, depth: 0, overrideAccess: false, sort: 'name' })).docs
 }
 
 export async function fetchLatestPosts(payload: Payload, limit = 3): Promise<AnyDoc[]> {

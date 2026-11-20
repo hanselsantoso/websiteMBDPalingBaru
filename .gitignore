@@ -1,6 +1,7 @@
 node_modules/
 .superpowers/
 .tools/
+.secrets/
 .local-data/
 backups/
 exports/
@@ -31,3 +32,5 @@ logs/
 /.opencode-skills/
 
 !.env.example
+
+.certs/

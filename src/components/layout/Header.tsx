@@ -72,6 +72,8 @@ function NavGroup({ item, pathname }: { item: NavItem; pathname: string }) {
           <li key={child.href + child.label}>
             <Link
               href={child.href}
+              target={child.newTab || isExternalHref(child.href) ? '_blank' : undefined}
+              rel={child.newTab || isExternalHref(child.href) ? 'noopener noreferrer' : undefined}
               aria-current={isActivePath(pathname, child.href) ? 'page' : undefined}
               className="flex min-h-11 items-center rounded-xl px-3 font-semibold text-navy hover:bg-ink-100 aria-[current=page]:text-blue"
               onClick={() => setOpen(false)}
@@ -113,7 +115,7 @@ export function Header({ items, logoUrl }: { items: NavItem[]; logoUrl: string |
       data-site-header
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-300',
-        scrolled ? 'bg-navy shadow-[0_1px_0_rgb(255_255_255/0.1)]' : 'bg-transparent',
+        scrolled || pathname === '/kurikulum/cetak' ? 'bg-navy shadow-[0_1px_0_rgb(255_255_255/0.1)]' : 'bg-transparent',
       )}
     >
       <div className="container-arus flex h-[var(--header-h)] items-center justify-between gap-4">

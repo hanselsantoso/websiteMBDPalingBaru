@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.superpowers
+.tools
+.local-data
+.secrets
+.env*
+backups
+exports
+test-results
+playwright-report
+
+.certs

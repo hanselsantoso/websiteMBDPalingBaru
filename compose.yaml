@@ -1,0 +1,87 @@
+name: arus-digital
+services:
+  db:
+    image: postgres:17-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: arus
+      POSTGRES_USER: arus
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets: [postgres_password]
+    volumes: [database:/var/lib/postgresql/data]
+    ports: ['127.0.0.1:55432:5432']
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U arus -d arus']
+      interval: 10s
+      timeout: 5s
+      retries: 6
+  tooling:
+    profiles: [tools]
+    build:
+      context: .
+      target: tooling
+    environment: &application_environment
+      NODE_ENV: production
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:?Set the public origin in .env}
+      PAYLOAD_SECRET_FILE: /run/secrets/payload_secret
+      DATABASE_URL_FILE: /run/secrets/database_url
+      MEDIA_DIR: /app/.local-data/media
+      PMB_DOCUMENTS_DIR: /app/.local-data/pmb-documents
+      PMB_MAX_DOCUMENT_MB: ${PMB_MAX_DOCUMENT_MB:-2}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      EMAIL_FROM_ADDRESS: ${EMAIL_FROM_ADDRESS:-}
+      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY:-}
+    secrets: [payload_secret, database_url]
+    volumes: &uploads
+      - media:/app/.local-data/media
+      - documents:/app/.local-data/pmb-documents
+    depends_on:
+      db: {condition: service_healthy}
+    command: ['pnpm', 'payload', 'migrate:status']
+  app:
+    build:
+      context: .
+      target: runtime
+      # Linux VPS only: the build reads the loopback-only database port.
+      network: host
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:?Set the public origin in .env}
+        PMB_MAX_DOCUMENT_MB: ${PMB_MAX_DOCUMENT_MB:-2}
+      secrets: [payload_secret, build_database_url]
+    restart: unless-stopped
+    environment: *application_environment
+    secrets: [payload_secret, database_url]
+    volumes: *uploads
+    ports: ['127.0.0.1:3000:3000']
+    depends_on:
+      db: {condition: service_healthy}
+    healthcheck:
+      test: ['CMD', 'node', '-e', 'fetch("http://127.0.0.1:3000/health?ready=1").then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  proxy:
+    profiles: [https]
+    image: nginx:1.28-bookworm
+    restart: unless-stopped
+    ports: ['80:80', '443:443']
+    environment:
+      SITE_HOST: ${SITE_HOST:?Set SITE_HOST in .env}
+      MAX_REQUEST_BYTES: ${MAX_REQUEST_BYTES:-67108864}
+    volumes:
+      - ./ops/nginx.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./.certs:/etc/nginx/certs:ro
+    depends_on: [app]
+secrets:
+  postgres_password: {file: .secrets/postgres-password}
+  payload_secret: {file: .secrets/payload-secret}
+  database_url: {file: .secrets/docker-database-url}
+  build_database_url: {file: .secrets/database-url}
+volumes:
+  database:
+  media:
+  documents:

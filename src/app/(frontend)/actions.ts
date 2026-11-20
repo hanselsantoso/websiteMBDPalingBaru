@@ -16,6 +16,8 @@ import {
 import { clientIp, guardForm, rateLimit } from '@/server/guard'
 import * as forms from '@/server/services/forms'
 import type { ServiceResult } from '@/server/services/result'
+import { failure } from '@/server/services/result'
+import { buildUploadPolicy, validateUploadMetadata } from '@/lib/upload-policy'
 
 export type ActionResult<T> = { ok: true; data: T } | { ok: false; message: string; fieldErrors?: Record<string, string> }
 
@@ -70,20 +72,30 @@ export async function submitPmbAction(formData: FormData) {
   } catch {
     return { ok: false as const, message: INVALID }
   }
-  const files = formData.getAll('documents').filter((item): item is File => typeof item === 'object' && item !== null && 'arrayBuffer' in item && (item as File).size > 0)
-  const kinds = formData.getAll('documentKinds').map(String)
-  const documents = await Promise.all(
-    files.slice(0, 4).map(async (file, index) => ({
-      name: file.name.slice(0, 120),
-      type: file.type,
-      size: file.size,
-      kind: kinds[index] ?? 'lainnya',
-      data: Buffer.from(await file.arrayBuffer()),
-    })),
-  )
-  return guarded(pmbApplicationSchema, raw, 'pmb', { regNumber: '', name: '', waveName: '', documents: [] } as forms.PmbSubmissionData, async (input) =>
-    forms.submitPmbApplication(await getPayloadClient(), input, documents),
-  )
+  return guarded(pmbApplicationSchema, raw, 'pmb', { regNumber: '', name: '', waveName: '', documents: [] } as forms.PmbSubmissionData, async (input) => {
+    try {
+      const payload = await getPayloadClient()
+      const entries = formData.getAll('documents')
+      const files = entries.filter((item): item is File => typeof item === 'object' && item !== null && 'arrayBuffer' in item)
+      if (files.length !== entries.length) return failure('invalid_document', 'Dokumen tidak valid.')
+      const settings = await payload.findGlobal({ slug: 'pmb-settings', depth: 0, overrideAccess: false })
+      const maxMb = settings.maxDocumentMb || 2
+      const deployment = buildUploadPolicy(Number(process.env.PMB_MAX_DOCUMENT_MB || 2))
+      const policy = buildUploadPolicy(maxMb)
+      if (files.length && policy.maxRequestBytes > deployment.maxRequestBytes) return failure('upload_configuration', 'Unggah dokumen belum tersedia. Hubungi tim PMB.')
+      const metadataError = validateUploadMetadata(files, policy)
+      if (metadataError) return failure('invalid_document', metadataError, { documents: metadataError })
+      if (files.length && !settings.documentUploadEnabled) return failure('upload_disabled', 'Unggah dokumen belum tersedia.')
+      const kinds = formData.getAll('documentKinds').map(String)
+      const documents = await Promise.all(files.map(async (file, index) => ({
+        name: file.name.slice(0, 120), type: file.type, size: file.size,
+        kind: kinds[index] ?? 'lainnya', data: Buffer.from(await file.arrayBuffer()),
+      })))
+      return forms.submitPmbApplication(payload, input, documents)
+    } catch {
+      return failure('server_error', 'Pendaftaran belum dapat diproses. Coba lagi atau hubungi tim PMB.')
+    }
+  })
 }
 
 export async function checkPmbStatusAction(raw: unknown) {

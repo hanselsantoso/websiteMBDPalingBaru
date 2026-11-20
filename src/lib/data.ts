@@ -2,6 +2,7 @@ import { unstable_cache } from 'next/cache'
 import { draftMode } from 'next/headers'
 import { getPayloadClient } from './payload'
 import * as queries from './queries'
+import type { BlogPageInput } from './blog-pagination'
 
 /**
  * Cached reads for public routes. Every entry is tagged; Payload hooks
@@ -158,6 +159,9 @@ export async function getFacultyMember(slug: string, draft = false) {
 export const getPosts = cached('posts', ['posts', 'post-categories', 'media'], async () =>
   queries.fetchPosts(await payload()),
 )
+
+export const getPostsPage = cached('posts-page', ['posts', 'post-categories', 'post-tags', 'media'], async (input: BlogPageInput) => queries.fetchPostsPage(await payload(), input))
+export const getPostTags = cached('post-tags', ['post-tags'], async () => queries.fetchPostTags(await payload()))
 
 export const getLatestPosts = cached(
   'latest-posts',

@@ -369,6 +369,7 @@ export const PmbDocuments: CollectionConfig = {
     delete: write('pmb', 'hapus'),
   },
   upload: {
+    staticDir: process.env.PMB_DOCUMENTS_DIR || '.local-data/pmb-documents',
     mimeTypes: ['application/pdf', 'image/jpeg', 'image/png'],
     modifyResponseHeaders: ({ headers }) => {
       headers.set('Cache-Control', 'private, no-store')

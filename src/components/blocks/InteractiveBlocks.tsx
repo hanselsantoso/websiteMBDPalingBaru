@@ -23,7 +23,8 @@ import {
   getFacultyList,
   getPmbInfo,
   getPostCategories,
-  getPosts,
+  getPostsPage,
+  getPostTags,
   getQuiz,
 } from '@/lib/data'
 import { isPlaceholder } from '@/lib/domain/placeholders'
@@ -123,7 +124,8 @@ export async function FacultyDirectoryBlock({ block, ctx }: BlockProps) {
 }
 
 export async function BlogIndexBlock({ block }: BlockProps) {
-  const [posts, categories] = await Promise.all([getPosts(), getPostCategories()])
+  const pageSize = Math.max(1, Math.min(30, Math.floor(Number(block.pageSize) || 9)))
+  const [page, categories, tags] = await Promise.all([getPostsPage({ page: 1, limit: pageSize }), getPostCategories(), getPostTags()])
   return (
     <section id={anchor(block)} className="bg-white py-16 lg:py-24">
       {block.heading ? (
@@ -131,14 +133,15 @@ export async function BlogIndexBlock({ block }: BlockProps) {
           <h2 className="text-section font-bold">{block.heading}</h2>
         </div>
       ) : null}
-      {posts.length ? (
+      {page.docs.length ? (
         <BlogIndex
-          posts={posts}
+          initialPage={page}
+          tags={tags.map((tag) => ({ name: String(tag.name), slug: String(tag.slug) }))}
           categories={categories.map((category) => ({
             name: String(category.name),
             slug: String(category.slug),
           }))}
-          pageSize={Number(block.pageSize) || 9}
+          pageSize={pageSize}
         />
       ) : (
         <EmptyState>Belum ada artikel. Tim kami sedang menulis cerita pertama.</EmptyState>
@@ -173,7 +176,7 @@ export async function FormEmbedBlock({ block }: BlockProps) {
     const settings = (info.settings ?? {}) as Doc
     if (kind === 'pmb') {
       const tracks = info.tracks.filter((track) => track.isActive !== false)
-      const waves = info.waves.filter((wave) => wave.status !== 'ditutup')
+      const waves = info.waves.filter((wave) => wave.status === 'dibuka')
       form = (
         <PmbForm
           tracks={tracks.map((track) => ({
@@ -189,7 +192,7 @@ export async function FormEmbedBlock({ block }: BlockProps) {
           sources={((settings.sourceOptions as Doc[] | undefined) ?? [])
             .map((option) => String(option.label))
             .filter(Boolean)}
-          documentUpload={Boolean(settings.documentUploadEnabled)}
+          documentUpload={Boolean(settings.documentUploadEnabled) && (Number(settings.maxDocumentMb) || 2) <= Number(process.env.PMB_MAX_DOCUMENT_MB || 2)}
           maxDocumentMb={Number(settings.maxDocumentMb) || 2}
           successTitle={settings.successTitle}
           successBody={settings.successBody}

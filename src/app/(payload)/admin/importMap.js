@@ -26,9 +26,7 @@ import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea
 import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { LLMInstructionsMenuItem as LLMInstructionsMenuItem_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
-import { FigmaCloudLimitSlugTracker as FigmaCloudLimitSlugTracker_5b632879807206965a35b58cd5166e1c } from '@payloadcms/figma/client'
 import { PlaceholderBadge as PlaceholderBadge_66cf974565a80987a671b9628cac5d19 } from '../../../components/admin/PlaceholderBadge'
-import { LimitReachedView as LimitReachedView_d3552a8b0228f18024bd6ebd4c17886b } from '@payloadcms/figma/views'
 import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { NullField as NullField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
@@ -39,17 +37,13 @@ import { LeadWhatsAppButton as LeadWhatsAppButton_e9d01011316b6af4608381347061bb
 import { LeadsBoard as LeadsBoard_d7e7cacf3ab7c2b51587346d46177670 } from '../../../components/admin/LeadsBoard'
 import { ReplyByEmailButton as ReplyByEmailButton_e198a7f9ed32380bf30ba29616ee5057 } from '../../../components/admin/ReplyByEmailButton'
 import { TemplateTestButton as TemplateTestButton_388530fba0e94926fa914d31bd5846a4 } from '../../../components/admin/TemplateTestButton'
-import { FigmaAvatarCell as FigmaAvatarCell_5b632879807206965a35b58cd5166e1c } from '@payloadcms/figma/client'
 import { PermissionMatrixField as PermissionMatrixField_d0a733e7289cf9d795f94e1272011f47 } from '../../../components/admin/PermissionMatrixField'
 import { LLMInstructionsDescription as LLMInstructionsDescription_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
 import { LLMInstructionsCell as LLMInstructionsCell_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 import { ContrastChecker as ContrastChecker_ae4a80453bb4bd4f8076788a9c0c55e2 } from '../../../components/admin/ContrastChecker'
 import { MascotPreview as MascotPreview_090ae587f57b85bd1f10e8506152bb9a } from '../../../components/admin/MascotPreview'
-import { FigmaAvatar as FigmaAvatar_5b632879807206965a35b58cd5166e1c } from '@payloadcms/figma/client'
 import { Icon as Icon_81fda60f3e3709e861f40982a767707d } from '../../../components/admin/Brand'
 import { Logo as Logo_81fda60f3e3709e861f40982a767707d } from '../../../components/admin/Brand'
-import { DefaultLoginButton as DefaultLoginButton_5b632879807206965a35b58cd5166e1c } from '@payloadcms/figma/client'
-import { FigmaCloudLimitProvider as FigmaCloudLimitProvider_5b632879807206965a35b58cd5166e1c } from '@payloadcms/figma/client'
 import { FolderIcon as FolderIcon_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
 import { HierarchySidebarTabServer as HierarchySidebarTabServer_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 import { TagIcon as TagIcon_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
@@ -98,9 +92,7 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/ui#LLMInstructionsMenuItem": LLMInstructionsMenuItem_3817bf644402e67bfe6577f60ef982de,
-  "@payloadcms/figma/client#FigmaCloudLimitSlugTracker": FigmaCloudLimitSlugTracker_5b632879807206965a35b58cd5166e1c,
   "/components/admin/PlaceholderBadge#PlaceholderBadge": PlaceholderBadge_66cf974565a80987a671b9628cac5d19,
-  "@payloadcms/figma/views#LimitReachedView": LimitReachedView_d3552a8b0228f18024bd6ebd4c17886b,
   "@payloadcms/richtext-lexical/client#BlocksFeatureClient": BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#UploadFeatureClient": UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/ui#NullField": NullField_3817bf644402e67bfe6577f60ef982de,
@@ -111,17 +103,13 @@ export const importMap = {
   "/components/admin/LeadsBoard#LeadsBoard": LeadsBoard_d7e7cacf3ab7c2b51587346d46177670,
   "/components/admin/ReplyByEmailButton#ReplyByEmailButton": ReplyByEmailButton_e198a7f9ed32380bf30ba29616ee5057,
   "/components/admin/TemplateTestButton#TemplateTestButton": TemplateTestButton_388530fba0e94926fa914d31bd5846a4,
-  "@payloadcms/figma/client#FigmaAvatarCell": FigmaAvatarCell_5b632879807206965a35b58cd5166e1c,
   "/components/admin/PermissionMatrixField#PermissionMatrixField": PermissionMatrixField_d0a733e7289cf9d795f94e1272011f47,
   "@payloadcms/ui#LLMInstructionsDescription": LLMInstructionsDescription_3817bf644402e67bfe6577f60ef982de,
   "@payloadcms/ui/rsc#LLMInstructionsCell": LLMInstructionsCell_ab83ff7e88da8d3530831f296ec4756a,
   "/components/admin/ContrastChecker#ContrastChecker": ContrastChecker_ae4a80453bb4bd4f8076788a9c0c55e2,
   "/components/admin/MascotPreview#MascotPreview": MascotPreview_090ae587f57b85bd1f10e8506152bb9a,
-  "@payloadcms/figma/client#FigmaAvatar": FigmaAvatar_5b632879807206965a35b58cd5166e1c,
   "/components/admin/Brand#Icon": Icon_81fda60f3e3709e861f40982a767707d,
   "/components/admin/Brand#Logo": Logo_81fda60f3e3709e861f40982a767707d,
-  "@payloadcms/figma/client#DefaultLoginButton": DefaultLoginButton_5b632879807206965a35b58cd5166e1c,
-  "@payloadcms/figma/client#FigmaCloudLimitProvider": FigmaCloudLimitProvider_5b632879807206965a35b58cd5166e1c,
   "@payloadcms/ui#FolderIcon": FolderIcon_3817bf644402e67bfe6577f60ef982de,
   "@payloadcms/ui/rsc#HierarchySidebarTabServer": HierarchySidebarTabServer_ab83ff7e88da8d3530831f296ec4756a,
   "@payloadcms/ui#TagIcon": TagIcon_3817bf644402e67bfe6577f60ef982de,

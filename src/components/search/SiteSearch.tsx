@@ -26,16 +26,20 @@ export function SiteSearch({
   const [pending, startTransition] = useTransition()
 
   useEffect(() => {
+    let active = true
     const q = query.trim()
     if (q.length < 2) {
       setResults(null)
       return
     }
     const timer = setTimeout(
-      () => startTransition(async () => setResults(await searchAction(q))),
+      () => startTransition(async () => {
+        const hits = await searchAction(q)
+        if (active) setResults(hits)
+      }),
       300,
     )
-    return () => clearTimeout(timer)
+    return () => { active = false; clearTimeout(timer) }
   }, [query])
 
   return (
