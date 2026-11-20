@@ -1,0 +1,436 @@
+@import "tailwindcss";
+
+/*
+ * Arus Digital design tokens.
+ * Brand colors are CSS variables so the CMS (Branding → Warna) can override
+ * them at runtime; the layout injects the CMS values after this file.
+ */
+:root {
+  --brand-blue: #1a6bff;
+  --brand-navy: #071a3d;
+  --brand-lime: #c6f432;
+  --brand-cyan: #2ee6f6;
+  --brand-ink-50: #f5f6f7;
+  --brand-ink-100: #ebedef;
+  --brand-ink-200: #d7dae0;
+  --brand-ink-300: #b5bac5;
+  --brand-ink-400: #8f98a8;
+  --brand-ink-500: #6f7a8e;
+  --brand-ink-600: #515f77;
+  --brand-ink-700: #394864;
+  --brand-ink-800: #203150;
+  --brand-ink-900: #112345;
+  --pattern-wave: 0.7;
+  --pattern-fin: 0.7;
+  --pattern-star: 0.7;
+  --header-h: 72px;
+}
+
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-fox: #ff7a2f;
+  --color-fox-cream: #fff3e3;
+  --color-amber: #ffd45c;
+  --color-danger: #b42318;
+
+  --text-hero: clamp(2.5rem, 1.35rem + 5.1vw, 6rem);
+  --text-hero--line-height: 1.04;
+  --text-hero--letter-spacing: -0.03em;
+  --text-section: clamp(1.875rem, 1.3rem + 2.6vw, 3.75rem);
+  --text-section--line-height: 1.07;
+  --text-section--letter-spacing: -0.02em;
+  --text-title: clamp(1.375rem, 1.15rem + 1vw, 2rem);
+  --text-title--line-height: 1.15;
+  --text-lead: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+  --text-lead--line-height: 1.6;
+  --text-giant: clamp(5.5rem, 3rem + 14vw, 15rem);
+  --text-giant--line-height: 0.9;
+
+  --radius-card: 24px;
+  --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+  --ease-soft: cubic-bezier(0.25, 1, 0.5, 1);
+
+  --breakpoint-xs: 22.5rem;
+}
+
+@theme inline {
+  --color-blue: var(--brand-blue);
+  --color-navy: var(--brand-navy);
+  --color-lime: var(--brand-lime);
+  --color-cyan: var(--brand-cyan);
+  --color-ink-50: var(--brand-ink-50);
+  --color-ink-100: var(--brand-ink-100);
+  --color-ink-200: var(--brand-ink-200);
+  --color-ink-300: var(--brand-ink-300);
+  --color-ink-400: var(--brand-ink-400);
+  --color-ink-500: var(--brand-ink-500);
+  --color-ink-600: var(--brand-ink-600);
+  --color-ink-700: var(--brand-ink-700);
+  --color-ink-800: var(--brand-ink-800);
+  --color-ink-900: var(--brand-ink-900);
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
+  --shadow-hard: 4px 4px 0 0 var(--brand-navy);
+  --shadow-hard-sm: 2px 2px 0 0 var(--brand-navy);
+  --shadow-hard-lg: 6px 6px 0 0 var(--brand-navy);
+  --shadow-hard-cyan: 4px 4px 0 0 var(--brand-cyan);
+  --shadow-hard-lime: 4px 4px 0 0 var(--brand-lime);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--header-h) + 16px);
+  }
+  body {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--brand-navy);
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 3px solid var(--brand-cyan);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--brand-navy);
+  }
+  ::selection {
+    background: var(--brand-lime);
+    color: var(--brand-navy);
+  }
+  [hidden] {
+    display: none !important;
+  }
+  dialog::backdrop {
+    background: rgb(7 26 61 / 0.6);
+  }
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html[data-motion="full"] {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+@utility container-arus {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  @media (width >= 48rem) {
+    padding-inline: 24px;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 40px;
+  }
+}
+
+@utility label-mono {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Sticker card: 24px radius, 2px navy border, 4×4 hard shadow that collapses on press. */
+@utility sticker {
+  border-radius: 24px;
+  border: 2px solid var(--brand-navy);
+  background: #ffffff;
+  box-shadow: var(--shadow-hard);
+}
+
+@utility sticker-press {
+  transition-property: transform;
+  transition-duration: 160ms;
+  transition-timing-function: var(--ease-snappy);
+  &:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 0 var(--brand-navy);
+  }
+}
+
+@utility pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding-inline: 1.5rem;
+  border-radius: 999px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition-property: transform, background-color, color;
+  transition-duration: 160ms;
+  transition-timing-function: var(--ease-snappy);
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+@utility prose-arus {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  & > * + * {
+    margin-top: 1.1em;
+  }
+  & h2 {
+    margin-top: 2em;
+    font-size: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+    font-weight: 700;
+  }
+  & h3 {
+    margin-top: 1.6em;
+    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+    font-weight: 700;
+  }
+  & h4 {
+    margin-top: 1.4em;
+    font-weight: 700;
+  }
+  & a {
+    color: var(--brand-blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 600;
+  }
+  & ul,
+  & ol {
+    padding-left: 1.4em;
+  }
+  & ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  & ul > li {
+    position: relative;
+    padding-left: 1.75em;
+  }
+  & ul > li::before {
+    content: "";
+    position: absolute;
+    left: 0.15em;
+    top: 0.45em;
+    width: 0.85em;
+    height: 0.85em;
+    background: var(--brand-blue);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0C54 38 62 46 100 50C62 54 54 62 50 100C46 62 38 54 0 50C38 46 46 38 50 0Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  & ol {
+    list-style: decimal;
+  }
+  & ol > li::marker {
+    font-family: var(--font-mono);
+    color: var(--brand-blue);
+  }
+  & li + li {
+    margin-top: 0.4em;
+  }
+  & blockquote {
+    border-left: 4px solid var(--brand-blue);
+    padding: 0.4em 0 0.4em 1.1em;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1.35;
+    font-weight: 600;
+  }
+  & img {
+    border-radius: 20px;
+    outline: 1px solid rgb(0 0 0 / 0.1);
+    outline-offset: -1px;
+  }
+  & table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+  & th,
+  & td {
+    border-bottom: 1px solid var(--brand-ink-200);
+    padding: 0.6em 0.5em;
+    text-align: left;
+  }
+  & pre {
+    overflow-x: auto;
+    border-radius: 16px;
+    background: var(--brand-navy);
+    color: #ffffff;
+    padding: 1em 1.2em;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+  & code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+}
+
+/* ---------- Motion (CSS loops). Only run when motion is allowed. ---------- */
+@keyframes arus-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes arus-wave {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes arus-twinkle {
+  0%,
+  100% {
+    transform: scale(0.7) rotate(0deg);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1) rotate(12deg);
+    opacity: 1;
+  }
+}
+@keyframes arus-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+@keyframes arus-fin-cruise {
+  0% {
+    transform: translate3d(-15vw, 0, 0);
+  }
+  100% {
+    transform: translate3d(115vw, 0, 0);
+  }
+}
+@keyframes arus-rise {
+  from {
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.pattern-wave {
+  opacity: var(--pattern-wave);
+}
+.pattern-fin {
+  opacity: var(--pattern-fin);
+}
+.pattern-star {
+  opacity: var(--pattern-star);
+}
+html[data-wave="off"] .pattern-wave,
+html[data-fin="off"] .pattern-fin,
+html[data-star="off"] .pattern-star {
+  display: none;
+}
+
+/* Reveal-on-scroll: content is visible by default (no-JS, crawlers);
+   the Reveal component hides only offscreen items once JS confirms motion. */
+.reveal-pending {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+}
+.reveal-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 600ms var(--ease-soft),
+    transform 700ms var(--ease-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-motion="full"] .anim-marquee {
+    animation: arus-marquee var(--marquee-duration, 40s) linear infinite;
+  }
+  html[data-motion="full"] .anim-marquee:hover {
+    animation-play-state: paused;
+  }
+  html[data-motion="full"] .anim-wave {
+    animation: arus-wave var(--wave-duration, 30s) linear infinite;
+  }
+  html[data-motion="full"] .anim-twinkle {
+    animation: arus-twinkle var(--twinkle-duration, 2.6s) ease-in-out infinite;
+    animation-delay: var(--twinkle-delay, 0s);
+  }
+  html[data-motion="full"] .anim-float {
+    animation: arus-float 6s ease-in-out infinite;
+    animation-delay: var(--float-delay, 0s);
+  }
+  html[data-motion="full"] .anim-fin {
+    animation: arus-fin-cruise var(--fin-duration, 26s) linear infinite;
+  }
+  html[data-motion="full"] .anim-rise {
+    animation: arus-rise 700ms var(--ease-soft) both;
+    animation-delay: var(--rise-delay, 0ms);
+  }
+}
+
+@media print {
+  header[data-site-header],
+  footer[data-site-footer],
+  [data-sticky-bar],
+  [data-wa-fab],
+  .no-print {
+    display: none !important;
+  }
+  body {
+    color: #000;
+  }
+}
+
+.figma-custom-code-fragment {
+  display: contents;
+}
+
+.figma-bypass-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 2147483647;
+  transform: translateY(-150%);
+  border-radius: 6px;
+  background: #111827;
+  color: #fff;
+  padding: 8px 12px;
+  font: 600 14px/1.2 system-ui, sans-serif;
+  text-decoration: none;
+}
+
+.figma-bypass-link:focus {
+  transform: translateY(0);
+}

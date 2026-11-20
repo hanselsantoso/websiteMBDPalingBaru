@@ -1,0 +1,577 @@
+{
+  "slug": "roles",
+  "documents": [
+    {
+      "data": {
+        "name": "Super Admin",
+        "key": "super-admin",
+        "description": "Akses penuh, termasuk integrasi, skrip kustom, pengguna, dan audit log.",
+        "isSystem": true,
+        "permissions": {
+          "dashboard": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "halaman": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan"
+            ]
+          },
+          "blog": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan",
+              "ekspor"
+            ]
+          },
+          "media": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus"
+            ]
+          },
+          "kurikulum": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan",
+              "ekspor"
+            ]
+          },
+          "matakuliah": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan",
+              "ekspor"
+            ]
+          },
+          "dosen": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan",
+              "ekspor"
+            ]
+          },
+          "pmb": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan",
+              "ekspor"
+            ]
+          },
+          "leads": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "ekspor"
+            ]
+          },
+          "branding": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan"
+            ]
+          },
+          "menu": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan"
+            ]
+          },
+          "kuis": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan",
+              "ekspor"
+            ]
+          },
+          "kontenLain": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan"
+            ]
+          },
+          "pengaturan": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus"
+            ]
+          },
+          "pengguna": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus"
+            ]
+          },
+          "audit": {
+            "actions": [
+              "lihat",
+              "ekspor"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "name": "Admin",
+        "key": "admin",
+        "description": "Mengelola seluruh konten dan pengguna, kecuali Super Admin, integrasi, dan skrip.",
+        "isSystem": true,
+        "permissions": {
+          "dashboard": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "halaman": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan"
+            ]
+          },
+          "blog": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan",
+              "ekspor"
+            ]
+          },
+          "media": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus"
+            ]
+          },
+          "kurikulum": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan",
+              "ekspor"
+            ]
+          },
+          "matakuliah": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan",
+              "ekspor"
+            ]
+          },
+          "dosen": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan",
+              "ekspor"
+            ]
+          },
+          "pmb": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan",
+              "ekspor"
+            ]
+          },
+          "leads": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "ekspor"
+            ]
+          },
+          "branding": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "terbitkan"
+            ]
+          },
+          "menu": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "terbitkan"
+            ]
+          },
+          "kuis": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan",
+              "ekspor"
+            ]
+          },
+          "kontenLain": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan"
+            ]
+          },
+          "pengaturan": {
+            "actions": [
+              "lihat",
+              "ubah"
+            ]
+          },
+          "pengguna": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah"
+            ]
+          },
+          "audit": {
+            "actions": [
+              "lihat"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "name": "Editor",
+        "key": "editor",
+        "description": "Menyunting dan menerbitkan konten publik.",
+        "isSystem": true,
+        "permissions": {
+          "dashboard": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "halaman": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "terbitkan"
+            ]
+          },
+          "blog": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan"
+            ]
+          },
+          "media": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus"
+            ]
+          },
+          "kurikulum": {
+            "actions": [
+              "lihat",
+              "ubah"
+            ]
+          },
+          "matakuliah": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "terbitkan"
+            ]
+          },
+          "dosen": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "terbitkan"
+            ]
+          },
+          "pmb": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "branding": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "menu": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah"
+            ]
+          },
+          "kuis": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "terbitkan"
+            ]
+          },
+          "kontenLain": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "hapus",
+              "terbitkan"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "name": "Penulis",
+        "key": "penulis",
+        "description": "Menulis artikel sendiri dan mengajukannya untuk direview.",
+        "isSystem": true,
+        "permissions": {
+          "dashboard": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "halaman": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "blog": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah"
+            ],
+            "scope": "own"
+          },
+          "media": {
+            "actions": [
+              "lihat",
+              "buat"
+            ],
+            "scope": "own"
+          },
+          "kurikulum": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "matakuliah": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "dosen": {
+            "actions": [
+              "lihat"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "name": "Staf PMB",
+        "key": "staf-pmb",
+        "description": "Mengelola pendaftar, leads, dan pengaturan PMB.",
+        "isSystem": true,
+        "permissions": {
+          "dashboard": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "media": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "kurikulum": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "matakuliah": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "pmb": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "ekspor"
+            ]
+          },
+          "leads": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "ekspor"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "name": "Staf Marketing",
+        "key": "staf-marketing",
+        "description": "Mengelola leads, konten promosi, dan menu CTA.",
+        "isSystem": true,
+        "permissions": {
+          "dashboard": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "halaman": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "blog": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah"
+            ]
+          },
+          "media": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah"
+            ]
+          },
+          "kurikulum": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "matakuliah": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "dosen": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "pmb": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "leads": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah",
+              "ekspor"
+            ]
+          },
+          "branding": {
+            "actions": [
+              "lihat"
+            ]
+          },
+          "menu": {
+            "actions": [
+              "lihat",
+              "ubah"
+            ]
+          },
+          "kuis": {
+            "actions": [
+              "lihat",
+              "ubah"
+            ]
+          },
+          "kontenLain": {
+            "actions": [
+              "lihat",
+              "buat",
+              "ubah"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

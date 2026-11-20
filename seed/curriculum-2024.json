@@ -1,0 +1,541 @@
+{
+  "_note": "Sumber kebenaran Kurikulum 2024 (Part 6 brief). Jangan ubah kode atau SKS tanpa konfirmasi program studi. Diuji oleh src/lib/domain/__tests__/curriculum.test.ts.",
+  "version": {
+    "name": "Kurikulum 2024",
+    "year": 2024,
+    "isActive": true,
+    "status": "aktif",
+    "semesters": [
+      {
+        "number": 1,
+        "title": "Fondasi",
+        "description": "Dasar manajemen bisnis digital, komunikasi, matematika bisnis, pemasaran digital, dan AI untuk pemrograman dasar."
+      },
+      {
+        "number": 2,
+        "title": "Alat dan Data",
+        "description": "Akuntansi, sistem informasi, basis data, statistika, prompt engineering, dan technopreneurship."
+      },
+      {
+        "number": 3,
+        "title": "Bisnis Digital",
+        "description": "E-commerce, strategi bisnis digital, risiko, etika dan hukum, keuangan, serta blockchain dan fintech."
+      },
+      {
+        "number": 4,
+        "title": "Analitik dan AI",
+        "description": "Analisis data bisnis, teknologi AI, UI/UX aplikasi bisnis, hubungan pelanggan, SDM, dan rantai pasok."
+      },
+      {
+        "number": 5,
+        "title": "Data Science dan Cloud",
+        "description": "Data science, sistem pendukung keputusan, aktuaria, cloud, bisnis internasional, dan komunikasi visual."
+      },
+      {
+        "number": 6,
+        "title": "Enrichment",
+        "description": "[ISI: penjelasan Program Enrichment 1 dan 2, bentuk kegiatan, dan mitra]"
+      },
+      {
+        "number": 7,
+        "title": "Pendalaman",
+        "description": "Program Enrichment 2, Pancasila, dan Bahasa Inggris."
+      },
+      {
+        "number": 8,
+        "title": "Capstone",
+        "description": "Capstone Project: menerapkan strategi, data, dan teknologi pada satu proyek bisnis digital."
+      }
+    ]
+  },
+  "syllabusPlaceholders": {
+    "description": "[ISI: deskripsi mata kuliah]",
+    "cpmk": [
+      {
+        "text": "[ISI: capaian pembelajaran mata kuliah (CPMK)]"
+      }
+    ],
+    "weeklyPlan": [
+      {
+        "week": 1,
+        "topic": "[ISI: rencana topik 14-16 pertemuan]",
+        "method": "[ISI]",
+        "outcome": "[ISI]"
+      }
+    ],
+    "assessment": [
+      {
+        "component": "[ISI: komponen dan bobot penilaian]",
+        "weight": 100
+      }
+    ],
+    "references": [
+      {
+        "text": "[ISI: buku dan referensi]"
+      }
+    ],
+    "tools": [
+      {
+        "name": "[ISI: tools dan software]"
+      }
+    ]
+  },
+  "courses": [
+    {
+      "semester": 1,
+      "code": "BD101",
+      "name": "Pengantar Manajemen Bisnis Digital",
+      "nameSource": "Intro to Business Digital Management",
+      "credits": 3,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 1
+    },
+    {
+      "semester": 1,
+      "code": "BD102",
+      "name": "Komunikasi Bisnis",
+      "nameSource": "Business Communication",
+      "credits": 3,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 2
+    },
+    {
+      "semester": 1,
+      "code": "BD103",
+      "name": "AI untuk Pemrograman Dasar",
+      "nameSource": "AI for Basic Programming",
+      "credits": 3,
+      "tags": [
+        "AI"
+      ],
+      "type": "wajib",
+      "sortOrder": 3
+    },
+    {
+      "semester": 1,
+      "code": "BD104",
+      "name": "Matematika untuk Bisnis",
+      "nameSource": "Mathematics for Business",
+      "credits": 3,
+      "tags": [
+        "Data"
+      ],
+      "type": "wajib",
+      "sortOrder": 4
+    },
+    {
+      "semester": 1,
+      "code": "BD105",
+      "name": "Pemasaran Digital",
+      "nameSource": "Digital Marketing",
+      "credits": 3,
+      "tags": [
+        "E-Commerce"
+      ],
+      "type": "wajib",
+      "sortOrder": 5
+    },
+    {
+      "semester": 1,
+      "code": "BD106",
+      "name": "Manajemen Perkantoran Tanpa Kertas",
+      "nameSource": "Paperless Office Management",
+      "credits": 3,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 6
+    },
+    {
+      "semester": 2,
+      "code": "BD201",
+      "name": "Akuntansi untuk Bisnis Digital",
+      "nameSource": "Accounting for Digital Business",
+      "credits": 3,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 1
+    },
+    {
+      "semester": 2,
+      "code": "BD202",
+      "name": "Manajemen Sistem Informasi untuk Bisnis",
+      "nameSource": "Management I.S. for Business",
+      "credits": 3,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 2
+    },
+    {
+      "semester": 2,
+      "code": "BD203",
+      "name": "Manajemen Basis Data",
+      "nameSource": "Database Management",
+      "credits": 3,
+      "tags": [
+        "Data"
+      ],
+      "type": "wajib",
+      "sortOrder": 3
+    },
+    {
+      "semester": 2,
+      "code": "BD204",
+      "name": "Prompt Engineering untuk Aplikasi Bisnis",
+      "nameSource": "Prompt Engineering for Business App",
+      "credits": 4,
+      "tags": [
+        "AI"
+      ],
+      "type": "wajib",
+      "sortOrder": 4
+    },
+    {
+      "semester": 2,
+      "code": "BD205",
+      "name": "Statistika untuk Bisnis",
+      "nameSource": "Statistics for Business",
+      "credits": 3,
+      "tags": [
+        "Data"
+      ],
+      "type": "wajib",
+      "sortOrder": 5
+    },
+    {
+      "semester": 2,
+      "code": "BD206",
+      "name": "Technopreneurship",
+      "nameSource": "Technopreneurship",
+      "credits": 3,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 6
+    },
+    {
+      "semester": 3,
+      "code": "BD301",
+      "name": "Pengembangan Bisnis E-Commerce",
+      "nameSource": "E-Commerce Business Development",
+      "credits": 4,
+      "tags": [
+        "E-Commerce"
+      ],
+      "type": "wajib",
+      "sortOrder": 1
+    },
+    {
+      "semester": 3,
+      "code": "BD302",
+      "name": "Manajemen Risiko untuk Bisnis",
+      "nameSource": "Risk Management for Business",
+      "credits": 3,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 2
+    },
+    {
+      "semester": 3,
+      "code": "BD303",
+      "name": "Etika dan Hukum dalam Bisnis",
+      "nameSource": "Ethics and Legal in Business",
+      "credits": 3,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 3
+    },
+    {
+      "semester": 3,
+      "code": "BD304",
+      "name": "Manajemen Keuangan dan Investasi",
+      "nameSource": "Financial and Investment Management",
+      "credits": 3,
+      "tags": [
+        "Fintech"
+      ],
+      "type": "wajib",
+      "sortOrder": 4
+    },
+    {
+      "semester": 3,
+      "code": "BD305",
+      "name": "Strategi Bisnis Digital",
+      "nameSource": "Digital Business Strategy",
+      "credits": 4,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 5
+    },
+    {
+      "semester": 3,
+      "code": "BD306",
+      "name": "Blockchain dan Fintech",
+      "nameSource": "Blockchain and Fintech",
+      "credits": 4,
+      "tags": [
+        "Fintech"
+      ],
+      "type": "wajib",
+      "sortOrder": 6
+    },
+    {
+      "semester": 4,
+      "code": "BD401",
+      "name": "Analisis Data Bisnis",
+      "nameSource": "Business Data Analysis",
+      "credits": 3,
+      "tags": [
+        "Data"
+      ],
+      "type": "wajib",
+      "sortOrder": 1
+    },
+    {
+      "semester": 4,
+      "code": "BD402",
+      "name": "Manajemen Sumber Daya Manusia",
+      "nameSource": "Human Resource Management",
+      "credits": 3,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 2
+    },
+    {
+      "semester": 4,
+      "code": "BD403",
+      "name": "Manajemen Rantai Pasok",
+      "nameSource": "Supply Chain Management",
+      "credits": 3,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 3
+    },
+    {
+      "semester": 4,
+      "code": "BD404",
+      "name": "Teknologi AI untuk Bisnis",
+      "nameSource": "AI Technology for Business",
+      "credits": 4,
+      "tags": [
+        "AI"
+      ],
+      "type": "wajib",
+      "sortOrder": 4
+    },
+    {
+      "semester": 4,
+      "code": "BD405",
+      "name": "UI/UX untuk Aplikasi Bisnis",
+      "nameSource": "UI/UX for Business Application",
+      "credits": 3,
+      "tags": [
+        "Kreatif"
+      ],
+      "type": "wajib",
+      "sortOrder": 5
+    },
+    {
+      "semester": 4,
+      "code": "BD406",
+      "name": "Manajemen Hubungan Pelanggan",
+      "nameSource": "Customer Relationship Management",
+      "credits": 3,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 6
+    },
+    {
+      "semester": 5,
+      "code": "BD501",
+      "name": "Data Science untuk Bisnis Digital",
+      "nameSource": "Data Science for Digital Business",
+      "credits": 4,
+      "tags": [
+        "Data"
+      ],
+      "type": "wajib",
+      "sortOrder": 1
+    },
+    {
+      "semester": 5,
+      "code": "BD502",
+      "name": "Manajemen Aktuaria",
+      "nameSource": "Actuarial Management",
+      "credits": 3,
+      "tags": [
+        "Data"
+      ],
+      "type": "wajib",
+      "sortOrder": 2
+    },
+    {
+      "semester": 5,
+      "code": "BD503",
+      "name": "Sistem Pendukung Keputusan Praktis",
+      "nameSource": "Practical Decision Support Systems",
+      "credits": 3,
+      "tags": [
+        "Data"
+      ],
+      "type": "wajib",
+      "sortOrder": 3
+    },
+    {
+      "semester": 5,
+      "code": "BD504",
+      "name": "Teknologi Cloud untuk Bisnis",
+      "nameSource": "Cloud Technology for Business",
+      "credits": 4,
+      "tags": [
+        "Teknologi"
+      ],
+      "type": "wajib",
+      "sortOrder": 4
+    },
+    {
+      "semester": 5,
+      "code": "BD505",
+      "name": "Manajemen Bisnis Internasional",
+      "nameSource": "International Business Management",
+      "credits": 3,
+      "tags": [
+        "Bisnis"
+      ],
+      "type": "wajib",
+      "sortOrder": 5
+    },
+    {
+      "semester": 5,
+      "code": "BD506",
+      "name": "Komunikasi Visual dalam Pemasaran",
+      "nameSource": "Visual Communication in Marketing",
+      "credits": 4,
+      "tags": [
+        "Kreatif"
+      ],
+      "type": "wajib",
+      "sortOrder": 6
+    },
+    {
+      "semester": 6,
+      "code": "BD601",
+      "name": "Program Enrichment 1",
+      "nameSource": "Enrichment Program 1",
+      "credits": 14,
+      "tags": [
+        "Enrichment"
+      ],
+      "type": "wajib",
+      "sortOrder": 1
+    },
+    {
+      "semester": 6,
+      "code": "BD009",
+      "name": "Bahasa Indonesia",
+      "nameSource": "Bahasa Indonesia",
+      "credits": 2,
+      "tags": [
+        "Umum"
+      ],
+      "type": "umum",
+      "sortOrder": 2
+    },
+    {
+      "semester": 6,
+      "code": "BD603",
+      "name": "Kewarganegaraan",
+      "nameSource": "Kewarganegaraan",
+      "credits": 2,
+      "tags": [
+        "Umum"
+      ],
+      "type": "umum",
+      "sortOrder": 3
+    },
+    {
+      "semester": 6,
+      "code": null,
+      "name": "Agama",
+      "nameSource": "Agama",
+      "credits": 2,
+      "tags": [
+        "Umum"
+      ],
+      "type": "umum",
+      "sortOrder": 4
+    },
+    {
+      "semester": 7,
+      "code": "BD701",
+      "name": "Program Enrichment 2",
+      "nameSource": "Enrichment Program 2",
+      "credits": 3,
+      "tags": [
+        "Enrichment"
+      ],
+      "type": "wajib",
+      "sortOrder": 1
+    },
+    {
+      "semester": 7,
+      "code": "BD007",
+      "name": "Pancasila",
+      "nameSource": "Pancasila",
+      "credits": 2,
+      "tags": [
+        "Umum"
+      ],
+      "type": "umum",
+      "sortOrder": 2
+    },
+    {
+      "semester": 7,
+      "code": "BD702",
+      "name": "Bahasa Inggris",
+      "nameSource": "Bahasa Inggris",
+      "credits": 2,
+      "tags": [
+        "Umum"
+      ],
+      "type": "umum",
+      "sortOrder": 3
+    },
+    {
+      "semester": 8,
+      "code": "BD801",
+      "name": "Capstone Project",
+      "nameSource": "Capstone Project",
+      "credits": 6,
+      "tags": [
+        "Capstone"
+      ],
+      "type": "wajib",
+      "sortOrder": 1
+    }
+  ]
+}
