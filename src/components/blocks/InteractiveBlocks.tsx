@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import type { ReactNode } from 'react'
 import { BlogIndex } from '@/components/blog/BlogIndex'
 import { BrochureButton } from '@/components/cta/CtaLinks'
@@ -18,6 +19,7 @@ import { Icon } from '@/components/ui/Icon'
 import { PendingChip, TextOr } from '@/components/ui/Isi'
 import { Eyebrow, SectionHeading } from '@/components/ui/Section'
 import { isSiasatPose, type SiasatPose } from '@/lib/brand/mascot'
+import { CURRICULUM_ART } from '@/lib/brand/artwork'
 import {
   getCurriculum,
   getFacultyList,
@@ -64,6 +66,11 @@ export async function CurriculumExplorerBlock({ block, ctx }: BlockProps) {
   const { version, courses } = await getCurriculum()
   return (
     <section id={anchor(block)} className="bg-white py-16 lg:py-24">
+      <div className="container-arus mb-8 lg:mb-12">
+        <div className="relative mx-auto aspect-[3/2] max-w-3xl overflow-hidden rounded-[28px] border-2 border-navy bg-ink-50 shadow-hard">
+          <Image src={CURRICULUM_ART} alt="" fill sizes="(min-width: 840px) 768px, 92vw" className="object-cover" />
+        </div>
+      </div>
       {courses.length ? (
         <CurriculumExplorer
           semesters={toTrackSemesters(version)}

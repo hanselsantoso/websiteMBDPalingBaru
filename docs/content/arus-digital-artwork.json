@@ -1,0 +1,55 @@
+{
+  "generator": "Built-in ImageGen",
+  "assets": [
+    {
+      "name": "arus-digital-mark",
+      "path": "public/images/brand/arus-digital-mark.png",
+      "prompt": "Logo-brand. Create ONE production mark/icon for Arus Digital, an Indonesian digital business university program website. Square alpha-transparent background. A compact modern emblem featuring a swift cresting digital current and a subtle letter A created by its negative space. Enclose in a near-square rounded navy badge with a clean silhouette, one bold electric lime #C4F52A current shape and one minimal cyan #23B8CF flow accent. Premium editorial visual identity, crisp simplified vector-like edges and optical balance, legible at 24px and 16px, generous clean outside transparent margins of about 7%. Centered. One mark only. No written text, no graduation cap, no university seal, no glow, no gradient, no mockup, no border panels. Navy #071A3D. PNG alpha.",
+      "transparent": true
+    },
+    {
+      "name": "siasat-pointing",
+      "path": "public/images/mascot/siasat-pointing-v3.webp",
+      "prompt": "Stylized-concept production web mascot. Use the attached Siasat greeting character as visual identity reference. Full-body same cheerful orange fox, same adult campus proportions, face and dark round glasses, cobalt blue short-sleeve campus jacket, cyan scarf, lime lanyard with blank badge, dark navy shirt and full navy trousers down to ankles, cream paw feet and orange tail with cream tip. Same detailed high-quality 3D render, tactile fur, fabric and warm key/cyan rim. No typography or logos. Transparent alpha, square, centered, generous 12 percent blank margin on all sides, entire ears, tail, pants, feet and hands uncropped. The soft tight contact shadow can be included. Pose: the fox points deliberately to the viewer's left (towards nearby course content) with one upper paw, other paw relaxed, friendly confident smile. One character.",
+      "transparent": true,
+      "reference": "public/images/mascot/siasat-greeting-v2.png"
+    },
+    {
+      "name": "siasat-thinking",
+      "path": "public/images/mascot/siasat-thinking-v3.webp",
+      "prompt": "Stylized-concept production web mascot. Use the attached Siasat greeting character as visual identity reference. Full-body same cheerful orange fox, same adult campus proportions, face and dark round glasses, cobalt blue short-sleeve campus jacket, cyan scarf, lime lanyard with blank badge, dark navy shirt and full navy trousers down to ankles, cream paw feet and orange tail with cream tip. Same detailed high-quality 3D render, tactile fur, fabric and warm key/cyan rim. No typography or logos. Transparent alpha, square, centered, generous 12 percent blank margin on all sides, entire ears, tail, pants, feet and hands uncropped. The soft tight contact shadow can be included. Pose: thoughtfully considering an idea, one paw beneath chin, the other supporting that arm naturally, eyes looking slightly upwards. No tablet, one character.",
+      "transparent": true,
+      "reference": "public/images/mascot/siasat-greeting-v2.png"
+    },
+    {
+      "name": "siasat-celebrating",
+      "path": "public/images/mascot/siasat-celebrating-v3.webp",
+      "prompt": "Stylized-concept production web mascot. Use the attached Siasat greeting character as visual identity reference. Full-body same cheerful orange fox, same adult campus proportions, face and dark round glasses, cobalt blue short-sleeve campus jacket, cyan scarf, lime lanyard with blank badge, dark navy shirt and full navy trousers down to ankles, cream paw feet and orange tail with cream tip. Same detailed high-quality 3D render, tactile fur, fabric and warm key/cyan rim. No typography or logos. Transparent alpha, square, centered, generous 12 percent blank margin on all sides, entire ears, tail, pants, feet and hands uncropped. The soft tight contact shadow can be included. Pose: delighted celebration after a successful form, raises both paws in a small energetic victory stance, feet near ground, clear expressive smile. No confetti or external objects, one character.",
+      "transparent": true,
+      "reference": "public/images/mascot/siasat-greeting-v2.png"
+    },
+    {
+      "name": "siasat-confused",
+      "path": "public/images/mascot/siasat-confused-v3.webp",
+      "prompt": "Stylized-concept production web mascot. Use the attached Siasat greeting character as visual identity reference. Full-body same cheerful orange fox, same adult campus proportions, face and dark round glasses, cobalt blue short-sleeve campus jacket, cyan scarf, lime lanyard with blank badge, dark navy shirt and full navy trousers down to ankles, cream paw feet and orange tail with cream tip. Same detailed high-quality 3D render, tactile fur, fabric and warm key/cyan rim. No typography or logos. Transparent alpha, square, centered, generous 12 percent blank margin on all sides, entire ears, tail, pants, feet and hands uncropped. The soft tight contact shadow can be included. Pose: friendly, mildly puzzled expression, holds one paw open in a small questioning shrug and one near his head. Grounded, welcoming, no question mark or text. One character.",
+      "transparent": true,
+      "reference": "public/images/mascot/siasat-greeting-v2.png"
+    },
+    {
+      "name": "faculty-editorial",
+      "path": "public/images/illustrations/faculty-editorial.webp",
+      "prompt": "Stylized-concept premium 3D editorial fallback image for university faculty cards. The central subject is a ceramic open book in ivory alongside a simple navy round spectacle frame and a cobalt academic pen on a light periwinkle desk, small cyan and lime accents, curved reflected lines suggesting a digital current. Restrained modern academic illustration, no people, no portrait silhouette, no identifiable lecturer, no text, no logos. Square composition readable when cropped into a circle or organic frame, subject centered in middle 65%, even soft warm studio light, subtle tactile material texture, high quality product photography appearance. One finished asset, no markup or captions.",
+      "transparent": false
+    },
+    {
+      "name": "curriculum-journey",
+      "path": "public/images/illustrations/curriculum-journey.webp",
+      "promptSource": "WEB-MBD-FIX/output/imagegen/arus-digital-v1/prompts.json"
+    },
+    {
+      "name": "digital-business-ai",
+      "path": "public/images/illustrations/digital-business-ai.webp",
+      "promptSource": "WEB-MBD-FIX/output/imagegen/arus-digital-v1/prompts.json"
+    }
+  ]
+}

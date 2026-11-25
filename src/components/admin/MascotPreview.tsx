@@ -1,9 +1,11 @@
 'use client'
 
 import { useFormFields } from '@payloadcms/ui'
-import { domAnimation, LazyMotion } from 'motion/react'
+import { domAnimation, LazyMotion, m, useReducedMotion } from 'motion/react'
+import Image from 'next/image'
 import { useState } from 'react'
-import { SIASAT_POSES, SiasatArt, type SiasatPose } from '@/components/mascot/SiasatArt'
+import { SIASAT_ARTWORK } from '@/lib/brand/artwork'
+import { SIASAT_POSES, type SiasatPose } from '@/lib/brand/mascot'
 import './admin.css'
 
 const LABELS: Record<SiasatPose, string> = {
@@ -19,6 +21,7 @@ export function MascotPreview() {
   const [pose, setPose] = useState<SiasatPose>('greeting')
   const [animated, setAnimated] = useState(true)
   const [dark, setDark] = useState(false)
+  const reduced = useReducedMotion()
   const uploaded = useFormFields(([fields]) => Boolean(fields?.[`poses.${pose}.image`]?.value))
   const name = useFormFields(([fields]) => (fields?.mascotName?.value as string) || 'Siasat')
 
@@ -44,13 +47,19 @@ export function MascotPreview() {
       </div>
       <div className={`ad-stage ad-stage--spaced ${dark ? 'ad-stage--dark' : ''}`}>
         <LazyMotion features={domAnimation}>
-          <SiasatArt key={`${pose}-${animated}`} pose={pose} animated={animated} followPointer onDark={dark} title={`${name}, pose ${LABELS[pose]}`} />
+          <m.div
+            key={pose}
+            animate={animated && !reduced ? { y: [0, -8, 0] } : { y: 0 }}
+            transition={animated && !reduced ? { duration: 3.5, repeat: Infinity, ease: 'easeInOut' } : { duration: 0 }}
+          >
+            <Image src={SIASAT_ARTWORK[pose].url} alt={`${name}, pose ${LABELS[pose]}`} width={240} height={240} />
+          </m.div>
         </LazyMotion>
       </div>
       <p className="ad-note">
         {uploaded
-          ? 'Pose ini sudah punya gambar unggahan. Situs menampilkan gambar tersebut dengan animasi melayang dan bernapas; pratinjau di atas adalah placeholder vektor.'
-          : 'Belum ada gambar untuk pose ini, jadi situs memakai placeholder vektor di atas. Unggah PNG/WebP transparan 1024 px dan 2048 px di bagian Pose.'}
+          ? 'Situs memakai gambar unggahan untuk pose ini. Panel menampilkan ilustrasi bawaan.'
+          : 'Situs memakai ilustrasi bawaan di atas. Unggah gambar PNG atau WebP transparan di bagian Pose untuk menggantinya.'}
       </p>
     </div>
   )

@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import type { ReactNode } from 'react'
 import Link from 'next/link'
-import { Fin, Star } from '@/components/patterns/Patterns'
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip, TextOr } from '@/components/ui/Isi'
+import { BLOG_COVER_ART, FACULTY_ART } from '@/lib/brand/artwork'
 import { isPlaceholder } from '@/lib/domain/placeholders'
-import { asMedia, cn, formatDate, hashString, initials } from '@/lib/utils'
+import { asMedia, cn, formatDate } from '@/lib/utils'
 
 type Doc = Record<string, any>
 
@@ -45,11 +45,12 @@ export function Portrait({
           style={{ objectPosition: `${media.focalX ?? 50}% ${media.focalY ?? 30}%` }}
         />
       ) : (
-        <div className="absolute inset-0 grid place-items-center">
-          <Fin className="absolute right-[-12%] bottom-[-6%] size-[70%] text-blue" />
-          <span className="relative font-display text-5xl font-extrabold tracking-[-0.04em] text-white">{initials(name)}</span>
-          <span className="label-mono absolute bottom-3 left-3 text-[0.625rem] text-lime">Foto menyusul</span>
-        </div>
+        <>
+          <Image src={FACULTY_ART} alt="" fill sizes={sizes} priority={priority} className="object-cover" />
+          <span className="absolute bottom-3 left-3 rounded-full bg-navy px-3 py-1 text-xs font-semibold text-white">
+            Foto belum tersedia
+          </span>
+        </>
       )}
     </div>
   )
@@ -84,46 +85,19 @@ export function FacultyCard({ member, showPlaceholders, mask = 'fin', priority }
   )
 }
 
-const COVER_VARIANTS = ['bg-navy', 'bg-blue', 'bg-navy']
-
-/** Brand-pattern cover for posts without an uploaded image (no stock photography). */
 export function PostCover({ post, sizes, priority, className }: { post: Doc; sizes: string; priority?: boolean; className?: string }) {
   const cover = asMedia(post.cover)
-  const variant = hashString(String(post.slug ?? post.title ?? '')) % 3
-  const category = typeof post.category === 'object' ? post.category?.name : null
   return (
-    <div className={cn('relative overflow-hidden', !cover && COVER_VARIANTS[variant], className)}>
-      {cover ? (
-        <Image
-          src={cover.url!}
-          alt={cover.alt ?? ''}
-          fill
-          sizes={sizes}
-          priority={priority}
-          className="object-cover"
-          style={{ objectPosition: `${cover.focalX ?? 50}% ${cover.focalY ?? 50}%` }}
-        />
-      ) : (
-        <div aria-hidden="true" className="absolute inset-0">
-          <svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 size-full">
-            {[0, 1, 2].map((row) => (
-              <path
-                key={row}
-                d={`M-10 ${150 + row * 22} Q 40 ${130 + row * 22} 90 ${150 + row * 22} T 190 ${150 + row * 22} T 290 ${150 + row * 22} T 390 ${150 + row * 22} T 490 ${150 + row * 22}`}
-                fill="none"
-                stroke={row === 0 ? 'var(--brand-cyan)' : row === 1 ? (variant === 1 ? 'var(--brand-navy)' : 'var(--brand-blue)') : 'var(--brand-lime)'}
-                strokeWidth={row === 1 ? 10 : 4}
-                strokeLinecap="round"
-                opacity={0.9}
-              />
-            ))}
-          </svg>
-          <Fin className={cn('absolute bottom-[34%] size-[26%]', variant === 2 ? 'left-[12%] text-lime' : 'right-[14%] text-white')} />
-          <Star className="absolute top-[16%] right-[18%] size-6 text-lime" />
-          <Star className="absolute top-[34%] left-[22%] size-3 text-cyan" />
-          {category ? <span className="label-mono absolute top-4 left-4 text-white/80">{category}</span> : null}
-        </div>
-      )}
+    <div className={cn('relative overflow-hidden bg-navy', className)}>
+      <Image
+        src={cover?.url || BLOG_COVER_ART}
+        alt={cover?.alt ?? ''}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className="object-cover"
+        style={cover ? { objectPosition: `${cover.focalX ?? 50}% ${cover.focalY ?? 50}%` } : undefined}
+      />
     </div>
   )
 }

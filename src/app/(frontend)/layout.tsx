@@ -12,6 +12,7 @@ import { Siasat } from '@/components/mascot/Siasat'
 import { MOTION_BOOT_SCRIPT, MotionProvider } from '@/components/providers/MotionProvider'
 import { SiteProvider } from '@/components/providers/SiteProvider'
 import { JsonLd } from '@/components/seo/JsonLd'
+import { ARUS_MARK } from '@/lib/brand/artwork'
 import { brandCssVariables, resolveBrandColors } from '@/lib/brand/tokens'
 import { getBranding, getNavigation, getPmbInfo, getSiteSettings, isDraftMode } from '@/lib/data'
 import { BodyCustomCode, renderHeadCustomCode } from '@/lib/make-custom-code'
@@ -37,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const description =
     settings.defaultDescription || makeSiteSettings.description || 'S1 Manajemen Bisnis Digital ISTTS: jadi strategis bisnis di era digital.'
   const ogImage = settings.defaultOgImage?.url || branding.ogDefault?.url || makeSiteSettings.openGraph?.image
-  const favicon = branding.favicon?.url || makeSiteSettings.icons?.icon || '/favicon.svg'
+  const favicon = branding.favicon?.url || makeSiteSettings.icons?.icon || ARUS_MARK
   return {
     metadataBase: new URL(siteUrl()),
     title: { default: defaultTitle, template: settings.titleTemplate || '%s · MBD ISTTS' },

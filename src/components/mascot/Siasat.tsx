@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useMotionPreference } from '@/components/providers/MotionProvider'
 import { useSite } from '@/components/providers/SiteProvider'
+import { SIASAT_ARTWORK } from '@/lib/brand/artwork'
 import { springs } from '@/lib/motion'
 import { cn } from '@/lib/utils'
 import { DEFAULT_LINES, POSE_LABEL } from './lines'
@@ -25,18 +26,6 @@ const IMAGE_SIZES = {
   lg: '(min-width: 1024px) 288px, 256px',
   xl: '(min-width: 1024px) 400px, 320px',
 } as const
-
-// Bundled artwork is used until an editor supplies an image for this pose.
-const LOCAL_POSE_ASSETS: Partial<Record<SiasatPose, { url: string; alt: string }>> = {
-  greeting: {
-    url: '/images/mascot/siasat-greeting-v2.png',
-    alt: 'Siasat, rubah berkacamata dengan jaket biru dan celana navy, sedang menyapa',
-  },
-  tablet: {
-    url: '/images/mascot/siasat-tablet-v2.png',
-    alt: 'Siasat, rubah berkacamata dengan jaket biru dan celana navy, sedang memegang tablet',
-  },
-}
 
 export type SiasatProps = {
   pose: SiasatPose
@@ -88,7 +77,7 @@ export function Siasat({
   const [bubble, setBubble] = useState<string | null>(say)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const cmsAsset = mascot.poses[pose]
-  const asset = cmsAsset?.url ? cmsAsset : LOCAL_POSE_ASSETS[pose]
+  const asset = cmsAsset?.url ? cmsAsset : SIASAT_ARTWORK[pose]
   const animated = loop && mascot.idleAnimation && !reduced
   const label = `${mascot.name}, rubah strategis MBD, sedang ${POSE_LABEL[pose]}`
 

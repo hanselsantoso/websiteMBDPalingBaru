@@ -147,3 +147,6 @@
 ops/*.sh text eol=lf
 # Keep the two bundled website fallbacks available in an ordinary checkout.
 public/images/mascot/siasat-*-v2.png -filter -diff -merge -text
+public/images/mascot/siasat-*-v3.webp -filter -diff -merge -text
+public/images/brand/arus-digital-mark.png -filter -diff -merge -text
+public/images/illustrations/*.webp -filter -diff -merge -text

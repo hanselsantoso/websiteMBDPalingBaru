@@ -1,14 +1,16 @@
 'use client'
 
 import { m, useScroll, useTransform } from 'motion/react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
-import { SiasatArt } from '@/components/mascot/SiasatArt'
+import { Siasat } from '@/components/mascot/Siasat'
 import { useMotionPreference } from '@/components/providers/MotionProvider'
-import { Star, StarField, Wave } from '@/components/patterns/Patterns'
+import { StarField, Wave } from '@/components/patterns/Patterns'
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip } from '@/components/ui/Isi'
 import { Eyebrow } from '@/components/ui/Section'
+import { CURRICULUM_ART } from '@/lib/brand/artwork'
 import { displayCourseCode } from '@/lib/domain/curriculum'
 import { isPlaceholder, placeholderHint } from '@/lib/domain/placeholders'
 import { cn } from '@/lib/utils'
@@ -206,7 +208,9 @@ export function CurriculumTrack({
       href="/kurikulum"
       className="group flex h-full min-h-72 flex-col justify-between rounded-[28px] border-2 border-dashed border-lime p-6 text-white transition-colors duration-200 hover:bg-white/5"
     >
-      <Star className="size-8 text-lime" />
+      <div className="relative mb-5 aspect-[3/2] overflow-hidden rounded-2xl bg-ink-50">
+        <Image src={CURRICULUM_ART} alt="" fill sizes="(min-width: 1024px) 272px, 70vw" className="object-cover" />
+      </div>
       <div>
         <p className="text-2xl leading-tight font-bold">
           {finalCardTitle || 'Lihat kurikulum lengkap'}
@@ -309,7 +313,7 @@ export function CurriculumTrack({
                   className="absolute -top-9 left-0 w-12 -translate-x-1/2"
                   style={{ x: markerX }}
                 >
-                  <SiasatArt pose="pointing" animated={false} onDark className="h-auto w-full" />
+                  <Siasat pose="pointing" decorative loop={false} onDark size="xs" className="max-w-full" />
                 </m.div>
               </div>
             </div>
