@@ -11,6 +11,20 @@ beforeEach(() => { host = document.createElement('div'); document.body.append(ho
 afterEach(async () => { await act(() => root.unmount()); host.remove(); delete window.turnstile; vi.restoreAllMocks() })
 
 describe('Turnstile lifecycle', () => {
+  it('offers a retry when the provider script cannot load', async () => {
+    try {
+      await act(() => root.render(createElement(Turnstile, { siteKey: 'site-key', onToken: () => {} })))
+      const failed = document.querySelector('script[data-arus-turnstile]')!
+      await act(() => failed.dispatchEvent(new Event('error')))
+      expect(host.querySelector('[role=alert]')).not.toBeNull()
+      await act(() => host.querySelector('button')?.click())
+      const replacement = document.querySelector('script[data-arus-turnstile]')
+      expect(replacement).not.toBeNull()
+      expect(replacement).not.toBe(failed)
+    } finally {
+      document.querySelector('script[data-arus-turnstile]')?.remove()
+    }
+  })
   it('keeps one widget on rerender while delivering tokens to the latest callback', async () => {
     let options: Record<string, unknown> = {}
     let widgets = 0

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { forwardRef, useEffect, useRef, type ComponentPropsWithoutRef, type ReactNode } from 'react'
+import { forwardRef, useEffect, useRef, useState, type ComponentPropsWithoutRef, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 const control =
@@ -214,11 +214,14 @@ declare global {
 export function Turnstile({ siteKey, onToken, resetKey = 0 }: { siteKey: string | null; onToken: (token: string) => void; resetKey?: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const onTokenRef = useRef(onToken)
+  const [scriptFailed, setScriptFailed] = useState(false)
+  const [retry, setRetry] = useState(0)
   useEffect(() => { onTokenRef.current = onToken }, [onToken])
   useEffect(() => {
     if (!siteKey || !ref.current) return
     let disposed = false
     let widgetId: string | null = null
+    setScriptFailed(false)
     onTokenRef.current('')
     const mount = () => {
       if (!disposed && window.turnstile && ref.current && widgetId === null) {
@@ -238,14 +241,30 @@ export function Turnstile({ siteKey, onToken, resetKey = 0 }: { siteKey: string 
       script.async = true
       document.head.appendChild(script)
     }
+    const handleScriptError = () => {
+      script?.remove()
+      if (!disposed) setScriptFailed(true)
+    }
     script?.addEventListener('load', mount)
+    script?.addEventListener('error', handleScriptError)
     mount()
     return () => {
       disposed = true
       script?.removeEventListener('load', mount)
+      script?.removeEventListener('error', handleScriptError)
       if (widgetId !== null) window.turnstile?.remove(widgetId)
     }
-  }, [siteKey, resetKey])
+  }, [siteKey, resetKey, retry])
   if (!siteKey) return null
-  return <div ref={ref} className="min-h-[65px]" />
+  return (
+    <div>
+      <div ref={ref} className={scriptFailed ? 'hidden' : 'min-h-[65px]'} />
+      {scriptFailed ? (
+        <div>
+          <p role="alert">Verifikasi keamanan gagal dimuat.</p>
+          <button type="button" className="mt-1 font-semibold underline" onClick={() => setRetry((value) => value + 1)}>Muat ulang verifikasi</button>
+        </div>
+      ) : null}
+    </div>
+  )
 }

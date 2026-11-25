@@ -1,26 +1,28 @@
 # Status implementasi target VPS
 
-Tanggal: 20 November 2026. Pengguna memilih Native + reviewer akhir, lalu menjelaskan bahwa VPS/domain belum tersedia dan meminta proyek serta konfigurasi deployment disiapkan dahulu.
+Pembaruan 25 November 2026. Target tahap ini adalah menyiapkan proyek dan konfigurasi deployment sebelum VPS dan domain tersedia. Pemeriksaan mandiri oleh reviewer terpisah telah dilakukan untuk tahap persiapan ini.
 
 Target: `F:/laragon/www/WEB-MBD-VPS`. Sumber Make: `F:/laragon/www/WEB-MBD-FIX`, tidak diubah oleh tahap implementasi ini. Repository target dan snapshot baseline tersedia.
 
 | Task | Hasil tahap ini | Pekerjaan yang masih terbuka |
 | --- | --- | --- |
 | 1 Baseline | Target terpisah, versi tersedia, mise dan pnpm bekerja, baseline 90 tes lulus | Bukti kompatibilitas runtime produksi setelah database tersedia |
-| 2 Runtime | Konfigurasi Payload/Postgres mandiri, env validation, health dan Dockerfile; kompilasi awal serta TypeScript lulus | Database, schema dan build penuh |
-| 3 Admin | Auth collection asli tetap dipertahankan; import map native dibuat CLI resmi | Bootstrap/login/reset/peran nyata; skill auth diperlukan sebelum perubahan auth |
-| 4 Storage/proxy | Volume media/dokumen terpisah dan konfigurasi HTTPS disiapkan | Uji restart, private-file access, permission volume dan TLS di Docker |
+| 2 Runtime | PostgreSQL 17.12 lokal, migrasi awal Payload dijalankan dan build standalone berhasil | Uji image Linux dan kesiapan pada VPS |
+| 3 Admin | Import map dibuat oleh CLI resmi. `/admin` dan `/admin/logout` merespons lewat route Payload bawaan | Bootstrap akun, login/reset dan peran nyata |
+| 4 Storage/proxy | Volume terpisah, pembacaan secret saat startup, dan HTTPS disiapkan. Compose config lulus | Uji runtime image, izin volume, restart, akses file privat dan TLS |
 | 5 Access/invariant | Temuan audit dipertahankan dalam backlog | Perubahan collection access, capability request, dashboard dan invariant memerlukan workflow modeling yang belum tersedia |
 | 6 Upload PMB | Policy ukuran/jumlah, pemeriksaan sebelum buffer, nomor dan status dokumen parsial, opsi wave sesuai server | Uji proxy/action/DB/storage nyata; alur tindak lanjut staf |
 | 7 Endpoint/email | Respons 204 kosong dan tes template by-ID; error provider diteruskan | SMTP nyata, jobs, rate limit lintas restart/instance dan operasional lead |
 | 8 CAPTCHA | Token schema/UI kuis, lifecycle stabil, expiry/reset dan teks WhatsApp manual | Uji provider nyata pada staging |
-| 9 Blog/search | Pagination server, taxonomy tag penuh, cache berparameter, UI muat lanjut; respons search usang diabaikan | E2E dengan data CMS nyata dan filter lintas taxonomy |
-| 10 Cache/route | Cache lama dipertahankan; query pagination bertag ditambahkan; origin target disiapkan | Tabel route produksi static/ISR, draft/freshness/slug/media setelah publish |
+| 9 Blog/search | Pagination server dan retry filter teruji. Hasil filter lama disembunyikan saat filter baru gagal. Cache hanya mencakup halaman pertama tanpa filter | E2E dengan konten CMS nyata dan filter lintas taxonomy |
+| 10 Cache/route | Build lokal mengklasifikasikan halaman utama sebagai static dan pola detail sebagai SSG | Draft/freshness/slug/media dan seluruh URL konten setelah impor |
 | 11 Data/restore | Gate transfer dan prosedur preservasi dirinci | Tooling export/import, pemetaan ID, transfer, backup dan restore nyata |
 | 12 Konten/visual | Dua maskot disalin, header cetak dan newTab diperbaiki, matrix konten tersedia | Konten resmi, pose tambahan, preview seluruh route dan gambar CMS |
-| 13 QA | Unit/regresi dan komponen DOM ditambahkan; typecheck dijalankan | Browser lengkap, backend nyata, produksi dan seluruh matriks akses |
+| 13 QA | 108 tes pada 25 file lulus. TypeScript dan build lulus. Pemeriksaan HTTP menggunakan PostgreSQL lokal | Browser lengkap dengan konten, transaksi PMB/quiz, produksi dan matriks akses |
 | 14 Cutover | Konfigurasi dan urutan deployment dipersiapkan | VPS/domain, tinjauan rilis, cutover/rollback/handover |
 
-Build awal Next 16.4.2: kompilasi berhasil dalam 18,3 detik dan TypeScript selesai; pengumpulan data route gagal karena `ECONNREFUSED 127.0.0.1:55432`. Database target memang belum berjalan. Patch target diperbarui ke Next 16.4.5 dan Node 24.22.3 sesuai panduan kompatibilitas resmi; hasil verifikasi patch dicatat pada akhir tahap.
+Build Next.js 16.4.5 dan Node 24.22.3 lulus setelah database lokal tersedia. `pnpm payload migrate:status` menunjukkan baseline berstatus `Yes`. Pemeriksaan 25 URL pada server standalone menghasilkan 200 untuk health database, API publik, blog data, admin, halaman cetak, robots, sitemap dan kedua gambar maskot. Endpoint admin tanpa login mengembalikan 401. Route CMS yang membutuhkan record mengembalikan 404 karena database informasi masih kosong.
+
+Review independen menyoroti ownership secret/volume, cache image Docker, filter blog yang gagal, cache query pengguna, serta CAPTCHA saat konfigurasi atau skrip gagal dimuat. Perbaikan diterapkan pada target. Compose config dan sintaks entrypoint lulus pemeriksaan. Container sebenarnya belum dijalankan, sehingga baca secret dan penulisan volume dalam container tetap perlu diuji.
 
 **Verify production delivery tetap terbuka.** Tidak ada deploy, perubahan DNS, pengiriman email nyata, mutasi CMS sumber atau pemindahan data. Kode yang siap diuji lokal tidak sama dengan backend siap produksi.

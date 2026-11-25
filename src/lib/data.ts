@@ -160,7 +160,11 @@ export const getPosts = cached('posts', ['posts', 'post-categories', 'media'], a
   queries.fetchPosts(await payload()),
 )
 
-export const getPostsPage = cached('posts-page', ['posts', 'post-categories', 'post-tags', 'media'], async (input: BlogPageInput) => queries.fetchPostsPage(await payload(), input))
+const getFirstPostsPage = cached('posts-page', ['posts', 'post-categories', 'post-tags', 'media'], async (limit: number) => queries.fetchPostsPage(await payload(), { page: 1, limit }))
+export async function getPostsPage(input: BlogPageInput) {
+  if (input.page === 1 && !input.category && !input.tag && !input.query) return getFirstPostsPage(input.limit)
+  return queries.fetchPostsPage(await payload(), input)
+}
 export const getPostTags = cached('post-tags', ['post-tags'], async () => queries.fetchPostTags(await payload()))
 
 export const getLatestPosts = cached(

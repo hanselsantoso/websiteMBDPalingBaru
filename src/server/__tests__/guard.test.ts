@@ -38,6 +38,11 @@ describe('rateLimit', () => {
 })
 
 describe('verifyCaptcha & guardForm', () => {
+  it('blocks verification when captcha settings are temporarily unavailable', async () => {
+    vi.stubEnv('TURNSTILE_SECRET_KEY', '')
+    const payload = { findGlobal: async () => { throw new Error('Storage unavailable') } } as unknown as Payload
+    expect(await verifyCaptcha(payload, undefined, '127.0.0.1')).toBe(false)
+  })
   it('allows disabled captcha but rejects partially configured protection', async () => {
     vi.stubEnv('TURNSTILE_SECRET_KEY', '')
     expect(await verifyCaptcha(fakePayload(null), undefined, '1.1.1.1')).toBe(true)

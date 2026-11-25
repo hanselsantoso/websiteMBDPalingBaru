@@ -26,28 +26,18 @@ export function clientIp(headers: Headers): string {
   return headers.get('x-real-ip') ?? 'unknown'
 }
 
-async function turnstileSiteKey(payload: Payload): Promise<string | null> {
-  try {
-    const settings = (await payload.findGlobal({ slug: 'site-settings', depth: 0, overrideAccess: true })) as {
-      integrations?: { turnstileSiteKey?: string | null }
-    }
-    return settings.integrations?.turnstileSiteKey?.trim() || null
-  } catch {
-    return null
-  }
-}
-
 /** Disabled only when both keys are absent; partial configuration fails closed. */
 export async function verifyCaptcha(payload: Payload, token: string | undefined, ip: string): Promise<boolean> {
-  const secret = process.env.TURNSTILE_SECRET_KEY
-  const siteKey = await turnstileSiteKey(payload)
-  if (!secret && !siteKey) return true
-  if (!secret || !siteKey) return false
-  if (!token) return false
   try {
+    const settings = await payload.findGlobal({ slug: 'site-settings', depth: 0, overrideAccess: true })
+    const siteKey = settings.integrations?.turnstileSiteKey?.trim()
+    const secret = process.env.TURNSTILE_SECRET_KEY
+    if (!secret && !siteKey) return true
+    if (!secret || !siteKey || !token) return false
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
       body: new URLSearchParams({ secret, response: token, remoteip: ip }),
+      signal: AbortSignal.timeout(5000),
     })
     const json = (await response.json()) as { success?: boolean }
     return Boolean(json.success)

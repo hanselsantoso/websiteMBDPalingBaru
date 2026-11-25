@@ -51,6 +51,7 @@ services:
       args:
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:?Set the public origin in .env}
         PMB_MAX_DOCUMENT_MB: ${PMB_MAX_DOCUMENT_MB:-2}
+        CONTENT_REVISION: ${CONTENT_REVISION:-}
       secrets: [payload_secret, build_database_url]
     restart: unless-stopped
     environment: *application_environment

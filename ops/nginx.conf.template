@@ -1,7 +1,7 @@
 server {
   listen 80;
   server_name ${SITE_HOST};
-  return 308 https://$host$request_uri;
+  return 308 https://${SITE_HOST}$request_uri;
 }
 server {
   listen 443 ssl;

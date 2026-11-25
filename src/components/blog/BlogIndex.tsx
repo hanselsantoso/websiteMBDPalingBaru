@@ -21,11 +21,18 @@ export function BlogIndex({
   const [category, setCategory] = useState('')
   const [tag, setTag] = useState('')
   const [query, setQuery] = useState('')
-  const [page, setPage] = useState(initialPage)
+  const [loaded, setLoaded] = useState({ filter: '', page: initialPage })
+  const [retry, setRetry] = useState(0)
   const [ready, setReady] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const requestRef = useRef<AbortController | null>(null)
+  const filterParams = new URLSearchParams()
+  if (category) filterParams.set('kategori', category)
+  if (tag) filterParams.set('tag', tag)
+  if (query) filterParams.set('q', query.trim())
+  const filter = filterParams.toString()
+  const page = loaded.filter === filter ? loaded.page : null
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -38,14 +45,14 @@ export function BlogIndex({
   useEffect(() => {
     if (!ready) return
     requestRef.current?.abort()
-    const params = new URLSearchParams()
-    if (category) params.set('kategori', category)
-    if (tag) params.set('tag', tag)
-    if (query) params.set('q', query)
-    const search = params.toString()
-    window.history.replaceState(null, '', search ? `?${search}` : window.location.pathname)
+    const params = new URLSearchParams(filter)
+    window.history.replaceState(null, '', filter ? `?${filter}` : window.location.pathname)
     setError('')
-    if (!category && !tag && !query) { setPage(initialPage); setLoading(false); return }
+    if (!filter) {
+      setLoaded({ filter, page: initialPage })
+      setLoading(false)
+      return
+    }
     const controller = new AbortController()
     requestRef.current = controller
     setLoading(true)
@@ -56,31 +63,36 @@ export function BlogIndex({
         const response = await fetch(`/blog/data?${params}`, { signal: controller.signal })
         if (!response.ok) throw new Error('request_failed')
         const result = await response.json() as BlogPage
-        if (!controller.signal.aborted) setPage(result)
+        if (!controller.signal.aborted) setLoaded({ filter, page: result })
       } catch {
-        if (!controller.signal.aborted) setError('Artikel belum dapat dimuat. Ubah filter atau coba lagi.')
+        if (!controller.signal.aborted) setError('Artikel belum dapat dimuat.')
       } finally {
         if (!controller.signal.aborted) setLoading(false)
       }
     }, 300)
     return () => { clearTimeout(timer); controller.abort() }
-  }, [category, tag, query, pageSize, ready, initialPage])
+  }, [filter, pageSize, ready, initialPage, retry])
 
   useEffect(() => () => requestRef.current?.abort(), [])
 
   const loadMore = async () => {
-    if (loading || !page.hasNextPage) return
+    if (loading || !page?.hasNextPage) return
     requestRef.current?.abort()
     const controller = new AbortController()
     requestRef.current = controller
     setLoading(true)
     setError('')
-    const params = new URLSearchParams({ page: String(page.page + 1), limit: String(pageSize), kategori: category, tag, q: query })
+    const params = new URLSearchParams(filter)
+    params.set('page', String(page.page + 1))
+    params.set('limit', String(pageSize))
     try {
       const response = await fetch(`/blog/data?${params}`, { signal: controller.signal })
       if (!response.ok) throw new Error('request_failed')
       const next = await response.json() as BlogPage
-      if (!controller.signal.aborted) setPage((previous) => ({ ...next, docs: [...previous.docs, ...next.docs.filter((post) => !previous.docs.some((existing) => existing.id === post.id))] }))
+      if (!controller.signal.aborted) {
+        const ids = new Set(page.docs.map((post) => post.id))
+        setLoaded({ filter, page: { ...next, docs: [...page.docs, ...next.docs.filter((post) => !ids.has(post.id))] } })
+      }
     } catch {
       if (!controller.signal.aborted) setError('Artikel berikutnya belum dapat dimuat. Coba lagi.')
     } finally {
@@ -89,8 +101,8 @@ export function BlogIndex({
   }
 
   const tagOptions = tags.map((tag) => ({ value: tag.slug, label: tag.name }))
-  const filtering = Boolean(category || tag || query.trim())
-  const results = page.docs
+  const filtering = Boolean(filter)
+  const results = page?.docs ?? []
   const featured = !filtering ? (results.find((post) => post.featured) ?? results[0]) : null
   const list = results.filter((post) => post !== featured)
   const visible = list
@@ -148,9 +160,14 @@ export function BlogIndex({
         </div>
       </div>
       <p className="sr-only" aria-live="polite">
-        {loading ? 'Memuat artikel…' : filtering ? `${page.totalDocs} artikel ditemukan.` : ''}
+        {loading ? 'Memuat artikel…' : filtering && page ? `${page.totalDocs} artikel ditemukan.` : ''}
       </p>
-      {error ? <p role="alert" className="mt-4 text-danger">{error}</p> : null}
+      {error ? (
+        <div className="mt-4">
+          <p role="alert" className="text-danger">{error}</p>
+          {!page ? <button type="button" className="pill mt-2 border-2 border-navy" onClick={() => setRetry((value) => value + 1)}>Coba lagi</button> : null}
+        </div>
+      ) : null}
 
       {featured ? (
         <div className="mt-10">
@@ -168,7 +185,7 @@ export function BlogIndex({
         </ul>
       ) : null}
 
-      {!loading && !results.length ? (
+      {!loading && page && !results.length ? (
         <div className="mt-10 rounded-[28px] border-2 border-dashed border-navy p-10 text-center">
           <p className="text-lg font-semibold">
             {initialPage.docs.length
@@ -191,7 +208,7 @@ export function BlogIndex({
         </div>
       ) : null}
 
-      {page.hasNextPage ? (
+      {page?.hasNextPage ? (
         <div className="mt-10 flex justify-center">
           <button
             type="button"

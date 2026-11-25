@@ -1,19 +1,19 @@
 # Persiapan deployment VPS
 
-Status: konfigurasi awal, belum layak rilis. Docker, database nyata, export data dan uji produksi belum tersedia pada sesi ini. Jangan mengarahkan trafik pendaftar ke target sebelum gate di bawah selesai.
+Build standalone dan baseline PostgreSQL lulus di Windows dengan database target kosong. Konfigurasi Compose lulus pemeriksaan sintaks. Pengujian image Linux, ekspor data CMS, serta uji produksi masih terbuka.
 
 ## Yang sudah disiapkan
 
 Target terpisah menggunakan konfigurasi Payload publik, PostgreSQL dengan ID string UUID, direktori media/dokumen persisten, validasi environment, SMTP opsional yang gagal secara eksplisit ketika belum dikonfigurasi, endpoint health, dan image Next standalone. Tidak ada rahasia Figma yang digunakan.
 
-PostgreSQL UUID adalah kandidat target baru. Pemetaan ID sumber harus dibuktikan sebelum transfer. `push: false` mencegah sinkronisasi schema otomatis. Migration awal, bootstrap admin dan perubahan access belum dijalankan karena skill/data tooling yang diwajibkan belum tersedia.
+Target PostgreSQL menggunakan UUID. Pemetaan ID sumber harus dibuktikan sebelum transfer. Payload CLI telah menghasilkan migrasi awal dan menerapkannya pada PostgreSQL lokal kosong. `push: false` mencegah sinkronisasi schema otomatis. Bootstrap admin dan perubahan access masih menunggu verifikasi alur dan instruksi proyek yang relevan.
 
 ## Persiapan lingkungan lokal
 
 1. Gunakan `mise install` dari root target, lalu jalankan perintah lewat `mise exec --`.
 2. Jalankan `node scripts/prepare-environment.mjs http://localhost:3000`. Ini membuat rahasia baru khusus instalasi target dan menolak menimpa berkas yang sudah ada. Tidak mencetak nilainya. Atur ACL direktori `.secrets` pada Windows.
 3. Pasang Docker melalui pengelola mesin bila tersedia. Jalankan `docker compose config --quiet`, lalu `docker compose up -d db` hanya untuk database target yang baru.
-4. Sebelum schema dibuat, ikuti gate data-modeling dan ekspor resmi. Tinjau migration resmi Payload; jangan mengaktifkan schema push pada database berisi data. `docker compose run --rm tooling` hanya memeriksa status migration.
+4. Untuk database target yang baru dan kosong, terapkan baseline dengan `docker compose run --rm tooling pnpm payload migrate`. Perintah `docker compose run --rm tooling` memeriksa status migrasi. Untuk database existing, tinjau rencana perubahan dan backup sebelum migrasi.
 5. Setelah database/schema/konten tersedia, jalankan `mise exec -- pnpm dev`. PORT mengikuti environment Next.js.
 
 ## Persiapan VPS Linux
@@ -22,9 +22,9 @@ PostgreSQL UUID adalah kandidat target baru. Pemetaan ID sumber harus dibuktikan
 2. Atur `.env` dengan origin final sebelum build. Gunakan secret baru pada target; jangan mengirim nilainya melalui chat atau memasukkannya ke repository. SMTP/Turnstile dipasang melalui konfigurasi server yang terlindungi.
 3. Pastikan database source sudah direkonsiliasi ke staging, schema migration ditinjau, admin mandiri dapat diakses, serta izin dokumen PMB terbukti. Tidak ada migration atau bootstrap otomatis dalam entrypoint container.
 4. Mulai service `db`. Build Linux memakai host network untuk membaca database di loopback port 55432 melalui BuildKit secrets. Schema dan data publik harus tersedia karena build membaca CMS untuk generasi statis.
-5. Jalankan `docker compose build app`, kemudian `docker compose up -d app`. Uji readiness melalui loopback. App tidak dibuka ke internet langsung.
+5. Jalankan `CONTENT_REVISION=<id-snapshot> docker compose build app`. Gunakan revisi unik setiap kali snapshot konten atau database build berubah. Docker memakai revisi ini untuk membatalkan cache build konten. Lanjutkan dengan `docker compose up -d app` dan uji readiness melalui loopback.
 6. Tempatkan `fullchain.pem` dan `privkey.pem` di `.certs`, atur permission, lalu jalankan `docker compose --profile https up -d proxy`. Operator mengelola pembaruan sertifikat.
-7. Jalankan seluruh gate rilis pada rencana implementasi sebelum cutover. Compose belum pernah dijalankan dalam sesi ini; syntax dan perilaku runtime harus dibuktikan pada mesin Docker.
+7. Jalankan seluruh gate rilis pada rencana implementasi sebelum cutover. Uji container dengan `tooling` dijalankan lebih dahulu, lalu pastikan proses `node` bisa membaca konfigurasi, menyimpan media dan dokumen, serta membacanya lagi setelah restart.
 
 ## Batas upload
 
@@ -37,7 +37,7 @@ Backup harus mencakup database, volume media dan volume dokumen privat secara ko
 ## Gate yang masih terbuka
 
 - Skill data-modeling/content/auth dan export/import resmi yang dapat menjangkau sumber.
-- Schema migration target, bootstrap admin tanpa signup publik, audit access/invariant dan ID sumber.
+- Bootstrap admin tanpa signup publik, audit access/invariant, dan pemetaan ID sumber. Baseline migrasi sudah teruji pada target lokal kosong.
 - Database/container/SMTP/CAPTCHA nyata, konten resmi dan media CMS.
 - Build produksi, tabel route static/ISR, semua route publik, freshness konten dan dokumen privat.
 - Domain, TLS, backup/restore, cutover dan handover operator.
