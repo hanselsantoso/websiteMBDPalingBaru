@@ -12,7 +12,8 @@ import { Siasat } from '@/components/mascot/Siasat'
 import { MOTION_BOOT_SCRIPT, MotionProvider } from '@/components/providers/MotionProvider'
 import { SiteProvider } from '@/components/providers/SiteProvider'
 import { JsonLd } from '@/components/seo/JsonLd'
-import { ARUS_MARK } from '@/lib/brand/artwork'
+import { PROGRAM_MARK } from '@/lib/brand/artwork'
+import { INSTITUTION_NAME, PROGRAM_NAME } from '@/lib/brand/identity'
 import { brandCssVariables, resolveBrandColors } from '@/lib/brand/tokens'
 import { getBranding, getNavigation, getPmbInfo, getSiteSettings, isDraftMode } from '@/lib/data'
 import { BodyCustomCode, renderHeadCustomCode } from '@/lib/make-custom-code'
@@ -33,21 +34,20 @@ export const viewport: Viewport = {
 
 export async function generateMetadata(): Promise<Metadata> {
   const [settings, branding] = await Promise.all([getSiteSettings(), getBranding()])
-  const siteName = settings.siteName || 'Arus Digital'
-  const defaultTitle = `${settings.programName || 'S1 Manajemen Bisnis Digital'} ISTTS · ${siteName}`
+  const defaultTitle = `${PROGRAM_NAME} · ${settings.institutionName || INSTITUTION_NAME}`
   const description =
     settings.defaultDescription || makeSiteSettings.description || 'S1 Manajemen Bisnis Digital ISTTS: jadi strategis bisnis di era digital.'
   const ogImage = settings.defaultOgImage?.url || branding.ogDefault?.url || makeSiteSettings.openGraph?.image
-  const favicon = branding.favicon?.url || makeSiteSettings.icons?.icon || ARUS_MARK
+  const favicon = branding.favicon?.url || makeSiteSettings.icons?.icon || PROGRAM_MARK
   return {
     metadataBase: new URL(siteUrl()),
     title: { default: defaultTitle, template: settings.titleTemplate || '%s · MBD ISTTS' },
     description,
-    applicationName: siteName,
+    applicationName: PROGRAM_NAME,
     robots: makeSiteSettings.robots?.index === false ? { index: false, follow: false } : undefined,
     icons: { icon: favicon },
     openGraph: {
-      siteName,
+      siteName: PROGRAM_NAME,
       locale: 'id_ID',
       type: 'website',
       title: defaultTitle,
@@ -99,7 +99,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     '@context': 'https://schema.org',
     '@type': 'EducationalOrganization',
     name: `${config.programName} · ${config.institutionName}`,
-    alternateName: config.siteName,
     url: siteUrl(),
     description: settings.shortDescription ?? undefined,
     parentOrganization: { '@type': 'CollegeOrUniversity', name: config.institutionName },

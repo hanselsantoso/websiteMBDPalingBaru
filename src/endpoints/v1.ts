@@ -296,11 +296,11 @@ export const v1Endpoints: Endpoint[] = [
     handler: async (req) => {
       const limited = rateLimit(`events:${clientIp(req.headers)}`, 60, 60_000)
       if (!limited.ok) return respond(204, null)
-      let body: unknown = {}
+      let body: unknown
       try {
-        body = await req.json?.()
+        body = req.data ?? (await req.json?.())
       } catch {
-        body = await readBody(req)
+        return fail(422, 'validation_error', 'Data peristiwa tidak valid.')
       }
       const parsed = eventSchema.safeParse(body)
       if (!parsed.success) return fail(422, 'validation_error', 'Data peristiwa tidak valid.')

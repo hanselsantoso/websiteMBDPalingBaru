@@ -25,6 +25,7 @@ import { v1Endpoints } from './endpoints/v1'
 import { seoGroupFields } from './fields'
 import { Branding, Navigation, PmbSettings, SiteSettings } from './globals'
 import { assertBrandContrast } from './lib/brand/tokens'
+import { PROGRAM_NAME } from './lib/brand/identity'
 import { pathForDoc, siteUrl } from './lib/preview'
 import { readServerEnvironment } from './server/environment'
 
@@ -43,7 +44,7 @@ export default buildConfig({
   email: process.env.SMTP_HOST && process.env.EMAIL_FROM_ADDRESS
     ? nodemailerAdapter({
         defaultFromAddress: process.env.EMAIL_FROM_ADDRESS,
-        defaultFromName: 'Arus Digital',
+        defaultFromName: PROGRAM_NAME,
         transportOptions: {
           host: process.env.SMTP_HOST,
           port: Number(process.env.SMTP_PORT || 587),
@@ -52,13 +53,13 @@ export default buildConfig({
         },
       })
     : () => ({
-        name: 'unconfigured', defaultFromAddress: 'noreply@localhost', defaultFromName: 'Arus Digital',
+        name: 'unconfigured', defaultFromAddress: 'noreply@localhost', defaultFromName: PROGRAM_NAME,
         sendEmail: async () => { throw new Error('Email belum dikonfigurasi.') },
       }),
   admin: {
     user: Admins.slug,
     constrainWidth: true,
-    meta: { titleSuffix: ' · CMS Arus Digital' },
+    meta: { titleSuffix: ` · CMS ${PROGRAM_NAME}` },
     components: {
       graphics: {
         Logo: '/components/admin/Brand#Logo',

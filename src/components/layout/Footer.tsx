@@ -4,6 +4,8 @@ import { PrimaryCta, SecondaryActions } from '@/components/cta/CtaLinks'
 import { Fin, StarField, Wave } from '@/components/patterns/Patterns'
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip, TextOr } from '@/components/ui/Isi'
+import { PROGRAM_MARK } from '@/lib/brand/artwork'
+import { INSTITUTION_NAME, PROGRAM_NAME } from '@/lib/brand/identity'
 import { isExternalHref } from '@/lib/links'
 import { asMedia } from '@/lib/utils'
 import { ReducedMotionToggle } from './ReducedMotionToggle'
@@ -37,12 +39,15 @@ export function Footer({
         <Fin className="pattern-fin pointer-events-none absolute -right-10 bottom-24 size-72 text-white/[0.04]" />
         <div className="container-arus relative grid gap-12 py-16 lg:grid-cols-12 lg:py-20">
           <div className="lg:col-span-5">
-            <p className="font-display text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.95] font-extrabold tracking-[-0.04em]">
-              Arus
-              <br />
-              Digital<span className="text-lime">.</span>
-            </p>
-            <p className="label-mono mt-4 text-lime">{settings.programName ?? 'S1 Manajemen Bisnis Digital'} · ISTTS</p>
+            <div className="flex items-start gap-3 sm:gap-4">
+              <Image src={PROGRAM_MARK} alt="" width={56} height={56} className="size-12 shrink-0 sm:size-14" />
+              <div>
+                <p className="font-display text-[clamp(1.875rem,4vw,3.25rem)] leading-none font-extrabold tracking-[-0.04em]">
+                  {PROGRAM_NAME}
+                </p>
+                <p className="label-mono mt-3 text-lime">{settings.institutionName || INSTITUTION_NAME}</p>
+              </div>
+            </div>
             <p className="mt-4 max-w-md text-white/75">{settings.shortDescription}</p>
             <div className="mt-8 grid gap-5">
               <PrimaryCta id="footer" placement="footer" hideWhenOtherVisible magnetic={false} />
@@ -130,7 +135,7 @@ export function Footer({
         </div>
         <div className="container-arus relative flex flex-col gap-4 border-t border-white/15 py-6 md:flex-row md:items-center md:justify-between">
           <p className="text-sm text-white/65">
-            © {year} {settings.institutionName ?? 'ISTTS'}. Arus Digital adalah identitas kampanye S1 Manajemen Bisnis Digital.
+            © {year} {settings.institutionName || INSTITUTION_NAME}.
           </p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
             <Link href={privacyHref} className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">

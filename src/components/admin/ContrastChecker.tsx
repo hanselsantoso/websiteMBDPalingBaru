@@ -26,7 +26,7 @@ export function ContrastChecker() {
       <div className="ad-panel__head">
         <strong>Pemeriksa kontras (WCAG 2.2 AA)</strong>
         <button type="button" className="ad-btn" onClick={reset}>
-          Reset ke default Arus Digital
+          Pulihkan warna bawaan
         </button>
       </div>
       {failures.length ? (

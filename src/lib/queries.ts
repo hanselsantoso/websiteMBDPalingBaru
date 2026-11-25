@@ -1,5 +1,6 @@
 import type { Payload, Where } from 'payload'
 import type { BlogPage, BlogPageInput } from './blog-pagination'
+import { PROGRAM_NAME } from './brand/identity'
 
 /**
  * Plain Payload reads shared by Next.js pages (through the cached wrappers in
@@ -23,7 +24,8 @@ const findBySlug: (typeof import('./payload'))['findBySlug'] = async (...args) =
 type AnyDoc = Record<string, any>
 
 export async function fetchSiteSettings(payload: Payload): Promise<AnyDoc> {
-  return payload.findGlobal({ slug: 'site-settings', depth: 1, overrideAccess: false })
+  const settings = await payload.findGlobal({ slug: 'site-settings', depth: 1, overrideAccess: false })
+  return { ...settings, programName: PROGRAM_NAME, siteName: PROGRAM_NAME }
 }
 
 export async function fetchBranding(payload: Payload): Promise<AnyDoc> {

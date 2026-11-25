@@ -362,7 +362,7 @@ export const Branding: GlobalConfig = {
           throw new APIError(
             `Warna belum memenuhi kontras WCAG AA: ${failures
               .map((f) => `${f.usage} (${f.ratio}:1, minimal ${f.min}:1)`)
-              .join('; ')}. Sesuaikan warna atau klik "Reset ke default Arus Digital".`,
+              .join('; ')}. Sesuaikan warna atau pilih “Pulihkan warna bawaan”.`,
             400,
           )
         }

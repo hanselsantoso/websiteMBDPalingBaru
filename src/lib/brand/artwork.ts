@@ -1,6 +1,6 @@
 import type { SiasatPose } from './mascot'
 
-export const ARUS_MARK = '/images/brand/arus-digital-mark.png'
+export const PROGRAM_MARK = '/images/brand/manajemen-bisnis-digital-mark.png'
 export const CURRICULUM_ART = '/images/illustrations/curriculum-journey.webp'
 export const FACULTY_ART = '/images/illustrations/faculty-editorial.webp'
 export const BLOG_COVER_ART = '/images/illustrations/digital-business-ai.webp'

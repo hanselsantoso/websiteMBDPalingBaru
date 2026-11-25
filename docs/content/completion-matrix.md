@@ -17,6 +17,6 @@ Sumber pemeriksaan: audit situs published tanggal 20 November 2026. Belum ada pe
 | Privasi/ketentuan | Identitas pengelola, tujuan penggunaan, retensi data dan kontak | Institusi | Menunggu naskah yang disahkan |
 | Maskot greeting/tablet | Dua PNG bercelana sebagai fallback; CMS tetap prioritas | Aset disetujui pengguna | Sudah disalin ke target; produksi belum diverifikasi |
 | Maskot pose lain/ilustrasi | Empat pose Siasat tambahan, ilustrasi kurikulum, sampul artikel dan kartu dosen | Pelaksana visual | Aset bawaan dipasang dan diuji pada pratinjau komponen. Gambar CMS tetap diprioritaskan pada slot yang dapat diedit |
-| Logo Arus Digital | Simbol gelombang untuk navigasi, panel admin dan favicon | Pelaksana visual | Aset brand terpasang. Logo kampus dan mitra menunggu berkas resmi |
+| Logo Manajemen Bisnis Digital | Monogram M untuk navigasi, footer, panel admin dan favicon | Pelaksana visual | Identitas web prodi terpasang. Logo kampus dan mitra menunggu berkas resmi |
 
 Setelah tooling tersedia: verifikasi setiap relasi, CTA, dimensi gambar dan penggantian upload; catat bukti per route. Jangan mengganti placeholder dengan fakta rekaan. Data resmi yang belum tersedia tetap menjadi syarat rilis.

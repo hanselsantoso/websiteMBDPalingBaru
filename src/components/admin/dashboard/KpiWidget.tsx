@@ -28,7 +28,7 @@ export async function KpiWidget({ req }: WidgetProps) {
   return (
     <section className="ad-widget" aria-label="Ringkasan KPI">
       <span className="ad-mono">Ringkasan</span>
-      <h3>Kinerja Arus Digital</h3>
+      <h3>Kinerja situs prodi</h3>
       <div className="ad-kpis">
         {cards.map((card) => (
           <div key={card.label} className={`ad-kpi ${card.tone === 'amber' ? 'ad-kpi--amber' : ''}`}>

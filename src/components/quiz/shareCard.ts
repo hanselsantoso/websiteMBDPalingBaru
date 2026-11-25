@@ -1,5 +1,7 @@
 'use client'
 
+import { INSTITUTION_NAME, PROGRAM_NAME } from '@/lib/brand/identity'
+
 function cssVar(name: string, fallback: string): string {
   const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
   return value || fallback
@@ -121,9 +123,10 @@ export async function renderShareCard({
 
   ctx.fillStyle = '#FFFFFF'
   ctx.font = `700 40px ${display}`
-  ctx.fillText('Arus Digital', 90, 1300)
+  ctx.fillText(PROGRAM_NAME, 90, 1300, 760)
   ctx.font = `500 26px ${mono}`
-  ctx.fillText('S1 MANAJEMEN BISNIS DIGITAL · ISTTS', 380, 1298)
+  ctx.textAlign = 'right'
+  ctx.fillText(INSTITUTION_NAME, 990, 1298)
 
   return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), 'image/png'))
 }

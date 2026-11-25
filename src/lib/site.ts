@@ -1,6 +1,7 @@
 import type { NavItem } from '@/components/layout/Header'
 import type { FooterColumn } from '@/components/layout/Footer'
 import type { SiteConfig } from '@/components/providers/SiteProvider'
+import { INSTITUTION_NAME, PROGRAM_NAME } from '@/lib/brand/identity'
 import { SIASAT_POSES } from '@/lib/brand/mascot'
 import { waLink } from '@/lib/domain/phone'
 import { isPlaceholder } from '@/lib/domain/placeholders'
@@ -56,9 +57,9 @@ export function buildSiteConfig({
   const activeWave = pmbInfo?.activeWave ?? null
 
   return {
-    siteName: settings.siteName ?? 'Arus Digital',
-    programName: settings.programName ?? 'S1 Manajemen Bisnis Digital',
-    institutionName: settings.institutionName ?? 'ISTTS',
+    siteName: PROGRAM_NAME,
+    programName: PROGRAM_NAME,
+    institutionName: settings.institutionName || INSTITUTION_NAME,
     showPlaceholders: features.showPlaceholders !== false,
     showTotalSks: features.showTotalSks === true,
     privacyHref: pageHref(settings.privacyPage, '/kebijakan-privasi'),

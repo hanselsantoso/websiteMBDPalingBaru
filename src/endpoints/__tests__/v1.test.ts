@@ -9,6 +9,17 @@ const findEndpoint = (path: string, method = 'get') => {
 }
 
 describe('v1Endpoints', () => {
+  it('rejects malformed analytics JSON without reading the request body twice', async () => {
+    const request = new Request('http://localhost/api/v1/events', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-real-ip': '198.51.100.32' },
+      body: '{',
+    })
+    const req = Object.assign(request, { payload: { logger: { error: vi.fn() } } })
+    const res = await findEndpoint('/v1/events', 'post')(req as unknown as PayloadRequest)
+    expect(res.status).toBe(422)
+  })
+
   it('returns an empty 204 when analytics requests exceed the limit', async () => {
     const handler = findEndpoint('/v1/events', 'post')
     const req = { headers: new Headers({ 'x-real-ip': '198.51.100.203' }), json: async () => ({}), payload: {} } as unknown as PayloadRequest
@@ -66,6 +77,7 @@ describe('v1Endpoints', () => {
     const json = (await res.json()) as { data: { settings: Record<string, any> }; error: null }
     expect(res.status).toBe(200)
     expect(json.data.settings.integrations).toBeUndefined()
+    expect(json.data.settings.siteName).toBe('S1 Manajemen Bisnis Digital')
     expect(json.data.settings.analytics).toEqual({ ga4Id: 'G-TEST123', metaPixelId: 'PX-1' })
   })
 
