@@ -25,7 +25,7 @@ export function HeroVisual({ pose, chips }: { pose: SiasatPose; chips: string[] 
   return (
     <div ref={ref} className="relative mx-auto w-fit pt-6">
       <m.div style={reduced ? undefined : { y: mascotY }}>
-        <Siasat pose={pose} size="xl" interactive onDark priority showArtTag />
+        <Siasat pose={pose} clip={pose === 'greeting' ? 'sapaan' : undefined} size="xl" interactive onDark priority showArtTag />
       </m.div>
       {chips.slice(0, 4).map((chip, index) => (
         <m.span

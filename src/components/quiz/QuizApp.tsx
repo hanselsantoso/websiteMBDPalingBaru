@@ -239,7 +239,7 @@ export function QuizApp({
             {disclaimer ? <p className="mt-6 text-sm text-ink-600">{disclaimer}</p> : null}
           </div>
           <div className="justify-self-center lg:col-span-5">
-            <Siasat pose="thinking" size="lg" interactive showArtTag />
+            <Siasat pose="thinking" expression="curious" size="lg" interactive showArtTag />
           </div>
         </div>
       ) : null}
@@ -343,14 +343,14 @@ export function QuizApp({
             </form>
           </div>
           <div className="hidden justify-self-center lg:col-span-4 lg:block">
-            <Siasat pose="thinking" size="md" decorative />
+            <Siasat pose="thinking" expression="focused" size="md" decorative />
           </div>
         </div>
       ) : null}
 
       {phase === 'submitting' ? (
         <div className="grid justify-items-center gap-4 py-16 text-center" role="status">
-          <Siasat pose="thinking" size="md" />
+          <Siasat pose="thinking" expression="waiting" clip="berpikir" size="md" />
           <p className="text-lg font-semibold">Sia sedang membaca pola jawabanmu…</p>
         </div>
       ) : null}

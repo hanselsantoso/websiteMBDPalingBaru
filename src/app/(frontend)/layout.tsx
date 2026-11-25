@@ -87,6 +87,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const patterns = (branding.patterns ?? {}) as Record<string, unknown>
   const patternCss = `:root{--pattern-wave:${intensity(patterns.waveIntensity)};--pattern-fin:${intensity(patterns.finIntensity)};--pattern-star:${intensity(patterns.starIntensity)}}`
   const config = buildSiteConfig({ settings, branding, navigation, pmbInfo })
+  const wordmarkUrl = branding.wordmarkDark?.url ?? null
   const integrations = (settings.integrations ?? {}) as Record<string, string | undefined>
   const features = (settings.features ?? {}) as Record<string, unknown>
   const language = sanitizeHtmlAttribute(makeSiteSettings.language) || 'id'
@@ -140,12 +141,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <Maintenance settings={settings} />
               ) : (
                 <>
-                  <Header items={buildNav(navigation.header)} logoUrl={branding.wordmarkDark?.url ?? null} />
+                  <Header items={buildNav(navigation.header)} logoUrl={wordmarkUrl} />
                   <main id="konten" tabIndex={-1} className="outline-none">
                     {children}
                   </main>
                   <Footer
                     columns={buildFooterColumns(navigation.footerColumns)}
+                    logoUrl={wordmarkUrl}
                     settings={settings}
                     showPlaceholders={config.showPlaceholders}
                     privacyHref={config.privacyHref}

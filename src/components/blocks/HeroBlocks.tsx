@@ -75,6 +75,11 @@ export async function HeroBlock({ block, ctx }: BlockProps) {
           <div className="mt-9 flex flex-col items-start gap-5">
             <PrimaryCta id="hero" tone="dark" placement="hero" label={block.primaryLabel} />
             <SecondaryActions placement="hero" labels={{ quiz: block.quizLabel, whatsapp: block.whatsappLabel, brochure: block.brochureLabel }} />
+            {ctx.pageSlug === 'beranda' ? (
+              <Link href="/siasat" className="inline-flex min-h-11 items-center gap-2 rounded-full font-semibold text-lime hover:underline">
+                Lihat Galeri Siasat <Icon name="arrow-right" size={18} />
+              </Link>
+            ) : null}
           </div>
         </div>
         <div className="relative lg:col-span-5">

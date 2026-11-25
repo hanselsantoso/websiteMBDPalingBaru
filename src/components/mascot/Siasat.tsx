@@ -5,10 +5,12 @@ import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useMotionPreference } from '@/components/providers/MotionProvider'
 import { useSite } from '@/components/providers/SiteProvider'
-import { SIASAT_ARTWORK } from '@/lib/brand/artwork'
+import type { SiasatClipName } from '@/lib/brand/animation'
+import { getSiasatArtwork, type SiasatVariant } from '@/lib/brand/artwork'
 import { springs } from '@/lib/motion'
 import { cn } from '@/lib/utils'
 import { DEFAULT_LINES, POSE_LABEL } from './lines'
+import { SiasatAnimation } from './SiasatAnimation'
 import { SiasatArt, type SiasatPose } from './SiasatArt'
 
 const SIZES = {
@@ -29,6 +31,8 @@ const IMAGE_SIZES = {
 
 export type SiasatProps = {
   pose: SiasatPose
+  expression?: Exclude<SiasatVariant, SiasatPose>
+  clip?: SiasatClipName
   size?: keyof typeof SIZES
   /** Idle loops (float, blink, tail sway…). */
   loop?: boolean
@@ -60,6 +64,8 @@ function PointingMotion({ flip, children }: { flip: boolean; children: ReactNode
 
 export function Siasat({
   pose,
+  expression,
+  clip,
   size = 'md',
   loop = true,
   interactive = false,
@@ -75,10 +81,12 @@ export function Siasat({
   const { reduced } = useMotionPreference()
   const [scope, animate] = useAnimate<HTMLDivElement>()
   const [bubble, setBubble] = useState<string | null>(say)
+  const [replay, setReplay] = useState(0)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const cmsAsset = mascot.poses[pose]
-  const asset = cmsAsset?.url ? cmsAsset : SIASAT_ARTWORK[pose]
+  const asset = cmsAsset?.url ? cmsAsset : getSiasatArtwork(expression ?? pose)
   const animated = loop && mascot.idleAnimation && !reduced
+  const activeClip = animated && !cmsAsset?.url ? clip : undefined
   const label = `${mascot.name}, rubah strategis MBD, sedang ${POSE_LABEL[pose]}`
 
   useEffect(() => setBubble(say), [say])
@@ -89,27 +97,33 @@ export function Siasat({
     const pool = fromCms.length ? fromCms : DEFAULT_LINES[pose]
     const choices = pool.length > 1 ? pool.filter((line) => line !== bubble) : pool
     setBubble(choices[Math.floor(Math.random() * choices.length)] ?? null)
-    if (!reduced && scope.current)
+    if (activeClip) setReplay((previous) => previous + 1)
+    else if (!reduced && scope.current)
       void animate(scope.current, { y: [0, -18, 0] }, { duration: 0.5, ease: 'easeOut' })
     if (timer.current) clearTimeout(timer.current)
     timer.current = setTimeout(() => setBubble(null), 4500)
-  }, [animate, bubble, mascot.lines, pose, reduced, scope])
+  }, [activeClip, animate, bubble, mascot.lines, pose, reduced, scope])
 
   const art = asset?.url ? (
     <m.div
-      animate={animated ? { y: [0, -8, 0], scale: [1, 1.015, 1] } : undefined}
+      className={cn('relative', flip && '-scale-x-100')}
+      animate={animated && !activeClip ? { y: [0, -8, 0], scale: [1, 1.015, 1] } : undefined}
       transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
     >
-      <Image
-        src={asset.url}
-        alt=""
-        width={1024}
-        height={1024}
-        sizes={IMAGE_SIZES[size]}
-        priority={priority}
-        className={cn('h-auto w-full select-none', flip && '-scale-x-100')}
-        draggable={false}
-      />
+      {activeClip ? (
+        <SiasatAnimation key={`${activeClip}-${replay}`} clip={activeClip} play sizes={IMAGE_SIZES[size]} priority={priority} />
+      ) : (
+        <Image
+          src={asset.url}
+          alt=""
+          width={1024}
+          height={1024}
+          sizes={IMAGE_SIZES[size]}
+          priority={priority}
+          className="h-auto w-full select-none"
+          draggable={false}
+        />
+      )}
     </m.div>
   ) : (
     <SiasatArt

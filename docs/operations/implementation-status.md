@@ -15,14 +15,14 @@ Target: `F:/laragon/www/WEB-MBD-VPS`. Sumber Make: `F:/laragon/www/WEB-MBD-FIX`,
 | 7 Endpoint/email | Respons 204 kosong dan tes template by-ID; error provider diteruskan | SMTP nyata, jobs, rate limit lintas restart/instance dan operasional lead |
 | 8 CAPTCHA | Token schema/UI kuis, lifecycle stabil, expiry/reset dan teks WhatsApp manual | Uji provider nyata pada staging |
 | 9 Blog/search | Pagination server dan retry filter teruji. Hasil filter lama disembunyikan saat filter baru gagal. Cache hanya mencakup halaman pertama tanpa filter | E2E dengan konten CMS nyata dan filter lintas taxonomy |
-| 10 Cache/route | Build lokal mengklasifikasikan halaman utama sebagai static dan pola detail sebagai SSG | Draft/freshness/slug/media dan seluruh URL konten setelah impor |
+| 10 Cache/route | Build lokal mengklasifikasikan beranda, galeri, dan template halaman utama sebagai static. Pola detail memakai SSG | Draft, freshness, slug, media, dan seluruh URL konten setelah impor |
 | 11 Data/restore | Gate transfer dan prosedur preservasi dirinci | Tooling export/import, pemetaan ID, transfer, backup dan restore nyata |
-| 12 Konten/visual | Dua maskot disalin, header cetak dan newTab diperbaiki, matrix konten tersedia | Konten resmi, pose tambahan, preview seluruh route dan gambar CMS |
-| 13 QA | 108 tes pada 25 file lulus. TypeScript dan build lulus. Pemeriksaan HTTP menggunakan PostgreSQL lokal | Browser lengkap dengan konten, transaksi PMB/quiz, produksi dan matriks akses |
+| 12 Konten/visual | Logo Jejak Siasat, 25 pose kartun, dan tiga animasi terintegrasi. Beranda dan galeri diperiksa pada lebar 320, 390, 768, dan 1440 piksel | Konten resmi, pratinjau seluruh URL detail, dan penggantian gambar melalui CMS |
+| 13 QA | 112 tes pada 26 file lulus. TypeScript dan build lulus. Route publik diuji dengan PostgreSQL lokal | Browser lengkap dengan konten, transaksi PMB dan kuis, produksi, dan matriks akses |
 | 14 Cutover | Konfigurasi dan urutan deployment dipersiapkan | VPS/domain, tinjauan rilis, cutover/rollback/handover |
 
-Build Next.js 16.4.5 dan Node 24.22.3 lulus setelah database lokal tersedia. `pnpm payload migrate:status` menunjukkan baseline berstatus `Yes`. Pemeriksaan 25 URL pada server standalone menghasilkan 200 untuk health database, API publik, blog data, admin, halaman cetak, robots, sitemap dan kedua gambar maskot. Endpoint admin tanpa login mengembalikan 401. Route CMS yang membutuhkan record mengembalikan 404 karena database informasi masih kosong.
+Build Next.js 16.4.5 dan Node 24.22.3 lulus dengan database lokal. `pnpm payload migrate:status` menunjukkan baseline berstatus `Yes`. Server standalone mengembalikan 200 untuk beranda, galeri Siasat, halaman cetak, admin, robots, sitemap, dan pemeriksaan kesiapan database. CMS menolak akses anonim ke koleksi admin. Halaman program, kurikulum, dosen, karier, blog, kontak, kuis, dan PMB masih mengembalikan 404 karena database target belum punya konten terbit. Beranda menampilkan sambutan sementara saat rekaman CMS tidak tersedia.
 
 Review independen menyoroti ownership secret/volume, cache image Docker, filter blog yang gagal, cache query pengguna, serta CAPTCHA saat konfigurasi atau skrip gagal dimuat. Perbaikan diterapkan pada target. Compose config dan sintaks entrypoint lulus pemeriksaan. Container sebenarnya belum dijalankan, sehingga baca secret dan penulisan volume dalam container tetap perlu diuji.
 
-**Verify production delivery tetap terbuka.** Tidak ada deploy, perubahan DNS, pengiriman email nyata, mutasi CMS sumber atau pemindahan data. Kode yang siap diuji lokal tidak sama dengan backend siap produksi.
+**Verify production delivery tetap terbuka.** Runtime Linux, akses ekspor resmi CMS sumber, VPS dan domain dibutuhkan untuk menyelesaikan tahap rilis. Setelah transfer konten, uji seluruh route publik, publikasi media, admin, transaksi nyata PMB dan kuis, backup/restore, serta rollback sebelum cutover.

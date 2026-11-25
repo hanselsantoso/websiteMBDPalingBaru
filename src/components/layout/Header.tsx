@@ -93,6 +93,7 @@ export function Header({ items, logoUrl }: { items: NavItem[]; logoUrl: string |
   const [drawerOpen, setDrawerOpen] = useState(false)
   const { isOtherPrimaryVisible } = useSite()
   const hideCta = isOtherPrimaryVisible('header')
+  const lightPage = pathname === '/kurikulum/cetak' || pathname === '/siasat'
 
   useEffect(() => {
     let frame = 0
@@ -115,7 +116,7 @@ export function Header({ items, logoUrl }: { items: NavItem[]; logoUrl: string |
       data-site-header
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-300',
-        scrolled || pathname === '/kurikulum/cetak' ? 'bg-navy shadow-[0_1px_0_rgb(255_255_255/0.1)]' : 'bg-transparent',
+        scrolled || lightPage ? 'bg-navy shadow-[0_1px_0_rgb(255_255_255/0.1)]' : 'bg-transparent',
       )}
     >
       <div className="container-arus flex h-[var(--header-h)] items-center justify-between gap-4">

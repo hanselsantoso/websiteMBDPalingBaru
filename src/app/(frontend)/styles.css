@@ -373,7 +373,27 @@ html[data-star="off"] .pattern-star {
   transition-delay: var(--reveal-delay, 0ms);
 }
 
+@keyframes siasat-frames {
+  0%, 78%, 100% { translate: 0 0; }
+  32% { translate: -50% 0; }
+  48% { translate: 0 -50%; }
+  57% { translate: -50% -50%; }
+}
+
+.siasat-sprite {
+  visibility: hidden;
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  html[data-motion="full"] .siasat-poster-ready {
+    visibility: hidden;
+  }
+
+  html[data-motion="full"] .siasat-sprite {
+    visibility: visible;
+    animation: siasat-frames 1.8s steps(1, end) both;
+  }
+
   html[data-motion="full"] .anim-marquee {
     animation: arus-marquee var(--marquee-duration, 40s) linear infinite;
   }

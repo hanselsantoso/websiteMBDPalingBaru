@@ -74,7 +74,7 @@ export function BrochureModal({ placement, onClose }: { placement: string | null
         </button>
         {result ? (
           <div className="grid justify-items-center gap-4 pt-8 text-center">
-            <Siasat pose="celebrating" size="md" say={null} />
+            <Siasat pose="celebrating" expression="excited" clip="berhasil" size="md" say={null} />
             <h2 id="brosur-title" className="text-title font-bold">
               {result.downloadUrl ? 'Brosur siap diunduh!' : 'Terima kasih, datamu sudah tercatat!'}
             </h2>

@@ -26,14 +26,14 @@ export function SuccessPanel({
         className,
       )}
     >
-      <Siasat pose="celebrating" size="md" />
+      <Siasat pose="celebrating" expression="proud" clip="berhasil" size="md" />
       <h3 className="text-title font-bold">{title}</h3>
       {children}
     </div>
   )
 }
 
-/** Server failure (not field validation): calm copy plus the confused fox. */
+/** Server failure feedback with a reassuring expression. */
 export function FailureNote({ message }: { message: string | null }) {
   if (!message) return null
   return (
@@ -41,7 +41,7 @@ export function FailureNote({ message }: { message: string | null }) {
       className="flex items-center gap-4 rounded-2xl border-2 border-danger bg-white p-4"
       role="alert"
     >
-      <Siasat pose="confused" size="xs" decorative />
+      <Siasat pose="confused" expression="reassuring" size="xs" decorative />
       <p className="font-semibold text-danger">{message}</p>
     </div>
   )

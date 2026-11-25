@@ -4,7 +4,7 @@ import { PrimaryCta, SecondaryActions } from '@/components/cta/CtaLinks'
 import { Fin, StarField, Wave } from '@/components/patterns/Patterns'
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip, TextOr } from '@/components/ui/Isi'
-import { PROGRAM_MARK } from '@/lib/brand/artwork'
+import { PROGRAM_WORDMARK } from '@/lib/brand/artwork'
 import { INSTITUTION_NAME, PROGRAM_NAME } from '@/lib/brand/identity'
 import { isExternalHref } from '@/lib/links'
 import { asMedia } from '@/lib/utils'
@@ -14,12 +14,14 @@ export type FooterColumn = { title: string; links: { label: string; href: string
 
 export function Footer({
   columns,
+  logoUrl,
   settings,
   showPlaceholders,
   privacyHref,
   termsHref,
 }: {
   columns: FooterColumn[]
+  logoUrl: string | null
   settings: Record<string, any>
   showPlaceholders: boolean
   privacyHref: string
@@ -40,7 +42,13 @@ export function Footer({
         <div className="container-arus relative grid gap-12 py-16 lg:grid-cols-12 lg:py-20">
           <div className="lg:col-span-5">
             <div className="flex items-start gap-3 sm:gap-4">
-              <Image src={PROGRAM_MARK} alt="" width={56} height={56} className="size-12 shrink-0 sm:size-14" />
+              {logoUrl ? (
+                <Image src={logoUrl} alt="" width={180} height={40} className="h-9 w-auto max-w-[42%] shrink-0 object-contain object-left" />
+              ) : (
+                <span className="w-16 shrink-0 rounded-lg bg-[#fff7e7] px-1.5 py-2 sm:w-24">
+                  <Image {...PROGRAM_WORDMARK} alt="" sizes="(min-width: 640px) 84px, 52px" className="h-auto w-full" />
+                </span>
+              )}
               <div>
                 <p className="font-display text-[clamp(1.875rem,4vw,3.25rem)] leading-none font-extrabold tracking-[-0.04em]">
                   {PROGRAM_NAME}
@@ -138,6 +146,9 @@ export function Footer({
             © {year} {settings.institutionName || INSTITUTION_NAME}.
           </p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <Link href="/siasat" className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">
+              Galeri Siasat
+            </Link>
             <Link href={privacyHref} className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">
               Kebijakan privasi
             </Link>

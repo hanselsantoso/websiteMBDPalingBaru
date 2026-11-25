@@ -1,16 +1,45 @@
 import type { SiasatPose } from './mascot'
 
-export const PROGRAM_MARK = '/images/brand/manajemen-bisnis-digital-mark.png'
+export const PROGRAM_MARK = '/images/brand/mbd-siasat-icon.png'
+export const PROGRAM_WORDMARK = { src: '/images/brand/mbd-jejak-siasat.webp', width: 640, height: 241 } as const
 export const CURRICULUM_ART = '/images/illustrations/curriculum-journey.webp'
 export const FACULTY_ART = '/images/illustrations/faculty-editorial.webp'
 export const BLOG_COVER_ART = '/images/illustrations/digital-business-ai.webp'
 
-// Bundled brand artwork is used when a pose has no Media upload.
-export const SIASAT_ARTWORK: Record<SiasatPose, { url: string; alt: string }> = {
-  greeting: { url: '/images/mascot/siasat-greeting-v2.png', alt: 'Siasat sedang menyapa' },
-  tablet: { url: '/images/mascot/siasat-tablet-v2.png', alt: 'Siasat sedang memegang tablet' },
-  pointing: { url: '/images/mascot/siasat-pointing-v3.webp', alt: 'Siasat sedang menunjuk' },
-  thinking: { url: '/images/mascot/siasat-thinking-v3.webp', alt: 'Siasat sedang berpikir' },
-  celebrating: { url: '/images/mascot/siasat-celebrating-v3.webp', alt: 'Siasat sedang merayakan keberhasilan' },
-  confused: { url: '/images/mascot/siasat-confused-v3.webp', alt: 'Siasat terlihat bingung' },
+export const SIASAT_LABELS = {
+  greeting: 'Menyapa',
+  pointing: 'Menunjuk',
+  thinking: 'Berpikir',
+  celebrating: 'Merayakan',
+  confused: 'Bingung',
+  tablet: 'Memegang tablet',
+  excited: 'Antusias',
+  focused: 'Fokus',
+  waiting: 'Menunggu',
+  proud: 'Bangga',
+  reassuring: 'Menenangkan',
+  curious: 'Penasaran',
+  surprised: 'Kaget',
+  panic: 'Panik',
+  mischievous: 'Jahil',
+  unimpressed: 'Tatapan datar',
+  shocked: 'Terperanjat',
+  exasperated: 'Kesal',
+  embarrassed: 'Malu',
+  laughing: 'Tertawa lepas',
+  suspecting: 'Curiga',
+  idea: 'Dapat ide',
+  exhausted: 'Lelah',
+  dejected: 'Sedih',
+  determined: 'Bertekad',
+} satisfies Record<SiasatPose, string> & Record<string, string>
+
+export type SiasatVariant = keyof typeof SIASAT_LABELS
+export const SIASAT_VARIANTS = Object.keys(SIASAT_LABELS) as SiasatVariant[]
+
+export function getSiasatArtwork(variant: SiasatVariant) {
+  return {
+    url: `/images/mascot/toon/${variant}.webp`,
+    alt: `Siasat: ${SIASAT_LABELS[variant].toLowerCase()}`,
+  }
 }

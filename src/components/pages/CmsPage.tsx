@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import type { ReactElement } from 'react'
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { getPage, getSiteSettings, isDraftMode } from '@/lib/data'
-import { notFoundOrRedirect } from '@/lib/routing'
+import { redirectIfConfigured } from '@/lib/routing'
 import { breadcrumbLd, docMetadata } from '@/lib/seo'
 
 type Doc = Record<string, any>
@@ -21,9 +23,9 @@ export async function loadCmsPage(slug: string): Promise<Doc | null> {
   return getPage(slug, draft)
 }
 
-export async function cmsPageMetadata(slug: string, path: string): Promise<Metadata> {
+export async function cmsPageMetadata(slug: string, path: string, emptyTitle = 'Halaman tidak ditemukan'): Promise<Metadata> {
   const [page, settings] = await Promise.all([loadCmsPage(slug), getSiteSettings()])
-  if (!page) return { title: 'Halaman tidak ditemukan', robots: { index: false } }
+  if (!page) return { title: emptyTitle, robots: { index: false } }
   return docMetadata({
     doc: page,
     path,
@@ -34,9 +36,20 @@ export async function cmsPageMetadata(slug: string, path: string): Promise<Metad
   })
 }
 
-export async function CmsPage({ slug, path }: { slug: string; path: string }) {
+export async function CmsPage({
+  slug,
+  path,
+  emptyState,
+}: {
+  slug: string
+  path: string
+  emptyState?: ReactElement
+}) {
   const [page, settings] = await Promise.all([loadCmsPage(slug), getSiteSettings()])
-  if (!page) return notFoundOrRedirect(path)
+  if (!page) {
+    await redirectIfConfigured(path)
+    return emptyState ?? notFound()
+  }
   const meta = (page.meta ?? {}) as Doc
   return (
     <>

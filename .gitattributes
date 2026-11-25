@@ -151,3 +151,7 @@ public/images/mascot/siasat-*-v3.webp -filter -diff -merge -text
 public/images/brand/arus-digital-mark.png -filter -diff -merge -text
 public/images/brand/manajemen-bisnis-digital-mark.png -filter -diff -merge -text
 public/images/illustrations/*.webp -filter -diff -merge -text
+public/images/brand/mbd-jejak-siasat.webp -filter -diff -merge -text
+public/images/brand/mbd-siasat-icon.png -filter -diff -merge -text
+public/images/mascot/toon/*.webp -filter -diff -merge -text
+public/images/mascot/animation/*.webp -filter -diff -merge -text

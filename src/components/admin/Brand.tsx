@@ -1,12 +1,14 @@
 import Image from 'next/image'
-import { PROGRAM_MARK } from '@/lib/brand/artwork'
+import { PROGRAM_MARK, PROGRAM_WORDMARK } from '@/lib/brand/artwork'
 import { INSTITUTION_NAME, PROGRAM_NAME } from '@/lib/brand/identity'
 import './admin.css'
 
 export function Logo() {
   return (
     <span className="ad-brand">
-      <Image src={PROGRAM_MARK} alt="" width={44} height={44} />
+      <span className="ad-brand__mark">
+        <Image {...PROGRAM_WORDMARK} alt="" sizes="76px" className="ad-brand__art" />
+      </span>
       <span>
         <span className="ad-brand__name">{PROGRAM_NAME}</span>
         <br />
