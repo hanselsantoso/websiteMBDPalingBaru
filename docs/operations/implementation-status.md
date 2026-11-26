@@ -18,7 +18,7 @@ Target: `F:/laragon/www/WEB-MBD-VPS`. Sumber Make: `F:/laragon/www/WEB-MBD-FIX`,
 | 10 Cache/route | Build lokal mengklasifikasikan beranda, galeri, dan template halaman utama sebagai static. Pola detail memakai SSG | Draft, freshness, slug, media, dan seluruh URL konten setelah impor |
 | 11 Data/restore | Gate transfer dan prosedur preservasi dirinci | Tooling export/import, pemetaan ID, transfer, backup dan restore nyata |
 | 12 Konten/visual | Logo Jejak Siasat, 25 pose kartun, dan tiga animasi terintegrasi. Beranda dan galeri diperiksa pada lebar 320, 390, 768, dan 1440 piksel | Konten resmi, pratinjau seluruh URL detail, dan penggantian gambar melalui CMS |
-| 13 QA | 112 tes pada 26 file lulus. TypeScript dan build lulus. Route publik diuji dengan PostgreSQL lokal | Browser lengkap dengan konten, transaksi PMB dan kuis, produksi, dan matriks akses |
+| 13 QA | 115 tes lulus. Build standalone dan 60 pemeriksaan HTTP lulus dengan konten fiktif pada database QA. Alur login, publish, Media, kuis, brosur, kontak, dan PMB diuji | Konten resmi, pengujian provider nyata, dan verifikasi lingkungan publik |
 | 14 Cutover | Konfigurasi dan urutan deployment dipersiapkan | VPS/domain, tinjauan rilis, cutover/rollback/handover |
 
 Build Next.js 16.4.5 dan Node 24.22.3 lulus dengan database lokal. `pnpm payload migrate:status` menunjukkan baseline berstatus `Yes`. Server standalone mengembalikan 200 untuk beranda, galeri Siasat, halaman cetak, admin, robots, sitemap, dan pemeriksaan kesiapan database. CMS menolak akses anonim ke koleksi admin. Halaman program, kurikulum, dosen, karier, blog, kontak, kuis, dan PMB masih mengembalikan 404 karena database target belum punya konten terbit. Beranda menampilkan sambutan sementara saat rekaman CMS tidak tersedia.

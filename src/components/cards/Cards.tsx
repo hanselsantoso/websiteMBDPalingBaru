@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from '@/components/ui/CmsImage'
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { Icon } from '@/components/ui/Icon'

@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from '@/components/ui/CmsImage'
 import Link from 'next/link'
 import { WhatsAppLink } from '@/components/cta/CtaLinks'
 import { ArrowLink, FacultyCard, PostCard } from '@/components/cards/Cards'

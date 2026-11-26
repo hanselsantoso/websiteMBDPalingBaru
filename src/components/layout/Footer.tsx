@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from '@/components/ui/CmsImage'
 import Link from 'next/link'
 import { PrimaryCta, SecondaryActions } from '@/components/cta/CtaLinks'
 import { Fin, StarField, Wave } from '@/components/patterns/Patterns'

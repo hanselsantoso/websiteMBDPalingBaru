@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from '@/components/ui/CmsImage'
 import Link from 'next/link'
 import { PrimaryCta, SecondaryActions, WhatsAppLink, QuizLink, BrochureButton } from '@/components/cta/CtaLinks'
 import { Siasat } from '@/components/mascot/Siasat'

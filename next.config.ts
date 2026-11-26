@@ -11,6 +11,10 @@ if (!Number.isFinite(uploadMb) || uploadMb <= 0 || uploadMb > 100) throw new Err
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  outputFileTracingIncludes: {
+    // Payload inspects uploaded files through the Node entry point of strtok3.
+    '/api/**': ['./node_modules/.pnpm/strtok3@*/node_modules/strtok3/lib/**/*.js'],
+  },
   turbopack: { root: dirname },
   webpack: (config) => {
     config.resolve.extensionAlias = { '.cjs': ['.cts', '.cjs'], '.js': ['.ts', '.tsx', '.js', '.jsx'], '.mjs': ['.mts', '.mjs'] }

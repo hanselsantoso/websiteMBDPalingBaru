@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 
 const args = process.argv.slice(2)
-const origin = new URL(args.find(arg => arg !== '--require-content') ?? 'http://127.0.0.1:3000').origin
+const origin = new URL(args.find(arg => !arg.startsWith('--')) ?? 'http://127.0.0.1:3000').origin
 const contentStatuses = args.includes('--require-content') ? [200] : [200, 404]
 const checks = []
 
@@ -50,9 +50,26 @@ async function main() {
   assert.equal(typeof site.settings.siteName, 'string')
   assert.ok(!Object.hasOwn(site.settings, 'integrations'))
   assert.equal(typeof (await api('/branding/mascot')).data.name, 'string')
+  const { data: branding } = await api('/branding')
+  const uploadedLogo = branding.logos?.wordmarkDark
+  const file = uploadedLogo ? new URL(uploadedLogo, origin) : null
+  if (file?.origin === origin && file.pathname.startsWith('/api/media/file/')) {
+    const mediaPath = file.pathname + file.search
+    const image = await request(mediaPath, [200])
+    assert.match(image.headers.get('content-type') ?? '', /^image\//)
+    assert.ok((await image.arrayBuffer()).byteLength > 0)
+    const resize = new URLSearchParams({ url: mediaPath, w: '256', q: '75' })
+    const optimized = await request(`/_next/image?${resize}`, [200], { headers: { accept: 'image/webp' } })
+    assert.match(optimized.headers.get('content-type') ?? '', /^image\//)
+    assert.ok((await optimized.arrayBuffer()).byteLength > 0)
+  } else {
+    const message = 'Wordmark unggahan dari Media pada origin pengujian belum tersedia.'
+    if (args.includes('--require-media')) throw new Error(message)
+    console.log(`Dilewati: ${message}`)
+  }
 
   for (const path of [
-    '/branding', '/curriculum', '/faculty', '/posts', '/post-categories', '/programs',
+    '/curriculum', '/faculty', '/posts', '/post-categories', '/programs',
     '/careers', '/partners', '/testimonials', '/jobs', '/pmb/info', '/quiz', '/search?q=mbd',
   ]) {
     await api(path)

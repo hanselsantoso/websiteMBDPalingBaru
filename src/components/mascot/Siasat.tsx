@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, m, useAnimate, useScroll, useTransform } from 'motion/react'
-import Image from 'next/image'
+import Image from '@/components/ui/CmsImage'
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useMotionPreference } from '@/components/providers/MotionProvider'
 import { useSite } from '@/components/providers/SiteProvider'

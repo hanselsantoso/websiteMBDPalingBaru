@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { m } from 'motion/react'
-import Image from 'next/image'
+import Image from '@/components/ui/CmsImage'
 import Link from 'next/link'
 import { useEffect, useRef, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'

@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from '@/components/ui/CmsImage'
 import Link from 'next/link'
 import { Siasat } from '@/components/mascot/Siasat'
 import { Reveal, VideoEmbed } from '@/components/motion/Interactive'

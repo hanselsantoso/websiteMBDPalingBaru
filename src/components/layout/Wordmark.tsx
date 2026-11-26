@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import Image from '@/components/ui/CmsImage'
 import Link from 'next/link'
 import { PROGRAM_WORDMARK } from '@/lib/brand/artwork'
 import { INSTITUTION_NAME, PROGRAM_NAME } from '@/lib/brand/identity'

@@ -11,7 +11,7 @@ import { programTotals } from '@/lib/domain/curriculum'
 import { isPlaceholder } from '@/lib/domain/placeholders'
 import { getCurriculum, getPartners, getPmbInfo } from '@/lib/data'
 import { asMedia, cn, formatDate } from '@/lib/utils'
-import Image from 'next/image'
+import Image from '@/components/ui/CmsImage'
 import { anchor, type BlockProps } from './types'
 
 export async function StatsBlock({ block, ctx }: BlockProps) {
