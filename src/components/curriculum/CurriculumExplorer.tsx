@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import { DataTable } from '@/components/ui/DataTable'
 import { Fin, Star } from '@/components/patterns/Patterns'
 import { useMotionPreference } from '@/components/providers/MotionProvider'
 import { Icon } from '@/components/ui/Icon'
@@ -283,102 +284,37 @@ export function CurriculumExplorer({
                   </p>
                 </aside>
               ) : null}
-              <table className="mt-4 hidden w-full border-collapse text-left md:table">
-                <caption className="sr-only">Mata kuliah semester {semester.number}</caption>
-                <thead>
-                  <tr className="border-b border-ink-300">
-                    <th scope="col" className="label-mono w-28 py-3 pr-4">
-                      Kode
-                    </th>
-                    <th scope="col" className="label-mono py-3 pr-4">
-                      Mata kuliah
-                    </th>
-                    <th scope="col" className="label-mono w-20 py-3 pr-4 text-right">
-                      SKS
-                    </th>
-                    <th scope="col" className="label-mono w-48 py-3">
-                      Jalur
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {shown.map((course) => (
-                    <tr key={course.id} className="border-b border-ink-200">
-                      <td className="py-3 pr-4 font-mono text-sm text-blue">
-                        {course.code ? (
-                          displayCourseCode(course.code)
-                        ) : showPlaceholders ? (
-                          <PendingChip hint="kode" />
-                        ) : (
-                          '—'
-                        )}
-                      </td>
-                      <td className="py-3 pr-4">
-                        <button
-                          type="button"
-                          onClick={() => setDrawer(course.slug)}
-                          className="text-left font-semibold underline decoration-navy/20 underline-offset-4 hover:text-blue hover:decoration-blue"
-                        >
-                          {course.name}
-                        </button>
-                        {course.nameSource && course.nameSource !== course.name ? (
-                          <span className="block text-sm text-ink-600">{course.nameSource}</span>
-                        ) : null}
-                      </td>
-                      <td className="py-3 pr-4 text-right font-mono tabular-nums">
-                        {course.credits}
-                      </td>
-                      <td className="py-3">
-                        <span className="flex flex-wrap gap-1">
-                          {course.tags.map((item) => (
-                            <span
-                              key={item}
-                              className="label-mono rounded-full bg-ink-100 px-2 py-0.5 text-[0.6875rem]"
-                            >
-                              {item}
-                            </span>
-                          ))}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th scope="row" colSpan={2} className="label-mono py-3 pr-4 text-right">
-                      Total semester {semester.number}
-                    </th>
-                    <td className="py-3 pr-4 text-right font-mono font-bold tabular-nums">
-                      {total}
-                    </td>
-                    <td />
-                  </tr>
-                </tfoot>
-              </table>
-              <ul className="mt-4 grid gap-3 md:hidden">
-                {shown.map((course) => (
-                  <li key={course.id} className="min-w-0">
-                    <button
-                      type="button"
-                      onClick={() => setDrawer(course.slug)}
-                      className="sticker sticker-press flex w-full min-w-0 flex-col gap-1 p-4 text-left"
-                    >
-                      <span className="flex items-center justify-between gap-3">
-                        <span className="font-mono text-sm text-blue">
-                          {course.code ? displayCourseCode(course.code) : '[ISI]'}
-                        </span>
-                        <span className="label-mono rounded-md border border-navy px-2 py-0.5">
-                          {course.credits} SKS
-                        </span>
-                      </span>
-                      <span className="font-semibold">{course.name}</span>
-                      <span className="label-mono text-[0.6875rem] text-ink-600">
-                        {course.tags.join(' · ')}
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <DataTable
+                label={`Mata kuliah semester ${semester.number}`}
+                className="mt-4"
+                columns={[
+                  { label: 'Kode', className: 'w-24' },
+                  { label: 'Mata kuliah' },
+                  { label: 'SKS', className: 'w-16' },
+                  { label: 'Jalur' },
+                ]}
+                rows={shown.map(course => ({
+                  id: course.id,
+                  values: [course.code ?? '', [course.name, course.nameSource].filter(Boolean).join(' '), course.credits, course.tags.join(' ')],
+                  cells: [
+                    <span className="font-mono text-blue">{course.code ? displayCourseCode(course.code) : showPlaceholders ? <PendingChip hint="kode" /> : '—'}</span>,
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => setDrawer(course.slug)}
+                        className="text-left font-semibold underline decoration-navy/20 underline-offset-4 hover:text-blue hover:decoration-blue"
+                      >
+                        {course.name}
+                      </button>
+                      {course.nameSource && course.nameSource !== course.name ? <span className="block text-sm text-ink-600">{course.nameSource}</span> : null}
+                    </>,
+                    <span className="font-mono tabular-nums">{course.credits}</span>,
+                    <span className="flex flex-wrap gap-1">
+                      {course.tags.map(item => <span key={item} className="label-mono rounded-full bg-ink-100 px-2 py-0.5 text-[0.6875rem]">{item}</span>)}
+                    </span>,
+                  ],
+                }))}
+              />
             </section>
           )
         })}

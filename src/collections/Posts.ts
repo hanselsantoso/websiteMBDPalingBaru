@@ -65,7 +65,16 @@ export const Posts: CollectionConfig = {
             relationTo: 'media',
             admin: { description: 'Teks alternatif diambil dari media. Tanpa sampul, situs membuat sampul berpola merek.' },
           },
-          { name: 'content', label: 'Isi artikel', type: 'richText', editor: articleEditor, required: true },
+          {
+            name: 'content',
+            label: 'Isi artikel',
+            type: 'richText',
+            editor: articleEditor,
+            required: true,
+            admin: {
+              description: 'Pilih teks lalu buka menu gaya untuk memilih font, ukuran, atau warna. Gunakan menu tambah untuk menyisipkan gambar dari Media.',
+            },
+          },
           {
             name: 'relatedPosts',
             label: 'Artikel terkait (manual)',

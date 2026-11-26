@@ -3,9 +3,11 @@ import {
   FixedToolbarFeature,
   HeadingFeature,
   lexicalEditor,
+  TextStateFeature,
   UploadFeature,
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
+import { ARTICLE_TEXT_STATE } from '@/lib/article-text-state'
 
 export const CalloutBlock: Block = {
   slug: 'callout',
@@ -54,6 +56,7 @@ export const articleEditor = lexicalEditor({
     ...defaultFeatures.filter((feature) => !['heading', 'upload', 'relationship'].includes(feature.key)),
     HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
     UploadFeature({ enabledCollections: ['media'] }),
+    TextStateFeature({ state: ARTICLE_TEXT_STATE }),
     BlocksFeature({ blocks: [CalloutBlock, VideoEmbedBlock, CodeBlock] }),
     FixedToolbarFeature(),
   ],

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { DataTable } from '@/components/ui/DataTable'
 import Link from 'next/link'
 import { PrintButton } from '@/components/curriculum/PrintButton'
 import { toTrackCourses, toTrackSemesters } from '@/components/curriculum/types'
@@ -58,42 +59,20 @@ export default async function CurriculumPrintPage() {
                     {list.length} mata kuliah · {credits} SKS
                   </span>
                 </div>
-                <table className="mt-2 w-full border-collapse text-left text-sm">
-                  <thead>
-                    <tr className="border-b border-ink-300">
-                      <th scope="col" className="label-mono w-24 py-2 pr-3">
-                        Kode
-                      </th>
-                      <th scope="col" className="label-mono py-2 pr-3">
-                        Mata kuliah
-                      </th>
-                      <th scope="col" className="label-mono w-40 py-2 pr-3">
-                        Jalur
-                      </th>
-                      <th scope="col" className="label-mono w-16 py-2 text-right">
-                        SKS
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {list.map((course) => (
-                      <tr key={course.id} className="border-b border-ink-200">
-                        <td className="py-2 pr-3 font-mono text-xs text-blue">
-                          {course.code ? (
-                            displayCourseCode(course.code)
-                          ) : showPlaceholders ? (
-                            <PendingChip hint="kode" />
-                          ) : (
-                            '—'
-                          )}
-                        </td>
-                        <td className="py-2 pr-3 font-semibold">{course.name}</td>
-                        <td className="py-2 pr-3 text-xs text-ink-600">{course.tags.join(', ')}</td>
-                        <td className="py-2 text-right font-mono tabular-nums">{course.credits}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <DataTable
+                  label={`Ringkasan semester ${semester.number}`}
+                  columns={[{ label: 'Kode' }, { label: 'Mata kuliah' }, { label: 'Jalur' }, { label: 'SKS' }]}
+                  rows={list.map(course => ({
+                    id: course.id,
+                    values: [course.code ?? '', course.name, course.tags.join(', '), course.credits],
+                    cells: [
+                      <span key="code" className="font-mono text-blue">{course.code ? displayCourseCode(course.code) : showPlaceholders ? <PendingChip hint="kode" /> : '—'}</span>,
+                      course.name,
+                      course.tags.join(', '),
+                      course.credits,
+                    ],
+                  }))}
+                />
               </section>
             )
           })}

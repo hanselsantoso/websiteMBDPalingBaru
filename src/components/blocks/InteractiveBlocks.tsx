@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { DataTable } from '@/components/ui/DataTable'
 import Image from 'next/image'
 import type { ReactNode } from 'react'
 import { BlogIndex } from '@/components/blog/BlogIndex'
@@ -412,49 +413,28 @@ export async function PmbInfoBlock({ block, ctx }: BlockProps) {
     if (!rows.length) return null
     body = (
       <div className="overflow-hidden rounded-[24px] border-2 border-navy shadow-hard">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[34rem] border-collapse text-left">
-            <caption className="sr-only">
-              Rincian biaya kuliah{' '}
-              {settings.academicYear && !isPlaceholder(settings.academicYear)
-                ? settings.academicYear
-                : ''}
-            </caption>
-            <thead className="bg-navy text-white">
-              <tr>
-                <th scope="col" className="label-mono px-5 py-4">
-                  Komponen
-                </th>
-                <th scope="col" className="label-mono px-5 py-4">
-                  Nominal
-                </th>
-                <th scope="col" className="label-mono px-5 py-4">
-                  Keterangan
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y-2 divide-navy/10 bg-white">
-              {rows.map((row, index) => (
-                <tr key={row.id ?? index}>
-                  <th scope="row" className="px-5 py-4 font-semibold">
-                    <TextOr value={row.item} show={ctx.showPlaceholders} />
-                  </th>
-                  <td className="px-5 py-4 font-mono font-medium">
-                    <TextOr
-                      value={row.amount}
-                      show={ctx.showPlaceholders}
-                      fallback="—"
-                      hint="nominal"
-                    />
-                  </td>
-                  <td className="px-5 py-4 text-ink-600">
-                    <TextOr value={row.note} show={ctx.showPlaceholders} fallback="—" />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          label={`Rincian biaya kuliah ${settings.academicYear && !isPlaceholder(settings.academicYear) ? settings.academicYear : ''}`.trim()}
+          className="px-4"
+          columns={[{ label: 'Komponen' }, { label: 'Nominal' }, { label: 'Keterangan' }]}
+          rows={rows.map((row, index) => {
+            const values = [row.item, row.amount, row.note].map(value =>
+              isPlaceholder(value) ? '' : String(value ?? '').trim(),
+            )
+            const amount = values[1]
+            const rupiah = /^(?:Rp\s*)?\d+(?:\.\d{3})*$/i.test(amount)
+            return {
+              id: row.id ?? index,
+              values,
+              sortValues: rupiah ? { 1: Number(amount.replace(/\D/g, '')) } : undefined,
+              cells: [
+                <TextOr key="item" value={row.item} show={ctx.showPlaceholders} />,
+                <span key="amount" className="font-mono font-medium"><TextOr value={row.amount} show={ctx.showPlaceholders} fallback="—" hint="nominal" /></span>,
+                <TextOr key="note" value={row.note} show={ctx.showPlaceholders} fallback="—" />,
+              ],
+            }
+          })}
+        />
         {settings.feesNote && (ctx.showPlaceholders || !isPlaceholder(settings.feesNote)) ? (
           <p className="border-t-2 border-navy bg-ink-50 px-5 py-4 text-sm text-ink-700">
             <TextOr value={settings.feesNote} show={ctx.showPlaceholders} />

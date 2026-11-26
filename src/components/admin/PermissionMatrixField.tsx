@@ -1,6 +1,7 @@
 'use client'
 
 import { useField, useFormFields } from '@payloadcms/ui'
+import { DataTable } from '@/components/ui/DataTable'
 import {
   ACTIONS,
   MODULES,
@@ -46,51 +47,43 @@ export function PermissionMatrixField({ path, readOnly }: Props) {
           Centang aksi per modul. Memberi aksi apa pun otomatis menambahkan “Lihat”. “Milik sendiri” membatasi ke data yang dibuat pengguna.
         </p>
       )}
-      <div className="ad-table-wrap">
-        <table className="ad-matrix">
-          <thead>
-            <tr>
-              <th scope="col">Modul</th>
-              {ACTIONS.map((action) => (
-                <th key={action.key} scope="col" title={action.label}>
-                  {action.label}
-                </th>
-              ))}
-              <th scope="col">Cakupan</th>
-            </tr>
-          </thead>
-          <tbody>
-            {MODULES.map((module) => (
-              <tr key={module.key}>
-                <th scope="row">{module.label}</th>
-                {ACTIONS.map((action) => (
-                  <td key={action.key}>
-                    <input
-                      type="checkbox"
-                      className="ad-check"
-                      aria-label={`${module.label}: ${action.label}`}
-                      checked={isSuperAdmin || (matrix[module.key]?.actions.includes(action.key) ?? false)}
-                      disabled={disabled}
-                      onChange={() => toggle(module.key, action.key)}
-                    />
-                  </td>
-                ))}
-                <td>
-                  <select
-                    aria-label={`Cakupan ${module.label}`}
-                    value={matrix[module.key]?.scope ?? 'all'}
-                    disabled={disabled || !matrix[module.key]}
-                    onChange={(event) => setScope(module.key, event.target.value as 'all' | 'own')}
-                  >
-                    <option value="all">Semua data</option>
-                    <option value="own">Milik sendiri</option>
-                  </select>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <DataTable
+        label="Matriks izin"
+        admin
+        columns={[{ label: 'Modul' }, ...ACTIONS.map(action => ({ label: action.label })), { label: 'Cakupan' }]}
+        rows={MODULES.map(module => {
+          const permission = matrix[module.key]
+          const allowed = ACTIONS.map(action => isSuperAdmin || (permission?.actions.includes(action.key) ?? false))
+          return {
+            id: module.key,
+            values: [module.label, ...allowed.map(value => value ? 'Ya' : 'Tidak'), permission?.scope === 'own' ? 'Milik sendiri' : 'Semua data'],
+            cells: [
+              module.label,
+              ...ACTIONS.map((action, index) => (
+                <input
+                  key={action.key}
+                  type="checkbox"
+                  className="ad-check"
+                  aria-label={`${module.label}: ${action.label}`}
+                  checked={allowed[index]}
+                  disabled={disabled}
+                  onChange={() => toggle(module.key, action.key)}
+                />
+              )),
+              <select
+                key="scope"
+                aria-label={`Cakupan ${module.label}`}
+                value={permission?.scope ?? 'all'}
+                disabled={disabled || !permission}
+                onChange={event => setScope(module.key, event.target.value as 'all' | 'own')}
+              >
+                <option value="all">Semua data</option>
+                <option value="own">Milik sendiri</option>
+              </select>,
+            ],
+          }
+        })}
+      />
     </div>
   )
 }

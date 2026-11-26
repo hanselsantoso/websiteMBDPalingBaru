@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { DataTable } from '@/components/ui/DataTable'
 import type { ReactNode } from 'react'
 import { Star } from '@/components/patterns/Patterns'
 import { Icon } from '@/components/ui/Icon'
@@ -53,37 +54,23 @@ export function CourseDetailBody({ course, showPlaceholders }: { course: Doc; sh
       <section>
         <SectionTitle>Rencana mingguan</SectionTitle>
         {weekly.length ? (
-          <>
-            <table className="hidden w-full border-collapse text-left md:table">
-              <thead>
-                <tr className="border-b-2 border-navy">
-                  <th scope="col" className="label-mono w-20 py-2 pr-3">Minggu</th>
-                  <th scope="col" className="label-mono py-2 pr-3">Topik</th>
-                  <th scope="col" className="label-mono py-2 pr-3">Metode</th>
-                  <th scope="col" className="label-mono py-2">CPMK</th>
-                </tr>
-              </thead>
-              <tbody>
-                {weekly.map((row, index) => (
-                  <tr key={row.id ?? index} className="border-b border-ink-200 align-top">
-                    <td className="py-3 pr-3 font-mono text-sm">{row.week ?? index + 1}</td>
-                    <td className="py-3 pr-3 font-semibold">{isPlaceholder(row.topic) ? <PendingChip hint="topik pertemuan" /> : row.topic}</td>
-                    <td className="py-3 pr-3 text-ink-600">{isPlaceholder(row.method) ? '—' : row.method}</td>
-                    <td className="py-3 text-ink-600">{isPlaceholder(row.outcome) ? '—' : row.outcome}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <ol className="grid gap-3 md:hidden">
-              {weekly.map((row, index) => (
-                <li key={row.id ?? index} className="rounded-2xl border-2 border-navy p-4">
-                  <p className="label-mono text-blue">Minggu {row.week ?? index + 1}</p>
-                  <p className="mt-1 font-semibold">{isPlaceholder(row.topic) ? <PendingChip hint="topik pertemuan" /> : row.topic}</p>
-                  {!isPlaceholder(row.method) && row.method ? <p className="mt-1 text-sm text-ink-600">Metode: {row.method}</p> : null}
-                </li>
-              ))}
-            </ol>
-          </>
+          <DataTable
+            label="Rencana mingguan"
+            columns={[{ label: 'Minggu' }, { label: 'Topik' }, { label: 'Metode' }, { label: 'CPMK' }]}
+            rows={weekly.map((row, index) => ({
+              id: row.id ?? index,
+              values: [
+                row.week ?? index + 1,
+                ...[row.topic, row.method, row.outcome].map(value => isPlaceholder(value) ? '' : value ?? ''),
+              ],
+              cells: [
+                row.week ?? index + 1,
+                isPlaceholder(row.topic) ? <PendingChip key="topic" hint="topik pertemuan" /> : row.topic,
+                isPlaceholder(row.method) ? '—' : row.method,
+                isPlaceholder(row.outcome) ? '—' : row.outcome,
+              ],
+            }))}
+          />
         ) : (
           empty
         )}

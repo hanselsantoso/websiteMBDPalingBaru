@@ -1163,6 +1163,9 @@ export interface Post {
    * Teks alternatif diambil dari media. Tanpa sampul, situs membuat sampul berpola merek.
    */
   cover?: (string | null) | Media;
+  /**
+   * Pilih teks lalu buka menu gaya untuk memilih font, ukuran, atau warna. Gunakan menu tambah untuk menyisipkan gambar dari Media.
+   */
   content: LexicalRichText<LexicalNodes_842374A7>;
   /**
    * Kosongkan agar situs memilih otomatis dari kategori yang sama.

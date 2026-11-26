@@ -3,6 +3,7 @@ import Image from '@/components/ui/CmsImage'
 import { PendingChip } from '@/components/ui/Isi'
 import { VideoEmbed } from '@/components/motion/Interactive'
 import { placeholderHint } from '@/lib/domain/placeholders'
+import { articleTextStyle } from '@/lib/article-text-state'
 import { headingId, nodeText } from '@/lib/lexical'
 import { cn } from '@/lib/utils'
 
@@ -11,6 +12,12 @@ type AnyNode = Record<string, any>
 function makeConverters(showPlaceholders: boolean): JSXConvertersFunction {
   return ({ defaultConverters }) => ({
     ...defaultConverters,
+    text: (args: AnyNode) => {
+      const renderDefault = (defaultConverters as AnyNode).text
+      const text = typeof renderDefault === 'function' ? renderDefault(args) : args.node.text
+      const style = articleTextStyle(args.node.$)
+      return Object.keys(style).length ? <span style={style}>{text}</span> : text
+    },
     paragraph: (args: AnyNode) => {
       const text = nodeText(args.node).trim()
       if (/^\[ISI[^\]]*\]$/.test(text)) {
