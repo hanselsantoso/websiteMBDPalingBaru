@@ -14,13 +14,13 @@ export function SiasatAnimation({
 }: {
   clip: SiasatClipName
   play: boolean
-  sizes: string
+  sizes: { poster: string; sprite: string }
   priority?: boolean
 }) {
   const frame = useRef<HTMLSpanElement>(null)
   const visible = useInView(frame, { once: true, amount: 0.35 })
   const [ready, setReady] = useState(false)
-  const { poster, sprite } = SIASAT_CLIPS[clip]
+  const { poster, sprite, spriteSources } = SIASAT_CLIPS[clip]
 
   return (
     <span
@@ -34,23 +34,30 @@ export function SiasatAnimation({
         alt=""
         width={SIASAT_FRAME_SIZE}
         height={SIASAT_FRAME_SIZE}
-        sizes={sizes}
+        sizes={sizes.poster}
         priority={priority}
         draggable={false}
         className={cn('h-auto w-full select-none', ready && play && 'siasat-poster-ready')}
       />
       {play && visible ? (
-        <Image
-          src={sprite}
-          alt=""
-          width={SIASAT_FRAME_SIZE * 2}
-          height={SIASAT_FRAME_SIZE * 2}
-          unoptimized
-          loading="eager"
-          draggable={false}
-          onLoad={() => setReady(true)}
-          className={cn('absolute top-0 left-0 h-auto w-[200%] max-w-none select-none', ready ? 'siasat-sprite' : 'invisible')}
-        />
+        <picture>
+          <source
+            type="image/webp"
+            sizes={sizes.sprite}
+            srcSet={spriteSources.map(({ src, width }) => `${src} ${width}w`).join(', ')}
+          />
+          <Image
+            src={sprite}
+            alt=""
+            width={SIASAT_FRAME_SIZE * 2}
+            height={SIASAT_FRAME_SIZE * 2}
+            unoptimized
+            loading="eager"
+            draggable={false}
+            onLoad={() => setReady(true)}
+            className={cn('absolute top-0 left-0 h-auto w-[200%] max-w-none select-none', ready ? 'siasat-sprite' : 'invisible')}
+          />
+        </picture>
       ) : null}
     </span>
   )

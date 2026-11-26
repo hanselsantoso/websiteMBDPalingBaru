@@ -6,6 +6,11 @@ import { useMotionPreference } from '@/components/providers/MotionProvider'
 import { Button } from '@/components/ui/Button'
 import { SIASAT_CLIP_NAMES, SIASAT_CLIPS, type SiasatClipName } from '@/lib/brand/animation'
 
+const GALLERY_IMAGE_SIZES = {
+  poster: '(min-width: 830px) 208px, (min-width: 768px) calc((100vw - 206px) / 3), (min-width: 640px) calc((100vw - 190px) / 3), 80px',
+  sprite: '(min-width: 830px) 416px, (min-width: 768px) calc((200vw - 412px) / 3), (min-width: 640px) calc((200vw - 380px) / 3), 160px',
+}
+
 export function SiasatAnimationGallery() {
   const { reduced } = useMotionPreference()
   const [active, setActive] = useState<SiasatClipName | null>(null)
@@ -22,7 +27,7 @@ export function SiasatAnimationGallery() {
           return (
             <figure key={clip} className="grid grid-cols-[5rem_1fr] items-center gap-3 rounded-3xl border border-navy/15 bg-white p-4 sm:block sm:p-5">
               <div className="mx-auto w-full max-w-52 rounded-2xl bg-ink-50">
-                <SiasatAnimation key={selected ? replay : 0} clip={clip} play={selected} sizes="208px" />
+                <SiasatAnimation key={selected ? replay : 0} clip={clip} play={selected} sizes={GALLERY_IMAGE_SIZES} />
               </div>
               <figcaption className="grid justify-items-center gap-2 text-center sm:mt-3">
                 <span className="font-bold">{title}</span>

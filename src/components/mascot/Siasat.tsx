@@ -22,11 +22,17 @@ const SIZES = {
 } as const
 
 const IMAGE_SIZES = {
-  xs: '64px',
-  sm: '96px',
-  md: '160px',
-  lg: '(min-width: 1024px) 288px, 256px',
-  xl: '(min-width: 1024px) 400px, 320px',
+  xs: { poster: '64px', sprite: '128px' },
+  sm: { poster: '96px', sprite: '192px' },
+  md: { poster: '160px', sprite: '320px' },
+  lg: {
+    poster: '(min-width: 1024px) 288px, (min-width: 640px) 256px, 208px',
+    sprite: '(min-width: 1024px) 576px, (min-width: 640px) 512px, 416px',
+  },
+  xl: {
+    poster: '(min-width: 1024px) 400px, (min-width: 640px) 320px, 256px',
+    sprite: '(min-width: 1024px) 800px, (min-width: 640px) 640px, 512px',
+  },
 } as const
 
 export type SiasatProps = {
@@ -86,7 +92,8 @@ export function Siasat({
   const cmsAsset = mascot.poses[pose]
   const asset = cmsAsset?.url ? cmsAsset : getSiasatArtwork(expression ?? pose)
   const animated = loop && mascot.idleAnimation && !reduced
-  const activeClip = animated && !cmsAsset?.url ? clip : undefined
+  const builtInClip = cmsAsset?.url ? undefined : clip
+  const playClip = animated && Boolean(builtInClip)
   const label = `${mascot.name}, rubah strategis MBD, sedang ${POSE_LABEL[pose]}`
 
   useEffect(() => setBubble(say), [say])
@@ -97,28 +104,28 @@ export function Siasat({
     const pool = fromCms.length ? fromCms : DEFAULT_LINES[pose]
     const choices = pool.length > 1 ? pool.filter((line) => line !== bubble) : pool
     setBubble(choices[Math.floor(Math.random() * choices.length)] ?? null)
-    if (activeClip) setReplay((previous) => previous + 1)
+    if (playClip) setReplay((previous) => previous + 1)
     else if (!reduced && scope.current)
       void animate(scope.current, { y: [0, -18, 0] }, { duration: 0.5, ease: 'easeOut' })
     if (timer.current) clearTimeout(timer.current)
     timer.current = setTimeout(() => setBubble(null), 4500)
-  }, [activeClip, animate, bubble, mascot.lines, pose, reduced, scope])
+  }, [animate, bubble, mascot.lines, playClip, pose, reduced, scope])
 
   const art = asset?.url ? (
     <m.div
       className={cn('relative', flip && '-scale-x-100')}
-      animate={animated && !activeClip ? { y: [0, -8, 0], scale: [1, 1.015, 1] } : undefined}
+      animate={animated && !playClip ? { y: [0, -8, 0], scale: [1, 1.015, 1] } : undefined}
       transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
     >
-      {activeClip ? (
-        <SiasatAnimation key={`${activeClip}-${replay}`} clip={activeClip} play sizes={IMAGE_SIZES[size]} priority={priority} />
+      {builtInClip ? (
+        <SiasatAnimation key={`${builtInClip}-${replay}`} clip={builtInClip} play={playClip} sizes={IMAGE_SIZES[size]} priority={priority} />
       ) : (
         <Image
           src={asset.url}
           alt=""
           width={1024}
           height={1024}
-          sizes={IMAGE_SIZES[size]}
+          sizes={IMAGE_SIZES[size].poster}
           priority={priority}
           className="h-auto w-full select-none"
           draggable={false}

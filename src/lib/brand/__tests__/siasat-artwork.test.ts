@@ -1,3 +1,4 @@
+import { stat } from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 import sharp from 'sharp'
 import { getSiasatArtwork, PROGRAM_WORDMARK, SIASAT_VARIANTS } from '../artwork'
@@ -23,14 +24,24 @@ describe('illustrations shipped with the Siasat gallery', () => {
     }
   })
 
-  it('ships three registered 2×2 sprite sheets and matching static posters', async () => {
+  it('ships three sets of transparent 2×2 sprites sized for their network budgets', async () => {
     expect(SIASAT_CLIP_NAMES).toHaveLength(3)
+    const maxBytes = { 192: 16_000, 384: 40_000, 640: 80_000, 896: 120_000 }
     for (const name of SIASAT_CLIP_NAMES) {
-      const { sprite, poster } = SIASAT_CLIPS[name]
-      const [sheet, still] = await Promise.all([sharp(`public${sprite}`).metadata(), sharp(`public${poster}`).metadata()])
-      expect(sheet.width).toBe(2 * still.width)
-      expect(sheet.height).toBe(2 * still.height)
-      expect(sheet.hasAlpha && still.hasAlpha).toBe(true)
+      const { poster, spriteSources } = SIASAT_CLIPS[name]
+      const still = await sharp(`public${poster}`).metadata()
+      expect(still.width).toBe(448)
+      expect(still.height).toBe(448)
+      expect(still.hasAlpha).toBe(true)
+      expect(spriteSources.map(({ width }) => width)).toEqual([192, 384, 640, 896])
+      for (const { src, width } of spriteSources) {
+        const file = `public${src}`
+        const [sheet, { size }] = await Promise.all([sharp(file).metadata(), stat(file)])
+        expect(sheet.width, src).toBe(width)
+        expect(sheet.height, src).toBe(width)
+        expect(sheet.hasAlpha, src).toBe(true)
+        expect(size, src).toBeLessThanOrEqual(maxBytes[width as keyof typeof maxBytes])
+      }
     }
   })
 })

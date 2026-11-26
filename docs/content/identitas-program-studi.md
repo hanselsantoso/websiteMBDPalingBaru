@@ -20,6 +20,6 @@ Aset dibuat dengan ImageGen bawaan. [Prompt Jejak Siasat](./prompt-logo-jejak-si
 
 Galeri publik `/siasat` menampilkan 25 pose dan tiga animasi yang bisa diputar ulang. Tautannya tersedia di footer. Lambaian dipakai pada hero dengan pose sapaan, gerakan mata saat kuis memproses jawaban, dan jempol pada konfirmasi formulir serta brosur.
 
-Tiap animasi memakai [sprite WebP transparan 2 × 2 dan poster](../../public/images/mascot/animation/). Urutan frame dibaca dari kiri ke kanan, atas ke bawah. Satu pemutaran berlangsung 1,8 detik dan berakhir pada frame pertama. Mode Kurangi Gerak memakai gambar diam. Slot dengan unggahan pose dari CMS tetap menampilkan unggahan tersebut.
+Tiap animasi memakai [sprite WebP transparan 2 × 2 dan poster](../../public/images/mascot/animation/). Browser memilih satu dari empat ukuran WebP yang sudah dikompresi sesuai ruang tampil dan kepadatan layar. Sprite diunduh ketika animasi tampil di layar. Galeri juga menunggu pengunjung menekan tombol putar. Satu pemutaran berlangsung 1,8 detik dan berakhir pada frame pertama. Mode Kurangi Gerak hanya memuat poster. Slot dengan unggahan pose dari CMS tetap menampilkan unggahan tersebut.
 
 Frame digambar dengan ImageGen bawaan. [Lihat kumpulan prompt animasi](./prompt-animasi-siasat.json).
