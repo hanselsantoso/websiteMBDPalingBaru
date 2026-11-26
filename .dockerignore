@@ -10,5 +10,6 @@ backups
 exports
 test-results
 playwright-report
+output
 
 .certs
