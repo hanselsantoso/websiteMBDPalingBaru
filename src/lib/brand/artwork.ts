@@ -3,7 +3,7 @@ import type { SiasatPose } from './mascot'
 export const PROGRAM_MARK = '/images/brand/mbd-siasat-icon.png'
 export const PROGRAM_WORDMARK = { src: '/images/brand/mbd-jejak-siasat.webp', width: 640, height: 241 } as const
 export const PROGRAM_WORDMARK_DARK = { ...PROGRAM_WORDMARK, src: '/images/brand/mbd-jejak-siasat-putih.webp' } as const
-export const HERO_WAVE_ART = '/images/illustrations/hero-wave-cartoon.webp'
+export const HERO_WAVE_ART = '/images/illustrations/hero-divider-pita-siasat.webp'
 export const CURRICULUM_ART = '/images/illustrations/curriculum-journey.webp'
 export const FACULTY_ART = '/images/illustrations/faculty-editorial.webp'
 export const BLOG_COVER_ART = '/images/illustrations/digital-business-ai.webp'
