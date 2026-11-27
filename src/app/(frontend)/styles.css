@@ -346,6 +346,11 @@
 .pattern-wave {
   opacity: var(--pattern-wave);
 }
+
+#konten:has([data-joins-footer]) + [data-site-footer] > [data-footer-wave] {
+  display: none;
+}
+
 .pattern-fin {
   opacity: var(--pattern-fin);
 }

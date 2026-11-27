@@ -6,7 +6,7 @@ import { Fin, Marquee, Star, StarField, Wave } from '@/components/patterns/Patte
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip, TextOr } from '@/components/ui/Isi'
 import { Eyebrow, SectionHeading } from '@/components/ui/Section'
-import { BUSINESS_STRATEGY_ART } from '@/lib/brand/artwork'
+import { BUSINESS_STRATEGY_ART, HERO_WAVE_ART } from '@/lib/brand/artwork'
 import { isSiasatPose } from '@/lib/brand/mascot'
 import { programTotals } from '@/lib/domain/curriculum'
 import { isPlaceholder } from '@/lib/domain/placeholders'
@@ -354,12 +354,18 @@ export async function CtaBandBlock({ block, ctx }: BlockProps) {
   return (
     <section
       data-tone="dark"
+      data-joins-footer={ctx.isLast || undefined}
       id={anchor(block)}
       aria-labelledby={`cta-${block.id}`}
       className="relative isolate overflow-hidden bg-navy text-white"
     >
       <StarField tone="lime" />
-      <div className="container-arus relative grid items-center gap-10 py-20 lg:grid-cols-12 lg:py-28">
+      <div
+        className={cn(
+          'container-arus relative grid items-center gap-10 pt-20 lg:grid-cols-12 lg:pt-28',
+          ctx.isLast ? 'pb-12 lg:pb-16' : 'pb-20 lg:pb-28',
+        )}
+      >
         {pose ? (
           <Reveal className="order-2 justify-self-center lg:order-1 lg:col-span-4 lg:justify-self-start">
             <Siasat pose={pose} size="lg" onDark interactive showArtTag />
@@ -386,8 +392,18 @@ export async function CtaBandBlock({ block, ctx }: BlockProps) {
         </div>
       </div>
       {ctx.isLast ? (
-        <div className="relative h-[clamp(48px,7vw,96px)]">
-          <Wave preset="toNavy" />
+        <div
+          aria-hidden="true"
+          className="container-arus pointer-events-none relative flex items-center gap-4 before:h-px before:flex-1 before:bg-white/20 after:h-px after:flex-1 after:bg-white/20 sm:gap-7"
+        >
+          <Image
+            src={HERO_WAVE_ART}
+            alt=""
+            width={1440}
+            height={179}
+            sizes="(max-width: 639px) 55vw, 416px"
+            className="pattern-wave h-auto w-[55vw] max-w-[416px] shrink-0"
+          />
         </div>
       ) : (
         <div className="relative h-[clamp(56px,8vw,112px)]">

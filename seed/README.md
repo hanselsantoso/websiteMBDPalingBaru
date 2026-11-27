@@ -1,9 +1,9 @@
 # Seed data
 
-Starter content for Arus Digital lives in Payload. Everything here is applied with
-the project's Payload CLI (`pnpm exec payload …`), never with custom scripts, temporary
-endpoints or raw database access. Run commands from the project root inside the Make
-environment (the platform injects the backend configuration).
+Starter content for S1 Manajemen Bisnis Digital lives in Payload. Use the
+project's Payload CLI (`pnpm exec payload …`) from the project root. On the
+standalone target, complete the [local setup and migration](../docs/operations/deployment-preparation.md#persiapan-lingkungan-lokal)
+before running content commands.
 
 ## Files
 
@@ -29,7 +29,8 @@ Do not change codes or credits without confirmation from the study program.
 
 ## Workflow
 
-1. Wait for the environment: `figma make verify-bootstrap`.
+1. Check the database connection and applied migrations. The original Figma
+   Make project used `figma make verify-bootstrap` to check its managed backend.
 2. Discover the installed CLI contract: `pnpm exec payload --help` and
    `pnpm exec payload <operation> --help`.
 3. Inspect the target schema, for example
