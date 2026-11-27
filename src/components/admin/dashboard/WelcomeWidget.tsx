@@ -1,3 +1,5 @@
+import Image from 'next/image'
+import { INVERSE_WORDMARK } from '../Brand'
 import type { WidgetProps } from './summary'
 import { SiasatBadge } from './SiasatBadge'
 import '../admin.css'
@@ -20,7 +22,10 @@ export function WelcomeWidget({ req }: WidgetProps) {
     <section className="ad-widget ad-widget--welcome" aria-label="Sapaan Siasat">
       <SiasatBadge pose="greeting" />
       <div>
-        <span className="ad-mono">Sapaan dari Sia</span>
+        <div className="ad-welcome__identity">
+          <Image {...INVERSE_WORDMARK} alt="MBD" sizes="56px" />
+          <span className="ad-mono">Sapaan dari Siasat</span>
+        </div>
         <h3>Halo, {name}! Siap atur strategi hari ini?</h3>
         <p>Tips: {tip}</p>
         <nav className="ad-quick" aria-label="Aksi cepat">
