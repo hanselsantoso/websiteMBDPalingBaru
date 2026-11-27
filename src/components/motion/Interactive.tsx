@@ -28,9 +28,12 @@ export function Reveal({
 
   useEffect(() => {
     const node = ref.current
-    if (!node || reduced) return
+    if (!node) return
     const rect = node.getBoundingClientRect()
-    if (rect.top < window.innerHeight * 0.92) return
+    if (reduced || rect.top < window.innerHeight) {
+      setState('idle')
+      return
+    }
     setState('pending')
     const observer = new IntersectionObserver(
       ([entry]) => {

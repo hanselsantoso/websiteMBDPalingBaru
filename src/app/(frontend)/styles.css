@@ -360,11 +360,11 @@ html[data-star="off"] .pattern-star {
 
 /* Reveal-on-scroll: content is visible by default (no-JS, crawlers);
    the Reveal component hides only offscreen items once JS confirms motion. */
-.reveal-pending {
+html[data-motion="full"] .reveal-pending {
   opacity: 0;
   transform: translate3d(0, 24px, 0);
 }
-.reveal-in {
+html[data-motion="full"] .reveal-in {
   opacity: 1;
   transform: translate3d(0, 0, 0);
   transition:

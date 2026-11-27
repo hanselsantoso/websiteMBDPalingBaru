@@ -6,6 +6,7 @@ import { Fin, Marquee, Star, StarField, Wave } from '@/components/patterns/Patte
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip, TextOr } from '@/components/ui/Isi'
 import { Eyebrow, SectionHeading } from '@/components/ui/Section'
+import { BUSINESS_STRATEGY_ART } from '@/lib/brand/artwork'
 import { isSiasatPose } from '@/lib/brand/mascot'
 import { programTotals } from '@/lib/domain/curriculum'
 import { isPlaceholder } from '@/lib/domain/placeholders'
@@ -133,6 +134,7 @@ function CourseCodes({ codes, onDark }: { codes?: string | null; onDark?: boolea
 export function WhyMbdBlock({ block, ctx }: BlockProps) {
   const cards = (block.cards as Record<string, any>[]) ?? []
   const large = cards.find((card) => card.size === 'large') ?? cards[0]
+  const strategyArtwork = large?.icon === 'bisnis'
   const rest = cards.filter((card) => card !== large)
   const small = rest.slice(0, 4)
   const wide = rest.slice(4)
@@ -145,19 +147,34 @@ export function WhyMbdBlock({ block, ctx }: BlockProps) {
           {large ? (
             <Reveal
               as="article"
-              className="group relative isolate flex min-h-[22rem] flex-col overflow-hidden rounded-[28px] border-2 border-navy bg-blue p-7 text-white shadow-hard transition-transform duration-200 hover:-rotate-[0.6deg] md:col-span-2 lg:col-span-6 lg:row-span-2 lg:p-9"
+              className={cn(
+                'group relative isolate flex min-h-[22rem] flex-col overflow-hidden rounded-[28px] border-2 border-navy bg-blue p-7 text-white shadow-hard transition-transform duration-200 hover:-rotate-[0.6deg] md:col-span-2 lg:col-span-6 lg:row-span-2 lg:p-9',
+                strategyArtwork && 'gap-4 lg:flex-row lg:gap-5',
+              )}
             >
-              <Fin className="pattern-fin absolute -right-6 -bottom-8 -z-10 size-[min(70%,22rem)] text-lime transition-transform duration-500 group-hover:-translate-y-2" />
-              <span className="grid size-14 place-items-center rounded-2xl border-2 border-white/70 text-white">
-                <Icon name={large.icon ?? 'bisnis'} size={28} strokeWidth={2} />
-              </span>
-              <h3 className="mt-6 max-w-sm text-[clamp(1.75rem,1.4rem+1.5vw,2.5rem)] leading-[1.05] font-bold">
-                {large.title}
-              </h3>
-              <p className="mt-4 max-w-sm text-lead text-white/90">
-                <TextOr value={large.body} show={ctx.showPlaceholders} />
-              </p>
-              <CourseCodes codes={large.courseCodes} onDark />
+              {strategyArtwork ? null : (
+                <Fin className="pattern-fin absolute -right-6 -bottom-8 -z-10 size-[min(70%,22rem)] text-lime transition-transform duration-500 group-hover:-translate-y-2" />
+              )}
+              <div className="flex min-w-0 flex-1 flex-col">
+                <span className="grid size-14 place-items-center rounded-2xl border-2 border-white/70 text-white">
+                  <Icon name={large.icon ?? 'bisnis'} size={28} strokeWidth={2} />
+                </span>
+                <h3 className="mt-6 max-w-sm text-[clamp(1.75rem,1.4rem+1.5vw,2.5rem)] leading-[1.05] font-bold">
+                  {large.title}
+                </h3>
+                <p className="mt-4 max-w-sm text-lead">
+                  <TextOr value={large.body} show={ctx.showPlaceholders} />
+                </p>
+                <CourseCodes codes={large.courseCodes} onDark />
+              </div>
+              {strategyArtwork ? (
+                <Image
+                  {...BUSINESS_STRATEGY_ART}
+                  alt=""
+                  sizes="(min-width: 1024px) 144px, 112px"
+                  className="h-auto w-28 shrink-0 self-end lg:w-36"
+                />
+              ) : null}
             </Reveal>
           ) : null}
           {small.map((card, index) => (
