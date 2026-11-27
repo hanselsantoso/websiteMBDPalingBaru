@@ -6,7 +6,8 @@ import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { Siasat } from '@/components/mascot/Siasat'
 import { useMotionPreference } from '@/components/providers/MotionProvider'
-import { StarField, Wave } from '@/components/patterns/Patterns'
+import { PaintedDivider } from '@/components/patterns/PaintedDivider'
+import { StarField } from '@/components/patterns/Patterns'
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip } from '@/components/ui/Isi'
 import { Eyebrow } from '@/components/ui/Section'
@@ -28,7 +29,7 @@ function SemesterCard({
   const total = courses.reduce((sum, course) => sum + course.credits, 0)
   return (
     <article
-      className="relative flex h-full flex-col rounded-[28px] border-2 border-navy bg-white p-6 text-navy shadow-hard-lime"
+      className="relative flex h-full min-w-0 flex-col rounded-[28px] border-2 border-navy bg-white p-6 text-navy shadow-hard-lime"
       aria-labelledby={`sem-${semester.number}-title`}
     >
       <div className="flex items-start justify-between gap-3">
@@ -61,7 +62,7 @@ function SemesterCard({
             <Link
               href={`/kurikulum/${course.slug}`}
               prefetch={false}
-              className="group grid min-h-11 grid-cols-[4.25rem_1fr_auto] items-center gap-2 rounded-lg py-1 hover:bg-ink-50"
+              className="group grid min-h-11 grid-cols-[4.25rem_minmax(0,1fr)_auto] items-center gap-2 rounded-lg py-1 hover:bg-ink-50"
             >
               <span className="font-mono text-xs font-medium text-blue">
                 {course.code ? (
@@ -72,7 +73,7 @@ function SemesterCard({
                   '—'
                 )}
               </span>
-              <span className="text-[0.9375rem] leading-snug font-semibold group-hover:text-blue">
+              <span className="text-[0.9375rem] leading-snug font-semibold wrap-anywhere group-hover:text-blue">
                 {course.name}
               </span>
               <span className="label-mono rounded-md border border-navy px-1.5 py-0.5 text-[0.6875rem]">
@@ -233,7 +234,7 @@ export function CurriculumTrack({
     return (
       <section id={anchorId} data-tone="dark" className="relative bg-navy pt-20 text-white">
         {header}
-        <ol className="container-arus mt-10 grid gap-5 pb-24 md:grid-cols-2 lg:grid-cols-4">
+        <ol className="container-arus mt-10 grid grid-cols-1 gap-5 pb-24 md:grid-cols-2 lg:grid-cols-4">
           {semesters.map((semester) => (
             <li key={semester.number}>
               <SemesterCard
@@ -245,9 +246,7 @@ export function CurriculumTrack({
           ))}
           <li>{finalCard}</li>
         </ol>
-        <div className="relative h-[clamp(56px,8vw,112px)]">
-          <Wave preset="toWhite" />
-        </div>
+        <PaintedDivider />
       </section>
     )
   }
@@ -320,9 +319,7 @@ export function CurriculumTrack({
           ) : null}
         </div>
       </div>
-      <div className="relative h-[clamp(56px,8vw,112px)]">
-        <Wave preset="toWhite" />
-      </div>
+      <PaintedDivider />
     </section>
   )
 }

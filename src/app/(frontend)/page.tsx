@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { HeroVisual } from '@/components/blocks/HeroVisual'
 import { CmsPage, cmsPageMetadata } from '@/components/pages/CmsPage'
-import { StarField, Wave } from '@/components/patterns/Patterns'
+import { StarField } from '@/components/patterns/Patterns'
+import { PaintedDivider } from '@/components/patterns/PaintedDivider'
 import { ButtonLink } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Eyebrow } from '@/components/ui/Section'
@@ -33,9 +34,7 @@ function HomeWelcome() {
           <HeroVisual pose="greeting" chips={[]} />
         </div>
       </div>
-      <div className="relative h-[clamp(64px,9vw,128px)]">
-        <Wave preset="toWhite" />
-      </div>
+      <PaintedDivider />
     </section>
   )
 }

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { PrimaryCta, SecondaryActions, WhatsAppLink, QuizLink, BrochureButton } from '@/components/cta/CtaLinks'
 import { Siasat } from '@/components/mascot/Siasat'
 import { RotatingWords } from '@/components/motion/Interactive'
+import { PaintedDivider } from '@/components/patterns/PaintedDivider'
 import { Fin, Marquee, StarField, Wave } from '@/components/patterns/Patterns'
 import { buttonStyles } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -87,10 +88,7 @@ export async function HeroBlock({ block, ctx }: BlockProps) {
         </div>
       </div>
       {block.showPartnerStrip ? <PartnerStrip label={block.partnerStripLabel} showPlaceholders={ctx.showPlaceholders} /> : null}
-      <div className="relative h-[clamp(64px,9vw,128px)]">
-        <Fin className="anim-fin pattern-fin absolute bottom-[clamp(26px,4vw,52px)] left-0 size-[clamp(36px,4.5vw,64px)] text-cyan" />
-        <Wave preset="toWhite" />
-      </div>
+      <PaintedDivider />
     </section>
   )
 }

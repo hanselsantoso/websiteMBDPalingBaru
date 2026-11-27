@@ -4,7 +4,7 @@ import { PrimaryCta, SecondaryActions } from '@/components/cta/CtaLinks'
 import { Fin, StarField, Wave } from '@/components/patterns/Patterns'
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip, TextOr } from '@/components/ui/Isi'
-import { PROGRAM_WORDMARK } from '@/lib/brand/artwork'
+import { PROGRAM_WORDMARK_DARK } from '@/lib/brand/artwork'
 import { INSTITUTION_NAME, PROGRAM_NAME } from '@/lib/brand/identity'
 import { isExternalHref } from '@/lib/links'
 import { asMedia } from '@/lib/utils'
@@ -45,8 +45,8 @@ export function Footer({
               {logoUrl ? (
                 <Image src={logoUrl} alt="" width={180} height={40} className="h-9 w-auto max-w-[42%] shrink-0 object-contain object-left" />
               ) : (
-                <span className="w-16 shrink-0 rounded-lg bg-[#fff7e7] px-1.5 py-2 sm:w-24">
-                  <Image {...PROGRAM_WORDMARK} alt="" sizes="(min-width: 640px) 84px, 52px" className="h-auto w-full" />
+                <span className="w-16 shrink-0 px-1.5 py-2 sm:w-24">
+                  <Image {...PROGRAM_WORDMARK_DARK} alt="" sizes="(min-width: 640px) 84px, 52px" className="h-auto w-full" />
                 </span>
               )}
               <div>

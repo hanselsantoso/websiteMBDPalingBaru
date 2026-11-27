@@ -1,7 +1,7 @@
 import { stat } from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 import sharp from 'sharp'
-import { getSiasatArtwork, PROGRAM_WORDMARK, SIASAT_VARIANTS } from '../artwork'
+import { getSiasatArtwork, HERO_WAVE_ART, PROGRAM_WORDMARK, PROGRAM_WORDMARK_DARK, SIASAT_VARIANTS } from '../artwork'
 import { SIASAT_CLIPS, SIASAT_CLIP_NAMES } from '../animation'
 
 describe('illustrations shipped with the Siasat gallery', () => {
@@ -13,6 +13,28 @@ describe('illustrations shipped with the Siasat gallery', () => {
       height: PROGRAM_WORDMARK.height,
       hasAlpha: true,
     })
+  })
+
+  it('ships a transparent white wordmark for dark backgrounds', async () => {
+    const logo = sharp(`public${PROGRAM_WORDMARK_DARK.src}`)
+    const { width, height, hasAlpha } = await logo.metadata()
+    expect({ width, height, hasAlpha }).toEqual({
+      width: PROGRAM_WORDMARK_DARK.width,
+      height: PROGRAM_WORDMARK_DARK.height,
+      hasAlpha: true,
+    })
+    const { channels, isOpaque } = await logo.stats()
+    expect(isOpaque).toBe(false)
+    expect(channels.slice(0, 3).map(channel => channel.max)).toEqual([255, 255, 255])
+  })
+
+  it('ships the shallow hero divider as a lightweight transparent WebP', async () => {
+    const path = `public${HERO_WAVE_ART}`
+    const [{ format, width, height, hasAlpha }, { size }] = await Promise.all([sharp(path).metadata(), stat(path)])
+    expect(format).toBe('webp')
+    expect(hasAlpha).toBe(true)
+    expect(width! / height!).toBeGreaterThan(5)
+    expect(size).toBeLessThanOrEqual(130_000)
   })
 
   it('ships a transparent square image for each of the 25 expressions', async () => {
