@@ -1,4 +1,39 @@
-/* Admin-only styles. Uses Payload theme variables so light and dark modes both work. */
+/* Admin-only styles. The palette follows Payload's light and dark themes. */
+:root {
+  --ad-surface: #fff;
+  --ad-panel: #f4f7fc;
+  --ad-ink: #142744;
+  --ad-muted: #485974;
+  --ad-border: #d6e0ee;
+  --ad-control-border: #72839e;
+  --ad-track: #c9d7eb;
+  --ad-blue: #164b9f;
+  --ad-teal: #12644f;
+  --ad-amber-surface: #fff0c2;
+  --ad-amber-ink: #633800;
+  --ad-success-surface: #e1f5ec;
+  --ad-error-surface: #fce8ec;
+  --ad-error-ink: #881e38;
+}
+html[data-theme='dark'] {
+  --ad-surface: #17243b;
+  --ad-panel: #101a2d;
+  --ad-ink: #f2f6ff;
+  --ad-muted: #bac9e1;
+  --ad-border: #374965;
+  --ad-control-border: #7185a1;
+  --ad-track: #364966;
+  --ad-blue: #8ab7ff;
+  --ad-teal: #68e0bd;
+  --ad-amber-surface: #392f1d;
+  --ad-amber-ink: #ffdc87;
+  --ad-success-surface: #15392f;
+  --ad-error-surface: #492634;
+  --ad-error-ink: #ffb7c7;
+  --ad-article-color-blue: #8ab7ff;
+  --ad-article-color-green: #68e0bd;
+  --ad-article-color-red: #ff9eb1;
+}
 .ad-field {
   margin-bottom: calc(var(--base, 20px) * 1.25);
 }
@@ -10,7 +45,7 @@
 .ad-note {
   margin: 6px 0;
   font-size: 13px;
-  color: var(--theme-elevation-650, #555);
+  color: var(--ad-muted);
 }
 .ad-mono {
   font-family: var(--font-mono, ui-monospace, monospace);
@@ -19,11 +54,12 @@
   text-transform: uppercase;
 }
 .ad-panel {
-  border: 1px solid var(--theme-elevation-150, #ddd);
+  border: 1px solid var(--ad-border);
   border-radius: var(--style-radius-m, 8px);
   padding: 16px;
   margin: 8px 0 20px;
-  background: var(--theme-elevation-0, #fff);
+  background: var(--ad-surface);
+  color: var(--ad-ink);
 }
 .ad-panel__head {
   display: flex;
@@ -40,38 +76,50 @@
   min-height: 36px;
   padding: 6px 14px;
   border-radius: 999px;
-  border: 1px solid var(--theme-elevation-800, #222);
-  background: var(--theme-elevation-0, #fff);
-  color: var(--theme-text, #111);
+  border: 1px solid var(--ad-control-border);
+  background: var(--ad-surface);
+  color: var(--ad-ink);
   font: inherit;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
-  transition-property: background-color, transform;
+  transition-property: transform;
   transition-duration: 150ms;
 }
-.ad-btn:hover {
-  background: var(--theme-elevation-100, #f2f2f2);
+.ad-btn:hover:not(:disabled) {
+  background: var(--ad-panel);
+  color: var(--ad-ink);
+}
+.ad-btn:disabled {
+  color: var(--ad-muted);
+  cursor: default;
 }
 .ad-btn:active {
   transform: scale(0.96);
 }
-.ad-btn[aria-pressed='true'] {
-  background: #071a3d;
-  border-color: #071a3d;
-  color: #fff;
+.ad-btn[aria-pressed='true'],
+.ad-btn[aria-pressed='true']:hover:not(:disabled) {
+  background: var(--ad-blue);
+  border-color: var(--ad-blue);
+  color: var(--ad-surface);
 }
 .ad-btn--wa {
   background: #071a3d;
   border-color: #071a3d;
   color: #c6f432;
 }
-.ad-btn--wa:hover {
+.ad-btn--wa:hover:not(:disabled) {
   background: #0c2a5e;
+  color: #c6f432;
 }
 .ad-btn:focus-visible,
-.ad-check:focus-visible {
+.ad-check:focus-visible,
+.ad-board :is(summary, a):focus-visible,
+.ad-table-wrap:focus-visible,
+.ad-matrix select:focus-visible,
+.ad-table-filter :is(input, select):focus-visible,
+.ad-table-sort:focus-visible {
   outline: 3px solid var(--ad-blue);
   outline-offset: 2px;
 }
@@ -87,14 +135,19 @@
   border-radius: var(--style-radius-s, 6px);
   font-size: 13px;
 }
-.ad-alert--ok {
-  background: color-mix(in srgb, var(--theme-success-500, #2e7d32) 14%, transparent);
+.ad-alert--ok,
+.ad-pill--ok {
+  background: var(--ad-success-surface);
+  color: var(--ad-teal);
 }
-.ad-alert--error {
-  background: color-mix(in srgb, var(--theme-error-500, #c62828) 14%, transparent);
+.ad-alert--error,
+.ad-pill--fail {
+  background: var(--ad-error-surface);
+  color: var(--ad-error-ink);
 }
 .ad-alert--warn {
-  background: color-mix(in srgb, #ffd45c 32%, transparent);
+  background: var(--ad-amber-surface);
+  color: var(--ad-amber-ink);
 }
 .ad-table-wrap {
   overflow-x: auto;
@@ -107,7 +160,7 @@
 .ad-matrix th,
 .ad-matrix td {
   padding: 6px 8px;
-  border-bottom: 1px solid var(--theme-elevation-100, #eee);
+  border-bottom: 1px solid var(--ad-border);
   text-align: center;
 }
 .ad-matrix th:first-child,
@@ -152,12 +205,6 @@
   font-weight: 700;
   white-space: nowrap;
 }
-.ad-pill--ok {
-  background: color-mix(in srgb, var(--theme-success-500, #2e7d32) 18%, transparent);
-}
-.ad-pill--fail {
-  background: color-mix(in srgb, var(--theme-error-500, #c62828) 18%, transparent);
-}
 .ad-pill--amber {
   background: #ffd45c;
   color: #071a3d;
@@ -198,7 +245,7 @@
 /* Kanban */
 .ad-board {
   margin: 0 0 16px;
-  border: 1px solid var(--theme-elevation-150, #ddd);
+  border: 1px solid var(--ad-border);
   border-radius: var(--style-radius-m, 8px);
 }
 .ad-board > summary {
@@ -214,7 +261,8 @@
   overflow-x: auto;
 }
 .ad-board__col {
-  background: var(--theme-elevation-50, #f7f7f7);
+  background: var(--ad-panel);
+  color: var(--ad-ink);
   border-radius: 8px;
   padding: 8px;
   min-height: 80px;
@@ -224,37 +272,16 @@
   margin-top: 6px;
   padding: 8px;
   border-radius: 6px;
-  background: var(--theme-elevation-0, #fff);
-  box-shadow: 0 0 0 1px var(--theme-elevation-150, #ddd);
-  color: inherit;
+  background: var(--ad-surface);
+  box-shadow: 0 0 0 1px var(--ad-border);
+  color: var(--ad-ink);
   text-decoration: none;
   font-size: 13px;
 }
+.ad-board__card:hover {
+  color: var(--ad-blue);
+}
 /* Dashboard widgets */
-:root {
-  --ad-surface: #fff;
-  --ad-panel: #f4f7fc;
-  --ad-ink: #142744;
-  --ad-muted: #485974;
-  --ad-border: #d6e0ee;
-  --ad-track: #c9d7eb;
-  --ad-blue: #164b9f;
-  --ad-teal: #12644f;
-  --ad-amber-surface: #fff0c2;
-  --ad-amber-ink: #633800;
-}
-html[data-theme='dark'] {
-  --ad-surface: #17243b;
-  --ad-panel: #101a2d;
-  --ad-ink: #f2f6ff;
-  --ad-muted: #bac9e1;
-  --ad-border: #374965;
-  --ad-track: #364966;
-  --ad-blue: #8ab7ff;
-  --ad-teal: #68e0bd;
-  --ad-amber-surface: #392f1d;
-  --ad-amber-ink: #ffdc87;
-}
 .ad-widget {
   min-width: 0;
   padding: 18px;
@@ -512,12 +539,17 @@ html[data-theme='dark'] .ad-brand__art .ad-brand__art-dark {
   font-weight: 600;
 }
 .ad-table-filter input,
-.ad-table-filter select {
+.ad-table-filter select,
+.ad-matrix select {
   padding: 7px 9px;
-  border: 1px solid var(--theme-elevation-250);
+  border: 1px solid var(--ad-control-border);
   border-radius: 4px;
-  background: var(--theme-input-bg);
-  color: var(--theme-text);
+  background: var(--ad-surface);
+  color: var(--ad-ink);
+}
+.ad-table-filter input::placeholder {
+  color: var(--ad-muted);
+  opacity: 1;
 }
 .ad-table-sort {
   color: inherit;

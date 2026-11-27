@@ -22,6 +22,16 @@ export const ARTICLE_TEXT_STATE: TextStyleOptions = {
   },
 }
 
+export const ARTICLE_EDITOR_TEXT_STATE: TextStyleOptions = {
+  ...ARTICLE_TEXT_STATE,
+  textColor: Object.fromEntries(
+    Object.entries(ARTICLE_TEXT_STATE.textColor).map(([key, { label, css }]) => [
+      key,
+      { label, css: { color: `var(--ad-article-${key}, ${css.color})` } },
+    ]),
+  ),
+}
+
 export function articleTextStyle(state: unknown): CSSProperties {
   if (!state || typeof state !== 'object') return {}
   const options = state as Record<string, unknown>
