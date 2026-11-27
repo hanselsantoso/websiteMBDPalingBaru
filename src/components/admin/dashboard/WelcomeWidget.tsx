@@ -1,40 +1,42 @@
-import Image from 'next/image'
-import { INVERSE_WORDMARK } from '../Brand'
+import Link from 'next/link'
+import { getPermissions } from '@/access'
+import { Icon } from '@/components/ui/Icon'
+import { can } from '@/lib/domain/permissions'
 import type { WidgetProps } from './summary'
 import { SiasatBadge } from './SiasatBadge'
 import '../admin.css'
 
-const TIPS = [
-  'Matikan “Tampilkan penanda [ISI]” di Pengaturan situs hanya setelah semua penanda terisi.',
-  'Gunakan “Pratinjau” untuk mengirim tautan draf yang kedaluwarsa dalam 24 jam ke reviewer.',
-  'Lead dengan nomor WhatsApp atau email yang sama digabung otomatis. Cek tab “Semua sumber”.',
-  'Filter mata kuliah dengan “Kelengkapan silabus < 100” untuk melihat silabus yang belum lengkap.',
-  'Isi “Arahkan ke” di Log 404 untuk langsung membuat redirect 301 dari URL lama.',
-  'Hero beranda punya daftar kata berputar. Urutkan dengan seret dan lepas di blok Hero.',
-  'Total SKS program tetap tersembunyi sampai sakelar “Tampilkan total SKS” dinyalakan.',
-]
+const QUICK_ACTIONS = [
+  { module: 'blog', action: 'buat', label: 'Artikel baru', href: '/admin/collections/posts/create' },
+  { module: 'dosen', action: 'buat', label: 'Tambah dosen', href: '/admin/collections/faculty/create' },
+  { module: 'media', action: 'buat', label: 'Unggah media', href: '/admin/collections/media/create' },
+  { module: 'pmb', action: 'lihat', label: 'Pendaftar', href: '/admin/collections/pmb-applications' },
+] as const
 
-export function WelcomeWidget({ req }: WidgetProps) {
+export async function WelcomeWidget({ req }: WidgetProps) {
   const user = req.user as { name?: string | null; email?: string } | null
   const name = user?.name || user?.email?.split('@')[0] || 'Admin'
-  const tip = TIPS[Math.floor(Date.now() / 86_400_000) % TIPS.length]
+  const permissions = await getPermissions(req)
+  const actions = QUICK_ACTIONS.filter(item => can(permissions, item.module, item.action))
   return (
-    <section className="ad-widget ad-widget--welcome" aria-label="Sapaan Siasat">
-      <SiasatBadge pose="greeting" />
-      <div>
-        <div className="ad-welcome__identity">
-          <Image {...INVERSE_WORDMARK} alt="MBD" sizes="56px" />
-          <span className="ad-mono">Sapaan dari Siasat</span>
+    <section className="ad-lte-welcome" aria-labelledby="mbd-dashboard-title">
+      <div className="ad-lte-welcome__title">
+        <SiasatBadge pose="greeting" />
+        <div>
+          <h1 id="mbd-dashboard-title">Dashboard</h1>
+          <p>Halo, {name}.</p>
         </div>
-        <h3>Halo, {name}! Siap atur strategi hari ini?</h3>
-        <p>Tips: {tip}</p>
-        <nav className="ad-quick" aria-label="Aksi cepat">
-          <a href="/admin/collections/posts/create">Post baru</a>
-          <a href="/admin/collections/faculty/create">Tambah dosen</a>
-          <a href="/admin/collections/media/create">Unggah media</a>
-          <a href="/admin/collections/pmb-applications">Lihat pendaftar</a>
-        </nav>
       </div>
+      {actions.length ? (
+        <nav className="ad-lte-actions" aria-label="Aksi cepat">
+          {actions.map(item => (
+            <Link key={item.module} href={item.href} prefetch={false} className={item.module === 'blog' ? 'ad-lte-actions__primary' : undefined}>
+              {item.module === 'blog' ? <Icon name="kreatif" size={16} /> : null}
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+      ) : null}
     </section>
   )
 }

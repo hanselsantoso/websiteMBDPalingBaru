@@ -61,6 +61,8 @@ export default buildConfig({
     constrainWidth: true,
     meta: { titleSuffix: ` · CMS ${PROGRAM_NAME}` },
     components: {
+      providers: ['/components/admin/AdminTheme#AdminTheme'],
+      beforeNavLinks: ['/components/admin/Brand#SidebarBrand'],
       graphics: {
         Logo: '/components/admin/Brand#Logo',
         Icon: '/components/admin/Brand#Icon',
@@ -84,9 +86,9 @@ export default buildConfig({
       defaultLayout: [
         { widgetSlug: 'siasat-sapa', width: 'full' },
         { widgetSlug: 'kpi-mbd', width: 'full' },
+        { widgetSlug: 'grafik-leads', width: 'full' },
         { widgetSlug: 'perlu-tindakan', width: 'medium' },
         { widgetSlug: 'penanda-isi', width: 'medium' },
-        { widgetSlug: 'grafik-leads', width: 'full' },
         { widgetSlug: 'activity', width: 'full' },
         { widgetSlug: 'collections', width: 'full' },
       ] as never,

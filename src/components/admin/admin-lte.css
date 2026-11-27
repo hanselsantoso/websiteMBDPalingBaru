@@ -1,0 +1,274 @@
+/* AdminLTE 4 layout and small-box patterns, applied to Payload's native controls. */
+:root {
+  --lte-page: #f4f6f9;
+  --lte-card: #fff;
+  --lte-ink: #222a33;
+  --lte-muted: #4d5c6b;
+  --lte-border: #dce2e8;
+  --lte-primary: #1259d0;
+  --lte-primary-hover: #0d44a2;
+  --lte-focus: #1259d0;
+  --lte-shadow: 0 1px 3px rgb(20 37 55 / 10%);
+  --lte-radius: 6px;
+  --lte-sidebar: #292e34;
+  --lte-sidebar-line: #484f58;
+}
+
+html[data-theme='dark'] {
+  --lte-page: #1a1e23;
+  --lte-card: #262b31;
+  --lte-ink: #f1f4f8;
+  --lte-muted: #becad7;
+  --lte-border: #424b55;
+  --lte-focus: #91bfff;
+  --lte-shadow: 0 1px 3px rgb(0 0 0 / 25%);
+}
+
+html,
+body,
+#app {
+  background-color: var(--lte-page);
+}
+
+.app-header,
+.doc-controls {
+  background-color: var(--lte-card);
+  border-bottom: 1px solid var(--lte-border);
+}
+
+.app-header__content {
+  min-height: 52px;
+}
+
+.nav {
+  --color-bg: var(--lte-sidebar);
+  --color-bg-secondary: #363d45;
+  --color-bg-secondary-hover: #414953;
+  --color-bg-tertiary: #3e464e;
+  --color-bg-hover: #363d45;
+  --color-bg-pressed: #484f58;
+  --color-bg-selected: #1259d0;
+  --color-text: #f2f5fa;
+  --color-text-secondary: #d5dde7;
+  --color-text-tertiary: #b4c2d3;
+  --color-icon: #e3ebf5;
+  --color-icon-secondary: #d5dde7;
+  --color-icon-tertiary: #b4c2d3;
+  --color-border: var(--lte-sidebar-line);
+  color: var(--color-text);
+  background-color: var(--lte-sidebar);
+  border-color: #24282e;
+}
+
+.nav .nav__link {
+  min-height: 36px;
+  color: var(--color-text-secondary);
+}
+
+.nav .nav__link:hover,
+.nav .nav__link--selected {
+  color: #fff;
+}
+
+.nav .nav-group__toggle {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.ad-lte-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 8px 14px;
+  color: #fff;
+  border-bottom: 1px solid var(--lte-sidebar-line);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.ad-lte-brand:hover {
+  background-color: var(--color-bg-hover);
+  color: #fff;
+}
+
+.ad-lte-brand:focus-visible {
+  outline: 2px solid #a4caff;
+  outline-offset: -3px;
+}
+
+.ad-lte-brand__mark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 34px;
+  flex-shrink: 0;
+  background-color: #1259d0;
+  border-radius: var(--lte-radius);
+}
+
+.ad-lte-brand__mark img {
+  width: 40px;
+  height: auto;
+}
+
+.ad-lte-brand small {
+  display: block;
+  color: #c5ceda;
+  font-size: 11px;
+  font-weight: 550;
+}
+
+.ad-lte-welcome,
+.ad-lte-welcome__title,
+.ad-lte-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ad-lte-welcome {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  min-width: 0;
+}
+
+.ad-lte-welcome__title img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.ad-lte-welcome h1 {
+  margin: 0;
+  color: var(--lte-ink);
+  font-size: clamp(26px, 3.3vw, 32px);
+  font-weight: 650;
+  line-height: 1.1;
+}
+
+.ad-lte-welcome p {
+  margin: 4px 0 0;
+  color: var(--lte-muted);
+}
+
+.ad-lte-actions {
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.ad-lte-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 10px;
+  color: var(--lte-ink);
+  background-color: var(--lte-card);
+  border: 1px solid var(--lte-border);
+  border-radius: var(--lte-radius);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ad-lte-actions a:hover {
+  border-color: var(--lte-focus);
+}
+
+.ad-lte-actions a:focus-visible {
+  outline: 2px solid var(--lte-focus);
+  outline-offset: 2px;
+}
+
+.ad-lte-actions a.ad-lte-actions__primary {
+  color: #fff;
+  background: var(--lte-primary);
+  border-color: var(--lte-primary);
+}
+
+.ad-lte-actions a.ad-lte-actions__primary:hover {
+  background: var(--lte-primary-hover);
+}
+
+.ad-lte-metric {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-width: 0;
+  color: #fff;
+  background: #34485e;
+  border-radius: var(--lte-radius);
+  box-shadow: var(--lte-shadow);
+  overflow: clip;
+}
+
+.ad-lte-metric--blue { background: #1458ce; }
+.ad-lte-metric--green { background: #176847; }
+.ad-lte-metric--cyan { background: #076380; }
+.ad-lte-metric--purple { background: #6541a5; }
+.ad-lte-metric--amber { color: #261a08; background: #ffcb63; }
+
+.ad-lte-metric__main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 12px 12px;
+}
+
+.ad-lte-metric__main svg {
+  flex-shrink: 0;
+  opacity: 0.38;
+}
+
+.ad-lte-metric .ad-kpi__value {
+  margin: 0 0 4px;
+  font-size: clamp(27px, 3.3vw, 35px);
+  font-weight: 750;
+}
+
+.ad-lte-metric .ad-note {
+  margin: 0;
+  padding: 6px 12px;
+  color: inherit;
+  background: rgb(0 0 0 / 9%);
+  font-size: 12px;
+}
+
+.collection-list .table-wrap {
+  border: 1px solid var(--lte-border);
+  border-radius: var(--lte-radius);
+  background-color: var(--lte-card);
+  box-shadow: var(--lte-shadow);
+}
+
+.collection-list .table thead {
+  background-color: var(--lte-card);
+}
+
+.collection-list .table tbody tr:nth-child(even) {
+  background-color: var(--lte-page);
+}
+
+.document-fields__edit {
+  background-color: var(--lte-card);
+}
+
+.login__brand {
+  padding-bottom: 18px;
+  border-bottom: 3px solid var(--lte-primary);
+}
+
+@media (max-width: 768px) {
+  .ad-lte-welcome {
+    align-items: flex-start;
+  }
+
+  .ad-lte-metric__main svg {
+    width: 30px;
+    height: 30px;
+  }
+}

@@ -45,6 +45,8 @@ import { ContrastChecker as ContrastChecker_ae4a80453bb4bd4f8076788a9c0c55e2 } f
 import { MascotPreview as MascotPreview_090ae587f57b85bd1f10e8506152bb9a } from '../../../components/admin/MascotPreview'
 import { Icon as Icon_81fda60f3e3709e861f40982a767707d } from '../../../components/admin/Brand'
 import { Logo as Logo_81fda60f3e3709e861f40982a767707d } from '../../../components/admin/Brand'
+import { SidebarBrand as SidebarBrand_81fda60f3e3709e861f40982a767707d } from '../../../components/admin/Brand'
+import { AdminTheme as AdminTheme_969f35f2f98dbf971e3275c489a5877e } from '../../../components/admin/AdminTheme'
 import { FolderIcon as FolderIcon_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
 import { HierarchySidebarTabServer as HierarchySidebarTabServer_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 import { TagIcon as TagIcon_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
@@ -112,6 +114,8 @@ export const importMap = {
   "/components/admin/MascotPreview#MascotPreview": MascotPreview_090ae587f57b85bd1f10e8506152bb9a,
   "/components/admin/Brand#Icon": Icon_81fda60f3e3709e861f40982a767707d,
   "/components/admin/Brand#Logo": Logo_81fda60f3e3709e861f40982a767707d,
+  "/components/admin/Brand#SidebarBrand": SidebarBrand_81fda60f3e3709e861f40982a767707d,
+  "/components/admin/AdminTheme#AdminTheme": AdminTheme_969f35f2f98dbf971e3275c489a5877e,
   "@payloadcms/ui#FolderIcon": FolderIcon_3817bf644402e67bfe6577f60ef982de,
   "@payloadcms/ui/rsc#HierarchySidebarTabServer": HierarchySidebarTabServer_ab83ff7e88da8d3530831f296ec4756a,
   "@payloadcms/ui#TagIcon": TagIcon_3817bf644402e67bfe6577f60ef982de,
