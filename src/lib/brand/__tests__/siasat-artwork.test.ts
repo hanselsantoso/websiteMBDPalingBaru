@@ -34,7 +34,7 @@ describe('illustrations shipped with the Siasat gallery', () => {
     expect(format).toBe('webp')
     expect(hasAlpha).toBe(true)
     expect(width! / height!).toBeGreaterThan(5)
-    expect(size).toBeLessThanOrEqual(130_000)
+    expect(size).toBeLessThanOrEqual(60_000)
   })
 
   it('ships a transparent square image for each of the 25 expressions', async () => {
