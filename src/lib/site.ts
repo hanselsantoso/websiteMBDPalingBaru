@@ -1,3 +1,4 @@
+import { canonicalCrewHref, pivotDisplayName } from '@/lib/brand/crew'
 import type { NavItem } from '@/components/layout/Header'
 import type { FooterColumn } from '@/components/layout/Footer'
 import type { SiteConfig } from '@/components/providers/SiteProvider'
@@ -18,12 +19,12 @@ export function buildNav(items: CmsLink[] | null | undefined): NavItem[] {
     .filter((item) => item.isVisible !== false && item.label)
     .map((item) => ({
       label: String(item.label),
-      href: resolveHref(item),
+      href: canonicalCrewHref(resolveHref(item)),
       newTab: Boolean(item.newTab),
       asButton: Boolean(item.asButton),
       children: (item.children ?? [])
         .filter((child) => child.isVisible !== false && child.label)
-        .map((child) => ({ label: String(child.label), href: resolveHref(child), newTab: Boolean(child.newTab) })),
+        .map((child) => ({ label: String(child.label), href: canonicalCrewHref(resolveHref(child)), newTab: Boolean(child.newTab) })),
     }))
 }
 
@@ -32,7 +33,7 @@ export function buildFooterColumns(columns: Doc[] | null | undefined): FooterCol
     title: String(column.title ?? ''),
     links: ((column.links as CmsLink[]) ?? [])
       .filter((link) => link.isVisible !== false && link.label)
-      .map((link) => ({ label: String(link.label), href: resolveHref(link), newTab: Boolean(link.newTab) })),
+      .map((link) => ({ label: String(link.label), href: canonicalCrewHref(resolveHref(link)), newTab: Boolean(link.newTab) })),
   }))
 }
 
@@ -77,8 +78,8 @@ export function buildSiteConfig({
       hasBrochure: Boolean(brochure),
     },
     mascot: {
-      name: branding.mascotName || 'Siasat',
-      nickname: branding.mascotNickname || 'Sia',
+      name: pivotDisplayName(branding.mascotName),
+      nickname: pivotDisplayName(branding.mascotNickname),
       poses: Object.fromEntries(
         SIASAT_POSES.map((pose) => {
           const value = (poses[pose] ?? {}) as Doc

@@ -1,3 +1,4 @@
+import { crewGalleryTitle, CREW_PATH } from '@/lib/brand/crew'
 import { uiCopy } from '@/lib/i18n-copy'
 import { getContentTranslator } from '@/lib/content-translations'
 import { localizedAlternates, type Locale } from '@/lib/i18n'
@@ -9,15 +10,15 @@ import { getSiasatArtwork, SIASAT_GROUP_ART, SIASAT_LABELS, SIASAT_VARIANTS } fr
 
 export function pageMetadata(locale: Locale): Metadata {
   return {
-  title: locale === 'en' ? 'Siasat and Friends Gallery' : 'Galeri Siasat dan Teman-teman',
-  description: locale === 'en' ? 'Meet the six Digital Business Management mascots and explore their skills, poses and animations.' : 'Kenali enam maskot Manajemen Bisnis Digital ISTTS, skill yang mereka wakili, serta pose dan animasinya.',
-  alternates: localizedAlternates('/siasat', locale),
+    title: crewGalleryTitle(locale),
+    description: locale === 'en' ? 'Meet the six Digital Business Management mascots and explore their skills, poses and animations.' : 'Kenali enam maskot Manajemen Bisnis Digital ISTTS, skill yang mereka wakili, serta pose dan animasinya.',
+    alternates: localizedAlternates(CREW_PATH, locale),
   }
 }
 
 const BACKGROUNDS = ['bg-[#ffbc9e]', 'bg-[#aadfe7]', 'bg-[#f6d985]', 'bg-[#c6caf8]', 'bg-[#d6e5aa]']
 
-export default async function SiasatPage({ locale }: { locale: Locale }) {
+export default async function CrewPage({ locale }: { locale: Locale }) {
   const copy = (text: string) => uiCopy(locale, text)
   const t = await getContentTranslator(locale)
   return (
@@ -25,7 +26,7 @@ export default async function SiasatPage({ locale }: { locale: Locale }) {
       <div className="container-arus pt-[calc(var(--header-h)+40px)] pb-12 sm:pt-[calc(var(--header-h)+56px)] sm:pb-20">
         <header className="mb-10 grid items-center gap-6 sm:mb-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <h1 className="font-display text-5xl leading-[0.95] font-extrabold tracking-[-0.055em] sm:text-7xl">{copy("Siasat dan teman-teman")}</h1>
+            <h1 className="font-display text-5xl leading-[0.95] font-extrabold tracking-[-0.055em] sm:text-7xl">{crewGalleryTitle(locale)}</h1>
             <p className="mt-5 max-w-lg text-lg text-ink-700">{copy("Kenali enam maskot Manajemen Bisnis Digital ISTTS dan kemampuan yang mereka wakili.")}</p>
           </div>
           <Image
@@ -35,15 +36,16 @@ export default async function SiasatPage({ locale }: { locale: Locale }) {
             className="mx-auto h-auto w-full sm:max-w-xl lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1 lg:max-w-none"
           />
           <nav aria-label={copy("Bagian galeri")} className="flex flex-wrap gap-2 lg:col-span-5 lg:col-start-1 lg:row-start-2 lg:self-start">
-            <a href="#teman-siasat" className="pill border border-navy bg-navy px-4 py-2 text-sm font-bold text-white hover:bg-blue">{copy("Skill Maskot")}</a>
-            <a href="#animasi-siasat" className="pill border border-navy/20 bg-white px-4 py-2 text-sm font-bold hover:border-navy">{copy("Animasi Siasat")}</a>
-            <a href="#pose-siasat" className="pill border border-navy/20 bg-white px-4 py-2 text-sm font-bold hover:border-navy">{copy("Pose Siasat")}</a>
+            <a href="#characters" className="pill border border-navy bg-navy px-4 py-2 text-sm font-bold text-white hover:bg-blue">{copy("Skill Maskot")}</a>
+            <a href="#animations" className="pill border border-navy/20 bg-white px-4 py-2 text-sm font-bold hover:border-navy">{copy("Animasi Pivot")}</a>
+            <a href="#poses" className="pill border border-navy/20 bg-white px-4 py-2 text-sm font-bold hover:border-navy">{copy("Pose Pivot")}</a>
           </nav>
         </header>
         <SiasatFriendsGallery locale={locale} translate={t} />
         <SiasatAnimationGallery />
-        <section id="pose-siasat" aria-labelledby="siasat-expression-title" className="mt-12 scroll-mt-[calc(var(--header-h)+1rem)] sm:mt-16">
-          <h2 id="siasat-expression-title" className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{copy("25 pose dan ekspresi")}</h2>
+        <section id="poses" aria-labelledby="pivot-expression-title" className="mt-12 scroll-mt-[calc(var(--header-h)+1rem)] sm:mt-16">
+          <span id="pose-siasat" className="block scroll-mt-[calc(var(--header-h)+1rem)]" />
+          <h2 id="pivot-expression-title" className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{copy("25 pose dan ekspresi Pivot")}</h2>
           <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {SIASAT_VARIANTS.map((variant, index) => (
               <figure key={variant} className="overflow-hidden rounded-2xl border border-navy/20 bg-white">

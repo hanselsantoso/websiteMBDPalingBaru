@@ -95,7 +95,13 @@ async function main() {
     await request(`/api/${slug}?draft=true&limit=1`, [401, 403])
   }
   await request('/unduh/brosur', [403])
-  for (const path of ['/', '/siasat', '/kurikulum/cetak', '/robots.txt', '/sitemap.xml']) {
+  for (const prefix of ['', '/en']) {
+    const response = await request(prefix + '/siasat?from=legacy', [308])
+    assert.equal(new URL(response.headers.get('location'), origin).pathname, prefix + '/mbd-crew')
+    assert.equal(new URL(response.headers.get('location'), origin).searchParams.get('from'), 'legacy')
+  }
+
+  for (const path of ['/', '/mbd-crew', '/en/mbd-crew', '/kurikulum/cetak', '/robots.txt', '/sitemap.xml']) {
     await request(path, [200])
   }
   for (const path of ['/program', '/kurikulum', '/dosen', '/karier', '/blog', '/kontak', '/kuis', '/pmb']) {

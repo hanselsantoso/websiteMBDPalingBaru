@@ -4,7 +4,7 @@ Website program studi responsif dalam bahasa Indonesia dan Inggris dengan Next.j
 
 ## Akses lokal
 
-Saat aplikasi berjalan pada port bawaan, buka [beranda Indonesia](http://localhost:3000/), [beranda English](http://localhost:3000/en), atau [CMS Admin](http://localhost:3000/admin). Pilih ID atau EN dari navbar desktop atau menu ponsel.
+Saat aplikasi berjalan pada port bawaan, buka [beranda Indonesia](http://localhost:3000/), [beranda English](http://localhost:3000/en), lihat [MBD Crew](http://localhost:3000/mbd-crew), atau buka [CMS Admin](http://localhost:3000/admin). Pilih ID atau EN dari navbar desktop atau menu ponsel.
 
 Gunakan Node.js 24.22.3 dan pnpm 10.34.3 sesuai [.mise.toml](.mise.toml). Siapkan PostgreSQL, konfigurasi lokal, dan migrasi baseline sesuai [panduan deployment](docs/operations/deployment-preparation.md#persiapan-lingkungan-lokal). Setelah database siap, jalankan perintah berikut dari root proyek.
 

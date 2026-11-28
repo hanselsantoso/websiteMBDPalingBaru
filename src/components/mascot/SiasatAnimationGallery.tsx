@@ -19,8 +19,9 @@ export function SiasatAnimationGallery() {
   const [replay, setReplay] = useState(0)
 
   return (
-    <section id="animasi-siasat" aria-labelledby="siasat-animation-title" className="mt-12 scroll-mt-[calc(var(--header-h)+1rem)] sm:mt-16">
-      <h2 id="siasat-animation-title" className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{en ? 'Siasat in motion' : 'Siasat bergerak'}</h2>
+    <section id="animations" aria-labelledby="pivot-animation-title" className="mt-12 scroll-mt-[calc(var(--header-h)+1rem)] sm:mt-16">
+      <span id="animasi-siasat" className="block scroll-mt-[calc(var(--header-h)+1rem)]" />
+      <h2 id="pivot-animation-title" className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{en ? 'Pivot in motion' : 'Pivot bergerak'}</h2>
       {reduced ? <p className="mt-2 text-ink-600">{en ? 'Reduced motion is on. Previewing a still image.' : 'Kurangi gerak aktif. Pratinjau menampilkan gambar diam.'}</p> : null}
       <div className="mt-5 grid gap-4 sm:grid-cols-3">
         {SIASAT_CLIP_NAMES.map((clip) => {

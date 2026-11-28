@@ -709,7 +709,7 @@ export interface ImageTextBlock {
   heading: string;
   body?: LexicalRichText<LexicalNodes_BEE72FEE> | null;
   /**
-   * Kosongkan untuk menampilkan Siasat.
+   * Kosongkan untuk menampilkan Pivot.
    */
   image?: (string | null) | Media;
   mascotPose?: ('none' | 'greeting' | 'pointing' | 'thinking' | 'celebrating' | 'confused' | 'tablet') | null;
@@ -721,7 +721,7 @@ export interface ImageTextBlock {
   blockType: 'imageText';
 }
 /**
- * Teks alternatif wajib diisi. Gunakan folder Maskot untuk pose Siasat dan folder Brosur untuk PDF brosur.
+ * Teks alternatif wajib diisi. Gunakan folder Maskot untuk pose Pivot dan folder Brosur untuk PDF brosur.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".

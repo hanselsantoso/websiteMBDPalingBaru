@@ -1,3 +1,4 @@
+import { CREW_PATH } from '@/lib/brand/crew'
 import type { Locale } from '@/lib/i18n'
 import type { Metadata } from 'next'
 import Image from 'next/image'
@@ -27,7 +28,7 @@ function HomeWelcome({ locale }: { locale: Locale }) {
             {en ? 'BSc in Digital' : 'S1 Manajemen'} <span className="text-lime">{en ? 'Business Management' : 'Bisnis Digital'}</span>
           </h1>
           <p className="mt-6 max-w-lg text-lead text-white/80">
-            {en ? 'Meet Siasat and friends as you explore business, data, and technology.' : 'Kenalan dengan Siasat dan teman-temannya sambil menjelajahi bisnis, data, dan teknologi.'}
+            {en ? 'Meet the MBD Crew and explore business, data, and technology.' : 'Kenali MBD Crew sambil menjelajahi bisnis, data, dan teknologi.'}
           </p>
         </div>
         <Image
@@ -37,7 +38,7 @@ function HomeWelcome({ locale }: { locale: Locale }) {
           className="mx-auto h-auto w-full sm:max-w-xl lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1 lg:max-w-none"
         />
         <div className="lg:col-span-5 lg:col-start-1 lg:row-start-2 lg:self-start">
-          <ButtonLink href="/siasat#teman-siasat" variant="primaryDark">
+          <ButtonLink href={CREW_PATH + "#characters"} variant="primaryDark">
             {en ? 'Explore graduate skills' : 'Kenali skill lulusan MBD'} <Icon name="arrow-right" size={18} />
           </ButtonLink>
         </div>

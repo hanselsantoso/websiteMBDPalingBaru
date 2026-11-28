@@ -13,7 +13,7 @@ export type MascotPose = (typeof MASCOT_POSES)[number]['value']
 
 export const mascotPoseField = (
   name = 'mascotPose',
-  label = 'Pose Siasat',
+  label = 'Pose Pivot',
   options: { allowNone?: boolean; defaultValue?: string } = {},
 ): SelectField => {
   const allowNone = options.allowNone ?? true

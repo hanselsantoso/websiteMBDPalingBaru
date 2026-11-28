@@ -1,3 +1,4 @@
+import { crewCopy, crewGalleryLabel } from '@/lib/brand/crew'
 import { uiCopy } from '@/lib/i18n-copy'
 import type { Metadata } from 'next'
 import { Bricolage_Grotesque, JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google'
@@ -90,6 +91,12 @@ export async function PublicLayout({ children, locale }: { children: React.React
   const patterns = (branding.patterns ?? {}) as Record<string, unknown>
   const patternCss = `:root{--pattern-wave:${intensity(patterns.waveIntensity)};--pattern-fin:${intensity(patterns.finIntensity)};--pattern-star:${intensity(patterns.starIntensity)}}`
   const config = translateContent(buildSiteConfig({ settings: rawSettings, branding, navigation, pmbInfo }), translate)
+  const localizedMascot = {
+    ...config.mascot,
+    poses: translateContent(config.mascot.poses, crewCopy),
+    lines: translateContent(config.mascot.lines, crewCopy),
+  }
+  const translateNavigation = (text: string) => uiCopy(locale, crewGalleryLabel(translate(text)))
   const wordmarkUrl = branding.wordmarkDark?.url ?? null
   const integrations = (rawSettings.integrations ?? {}) as Record<string, string | undefined>
   const features = (rawSettings.features ?? {}) as Record<string, unknown>
@@ -139,17 +146,17 @@ export async function PublicLayout({ children, locale }: { children: React.React
         <div id="root">
           <LocaleProvider locale={locale}>
           <MotionProvider>
-            <SiteProvider config={config}>
+            <SiteProvider config={{ ...config, mascot: localizedMascot }}>
               {maintenance ? (
                 <Maintenance settings={settings} locale={locale} />
               ) : (
                 <>
-                  <Header items={translateContent(buildNav(navigation.header), translate)} logoUrl={wordmarkUrl} />
+                  <Header items={translateContent(buildNav(navigation.header), translateNavigation)} logoUrl={wordmarkUrl} />
                   <main id="konten" tabIndex={-1} className="outline-none">
                     {children}
                   </main>
                   <Footer
-                    columns={translateContent(buildFooterColumns(navigation.footerColumns), translate)}
+                    columns={translateContent(buildFooterColumns(navigation.footerColumns), translateNavigation)}
                     locale={locale}
                     logoUrl={wordmarkUrl}
                     settings={settings}

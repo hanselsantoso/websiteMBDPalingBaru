@@ -1,5 +1,7 @@
 'use client'
 
+import { pivotDisplayName } from '@/lib/brand/crew'
+
 import { useFormFields } from '@payloadcms/ui'
 import { domAnimation, LazyMotion, m, useReducedMotion } from 'motion/react'
 import Image from 'next/image'
@@ -14,7 +16,7 @@ export function MascotPreview() {
   const [dark, setDark] = useState(false)
   const reduced = useReducedMotion()
   const uploaded = useFormFields(([fields]) => Boolean(fields?.[`poses.${pose}.image`]?.value))
-  const name = useFormFields(([fields]) => (fields?.mascotName?.value as string) || 'Siasat')
+  const name = useFormFields(([fields]) => pivotDisplayName(fields?.mascotName?.value as string | undefined))
 
   return (
     <div className="ad-panel">
@@ -52,7 +54,7 @@ export function MascotPreview() {
           ? 'Situs memakai gambar unggahan untuk pose ini. Panel menampilkan ilustrasi bawaan.'
           : isSiasatPose(pose)
             ? 'Unggah gambar PNG atau WebP transparan di bagian Pose untuk mengganti ilustrasi bawaan ini.'
-            : 'Ekspresi tambahan dari koleksi ilustrasi Siasat.'}
+            : 'Ekspresi tambahan dari koleksi ilustrasi Pivot.'}
       </p>
     </div>
   )

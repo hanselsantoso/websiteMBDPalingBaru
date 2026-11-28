@@ -1,3 +1,4 @@
+import { CREW_CHARACTERS, pivotDisplayName } from '@/lib/brand/crew'
 import type { GlobalConfig } from 'payload'
 import { APIError } from 'payload'
 import { anyone, superAdminField, write } from '@/access'
@@ -268,8 +269,8 @@ export const Branding: GlobalConfig = {
             {
               type: 'row',
               fields: [
-                { name: 'mascotName', label: 'Nama maskot', type: 'text', defaultValue: 'Siasat', admin: { width: '33%' } },
-                { name: 'mascotNickname', label: 'Panggilan', type: 'text', defaultValue: 'Sia', admin: { width: '33%' } },
+                { name: 'mascotName', label: 'Nama maskot', type: 'text', defaultValue: CREW_CHARACTERS.siasat, hooks: { afterRead: [({ value }) => pivotDisplayName(value)] }, admin: { width: '33%' } },
+                { name: 'mascotNickname', label: 'Panggilan', type: 'text', defaultValue: CREW_CHARACTERS.siasat, hooks: { afterRead: [({ value }) => pivotDisplayName(value)] }, admin: { width: '33%' } },
                 { name: 'mascotTagline', label: 'Tagline', type: 'text', defaultValue: 'Si Strategis', admin: { width: '34%' } },
               ],
             },
@@ -304,7 +305,7 @@ export const Branding: GlobalConfig = {
             { name: 'glbModel', label: 'Model 3D GLB (opsional, hanya hero desktop)', type: 'upload', relationTo: 'media' },
             {
               name: 'lines',
-              label: 'Kalimat Siasat',
+              label: 'Kalimat Pivot',
               type: 'array',
               labels: { singular: 'Kalimat', plural: 'Kalimat' },
               fields: [

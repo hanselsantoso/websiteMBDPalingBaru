@@ -17,7 +17,7 @@ Gunakan `--require-content` saat halaman sudah diimpor dan diterbitkan. Opsi ini
 | Admin dan API publik | Setup admin terbuka. API branding, kurikulum, pencarian, PMB, dan kuis merespons |
 | Akses anonim | Koleksi admin, pendaftar, dokumen, lead, pesan, percobaan kuis, histori audit, dan draf menolak akses |
 | Validasi | Lima endpoint formulir menolak input kosong dengan HTTP 422. Unduhan brosur tanpa tanda tangan ditolak |
-| Aset situs | Logo Jejak Siasat dan sampel WebP dari ketiga animasi dapat dibuka |
+| Aset situs | Logo MBD dan sampel WebP dari ketiga animasi dapat dibuka |
 
 58 pemeriksaan HTTP lulus. Delapan halaman yang bergantung pada konten masih merespons HTTP 404 pada database lokal kosong. Dalam mode `--require-content`, respons tersebut dianggap gagal.
 

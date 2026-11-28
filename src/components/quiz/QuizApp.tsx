@@ -381,7 +381,7 @@ export function QuizApp({
       {phase === 'submitting' ? (
         <div className="grid justify-items-center gap-4 py-16 text-center" role="status">
           <Siasat pose="thinking" expression="waiting" clip="berpikir" size="md" />
-          <p className="text-lg font-semibold">{en ? 'Sia is reviewing your answers…' : 'Sia sedang membaca pola jawabanmu…'}</p>
+          <p className="text-lg font-semibold">{en ? 'Pivot is reviewing your answers…' : 'Pivot sedang membaca pola jawabanmu…'}</p>
         </div>
       ) : null}
 

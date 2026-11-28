@@ -1,3 +1,4 @@
+import { CREW_CHARACTERS } from '@/lib/brand/crew'
 import Image from 'next/image'
 import { LocaleLink as Link } from '@/components/providers/LocaleProvider'
 import { uiCopy } from '@/lib/i18n-copy'
@@ -7,12 +8,11 @@ import { courseSlug } from '@/lib/domain/curriculum'
 
 type Pose = readonly [slug: string, label: string]
 type Mascot = {
-  slug: string
-  name: string
+  slug: keyof typeof CREW_CHARACTERS
   species: string
   color: string
   skill: string
-  meaning: string
+  meaning: Record<Locale, string>
   example: string
   courses: readonly [code: string, title: string][]
   poses: readonly [Pose, ...Pose[]]
@@ -21,11 +21,10 @@ type Mascot = {
 const MASCOTS: readonly Mascot[] = [
   {
     slug: 'siasat',
-    name: 'Siasat',
     species: 'Rubah',
     color: 'bg-[#ffcfad]',
     skill: 'Strategi bisnis digital',
-    meaning: 'Rubah yang cepat membaca situasi melambangkan cara berpikir strategis.',
+    meaning: { id: "Pivot membaca perubahan pasar, menguji ide, lalu menentukan kapan strategi bisnis perlu disesuaikan.", en: "Pivot reads changes in the market, tests ideas, and decides when the business strategy needs to change." },
     example: 'Menilai peluang pasar dan menyusun model bisnis digital.',
     courses: [
       ['BD305', 'Strategi Bisnis Digital'],
@@ -35,11 +34,10 @@ const MASCOTS: readonly Mascot[] = [
   },
   {
     slug: 'rara',
-    name: 'Rara',
     species: 'Rubah perempuan',
     color: 'bg-[#c7ead9]',
     skill: 'Desain produk digital',
-    meaning: 'Rara mencatat ide di tabletnya dan mengajak tim melihat produk dari sisi pengguna.',
+    meaning: { id: "Proto mengubah kebutuhan pengguna menjadi prototipe yang bisa dicoba dan diperbaiki bersama.", en: "Proto turns user needs into prototypes that people can test and improve together." },
     example: 'Menerjemahkan kebutuhan pelanggan menjadi alur dan prototipe aplikasi.',
     courses: [
       ['BD405', 'UI/UX untuk Aplikasi Bisnis'],
@@ -56,11 +54,10 @@ const MASCOTS: readonly Mascot[] = [
   },
   {
     slug: 'kiko',
-    name: 'Kiko',
     species: 'Kucing hitam',
     color: 'bg-[#f8db86]',
     skill: 'Analisis data bisnis',
-    meaning: 'Tatapan Kiko yang tajam menggambarkan kebiasaan memeriksa bukti sebelum menarik kesimpulan.',
+    meaning: { id: "Metric memilih indikator yang tepat dan membaca pola penjualan sebelum menarik kesimpulan.", en: "Metric chooses the right measures and looks for patterns in sales before drawing conclusions." },
     example: 'Mengolah data penjualan dan menjelaskan pola yang relevan untuk keputusan bisnis.',
     courses: [
       ['BD401', 'Analisis Data Bisnis'],
@@ -75,11 +72,10 @@ const MASCOTS: readonly Mascot[] = [
   },
   {
     slug: 'bimo',
-    name: 'Bimo',
     species: 'Berang-berang',
     color: 'bg-[#bce4f3]',
     skill: 'Operasi dan rantai pasok',
-    meaning: 'Bimo menggambarkan kerja tim dan pentingnya menghubungkan setiap tahap pekerjaan.',
+    meaning: { id: "Flow menjaga alur pesanan, stok, dan pengiriman agar tiap tahap operasi terhubung.", en: "Flow keeps orders, inventory, and shipping connected throughout the operation." },
     example: 'Memetakan alur pesanan dan stok, lalu memilih sistem untuk merapikan proses.',
     courses: [
       ['BD403', 'Manajemen Rantai Pasok'],
@@ -94,11 +90,10 @@ const MASCOTS: readonly Mascot[] = [
   },
   {
     slug: 'uli',
-    name: 'Uli',
     species: 'Burung hantu',
     color: 'bg-[#e2d6f6]',
     skill: 'AI untuk bisnis',
-    meaning: 'Uli yang gemar membaca melambangkan kebiasaan belajar dan memeriksa kembali jawaban.',
+    meaning: { id: "Sage mengajukan pertanyaan yang tepat dan memeriksa hasil AI sebelum menggunakannya.", en: "Sage asks the right questions and checks AI outputs before using them." },
     example: 'Memilih alat AI, menulis prompt, dan memeriksa hasilnya untuk tugas bisnis.',
     courses: [
       ['BD204', 'Prompt Engineering untuk Aplikasi Bisnis'],
@@ -113,11 +108,10 @@ const MASCOTS: readonly Mascot[] = [
   },
   {
     slug: 'piko',
-    name: 'Piko',
     species: 'Kelinci',
     color: 'bg-[#ffd5bc]',
     skill: 'Pemasaran dan e-commerce',
-    meaning: 'Piko yang gesit menggambarkan keberanian mencoba ide dan menyesuaikannya dari respons pelanggan.',
+    meaning: { id: "Reach memilih kanal yang sesuai untuk menjangkau audiens, lalu mengevaluasi respons pelanggan.", en: "Reach chooses the right channels to connect with an audience and measures how customers respond." },
     example: 'Merancang kampanye digital dan mengevaluasi hasil penjualan di kanal online.',
     courses: [
       ['BD105', 'Pemasaran Digital'],
@@ -135,8 +129,9 @@ const MASCOTS: readonly Mascot[] = [
 export function SiasatFriendsGallery({ locale, translate }: { locale: Locale; translate: (text: string) => string }) {
   const copy = (text: string) => uiCopy(locale, translate(text))
   return (
-    <section id="teman-siasat" aria-labelledby="teman-siasat-title" className="scroll-mt-[calc(var(--header-h)+1rem)]">
-      <h2 id="teman-siasat-title" className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+    <section id="characters" aria-labelledby="crew-characters-title" className="scroll-mt-[calc(var(--header-h)+1rem)]">
+      <span id="teman-siasat" className="block scroll-mt-[calc(var(--header-h)+1rem)]" />
+      <h2 id="crew-characters-title" className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
 {copy('Skill yang diwakili tiap maskot')}
       </h2>
       <p className="mt-3 max-w-2xl text-ink-700">
@@ -145,15 +140,18 @@ export function SiasatFriendsGallery({ locale, translate }: { locale: Locale; tr
       <div className="mt-6 grid items-start gap-4 md:grid-cols-2 xl:grid-cols-3">
         {MASCOTS.map((mascot) => {
           const [portrait] = mascot.poses
+          const name = CREW_CHARACTERS[mascot.slug]
+          const id = `maskot-${name.toLowerCase()}`
           const directory = mascot.slug === 'siasat' ? '/images/mascot/toon' : `/images/mascot/friends/${mascot.slug}`
 
           return (
             <article
               key={mascot.slug}
-              id={`maskot-${mascot.slug}`}
-              aria-labelledby={`nama-maskot-${mascot.slug}`}
+              id={id}
+              aria-labelledby={id + "-nama"}
               className="min-w-0 scroll-mt-[calc(var(--header-h)+1rem)] overflow-hidden rounded-3xl border border-navy/20 bg-white"
             >
+              <span id={`maskot-${mascot.slug}`} className="block scroll-mt-[calc(var(--header-h)+1rem)]" />
               <div className="p-4 sm:p-5">
                 <div className="grid grid-cols-[5.5rem_minmax(0,1fr)] items-center gap-3 sm:grid-cols-[6rem_minmax(0,1fr)] sm:gap-4">
                   <div className={`rounded-2xl ${mascot.color}`}>
@@ -167,12 +165,12 @@ export function SiasatFriendsGallery({ locale, translate }: { locale: Locale; tr
                     />
                   </div>
                   <div>
-                    <h3 id={`nama-maskot-${mascot.slug}`} className="font-display text-2xl leading-tight font-extrabold">{mascot.name}</h3>
+                    <h3 id={id + "-nama"} className="font-display text-2xl leading-tight font-extrabold">{name}</h3>
                     <p className="text-xs text-ink-700">{copy(mascot.species)}</p>
                     <p className="mt-1 text-sm leading-snug font-bold text-blue">{copy(mascot.skill)}</p>
                   </div>
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-ink-700">{copy(mascot.meaning)}</p>
+                <p className="mt-4 text-sm leading-relaxed text-ink-700">{mascot.meaning[locale]}</p>
                 <p className="mt-2 text-sm leading-relaxed font-semibold">{copy(mascot.example)}</p>
                 <ul aria-label={copy('Mata kuliah terkait')} className="mt-4 space-y-1">
                   {mascot.courses.map(([code, title]) => (
@@ -191,8 +189,8 @@ export function SiasatFriendsGallery({ locale, translate }: { locale: Locale; tr
               {mascot.poses.length > 1 ? (
                 <details className="group border-t border-navy/10">
                   <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-2 px-4 text-sm font-bold focus-visible:outline-2 focus-visible:outline-offset-[-3px] focus-visible:outline-blue sm:px-5 [&::-webkit-details-marker]:hidden">
-                    <span className="group-open:hidden">{locale === 'en' ? `See ${mascot.poses.length} ${mascot.name} expressions` : `Lihat ${mascot.poses.length} ekspresi ${mascot.name}`}</span>
-                    <span className="hidden group-open:inline">{locale === 'en' ? 'Hide expressions' : `Tutup ekspresi ${mascot.name}`}</span>
+                    <span className="group-open:hidden">{locale === 'en' ? `See ${mascot.poses.length} ${name} expressions` : `Lihat ${mascot.poses.length} ekspresi ${name}`}</span>
+                    <span className="hidden group-open:inline">{locale === 'en' ? 'Hide expressions' : `Tutup ekspresi ${name}`}</span>
                     <Icon name="chevron-down" size={16} className="group-open:rotate-180" />
                   </summary>
                   <ul className="grid grid-cols-2 gap-2 px-3 pb-3 xs:grid-cols-3">
@@ -216,8 +214,8 @@ export function SiasatFriendsGallery({ locale, translate }: { locale: Locale; tr
                   </ul>
                 </details>
               ) : (
-                <a href="#pose-siasat" className="flex min-h-12 items-center justify-between gap-2 border-t border-navy/10 px-4 text-sm font-bold hover:text-blue sm:px-5">
-                  {copy('Lihat 25 ekspresi Siasat')} <Icon name="arrow-right" size={16} />
+                <a href="#poses" className="flex min-h-12 items-center justify-between gap-2 border-t border-navy/10 px-4 text-sm font-bold hover:text-blue sm:px-5">
+                  {(locale === 'en' ? 'See all 25 Pivot expressions' : 'Lihat 25 ekspresi Pivot')} <Icon name="arrow-right" size={16} />
                 </a>
               )}
             </article>

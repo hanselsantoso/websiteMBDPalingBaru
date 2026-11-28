@@ -80,7 +80,7 @@ export default buildConfig({
     },
     dashboard: {
       widgets: [
-        { slug: 'siasat-sapa', label: 'Sapaan Siasat', Component: '/components/admin/dashboard/WelcomeWidget#WelcomeWidget', minWidth: 'medium' },
+        { slug: 'siasat-sapa', label: 'Sapaan Pivot', Component: '/components/admin/dashboard/WelcomeWidget#WelcomeWidget', minWidth: 'medium' },
         { slug: 'kpi-mbd', label: 'Ringkasan KPI', Component: '/components/admin/dashboard/KpiWidget#KpiWidget', minWidth: 'medium' },
         { slug: 'perlu-tindakan', label: 'Perlu tindakan', Component: '/components/admin/dashboard/ActionsWidget#ActionsWidget' },
         { slug: 'penanda-isi', label: 'Pelacak penanda [ISI]', Component: '/components/admin/dashboard/PlaceholdersWidget#PlaceholdersWidget' },

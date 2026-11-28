@@ -61,7 +61,7 @@ export const Media: CollectionConfig = {
   admin: {
     group: 'Konten',
     defaultColumns: ['filename', 'alt', 'mimeType', 'folder', 'updatedAt'],
-    description: 'Teks alternatif wajib diisi. Gunakan folder Maskot untuk pose Siasat dan folder Brosur untuk PDF brosur.',
+    description: 'Teks alternatif wajib diisi. Gunakan folder Maskot untuk pose Pivot dan folder Brosur untuk PDF brosur.',
   },
   access: {
     read: () => true,

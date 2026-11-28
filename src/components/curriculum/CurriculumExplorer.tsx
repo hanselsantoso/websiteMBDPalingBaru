@@ -1,5 +1,7 @@
 'use client'
 
+import { CREW_CHARACTERS, CREW_NAME } from '@/lib/brand/crew'
+
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import { DataTable } from '@/components/ui/DataTable'
@@ -25,14 +27,14 @@ const EN_TAGS: Record<string, string> = {
 }
 
 const SEMESTER_MASCOTS: Partial<Record<number, { name: string; src: string; wide?: boolean }>> = {
-  1: { name: 'Siasat', src: getSiasatArtwork('greeting').url },
-  2: { name: 'Kiko', src: '/images/mascot/friends/kiko/curiga.webp' },
-  3: { name: 'Piko', src: '/images/mascot/friends/piko/antusias.webp' },
-  4: { name: 'Uli', src: '/images/mascot/friends/uli/dapat-ide.webp' },
-  5: { name: 'Siasat', src: getSiasatArtwork('tablet').url },
-  6: { name: 'Bimo', src: '/images/mascot/friends/bimo/menyapa.webp' },
-  7: { name: 'Rara', src: '/images/mascot/friends/rara/fokus.webp' },
-  8: { name: 'Tim Siasat', src: SIASAT_GROUP_ART.src, wide: true },
+  1: { name: CREW_CHARACTERS.siasat, src: getSiasatArtwork('greeting').url },
+  2: { name: CREW_CHARACTERS.kiko, src: '/images/mascot/friends/kiko/curiga.webp' },
+  3: { name: CREW_CHARACTERS.piko, src: '/images/mascot/friends/piko/antusias.webp' },
+  4: { name: CREW_CHARACTERS.uli, src: '/images/mascot/friends/uli/dapat-ide.webp' },
+  5: { name: CREW_CHARACTERS.siasat, src: getSiasatArtwork('tablet').url },
+  6: { name: CREW_CHARACTERS.bimo, src: '/images/mascot/friends/bimo/menyapa.webp' },
+  7: { name: CREW_CHARACTERS.rara, src: '/images/mascot/friends/rara/fokus.webp' },
+  8: { name: CREW_NAME, src: SIASAT_GROUP_ART.src, wide: true },
 }
 
 export function CurriculumExplorer({
@@ -303,7 +305,7 @@ export function CurriculumExplorer({
                         className="object-contain"
                       />
                     </div>
-                    <figcaption className="mt-1 text-xs font-semibold text-ink-700">{en && mascot.wide ? 'Team Siasat' : mascot.name}</figcaption>
+                    <figcaption className="mt-1 text-xs font-semibold text-ink-700">{mascot.name}</figcaption>
                   </figure>
                 ) : null}
               </div>

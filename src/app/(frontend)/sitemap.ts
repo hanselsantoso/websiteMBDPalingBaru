@@ -1,16 +1,17 @@
+import { CREW_PATH } from '@/lib/brand/crew'
 import { withLocale } from '@/lib/i18n'
 import type { MetadataRoute } from 'next'
 import { getCurriculum, getSitemapDocs } from '@/lib/data'
 import { siteUrl } from '@/lib/preview'
 
-const EXCLUDED_CMS_PAGES = new Set(['halaman-404', 'siasat'])
+const EXCLUDED_CMS_PAGES = new Set(['halaman-404', 'siasat', CREW_PATH.slice(1)])
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteUrl()
   const [docs, curriculum] = await Promise.all([getSitemapDocs(), getCurriculum()])
   const date = (value?: string | null) => (value ? new Date(value) : undefined)
   const pages: MetadataRoute.Sitemap = [
-    { url: `${base}/siasat`, changeFrequency: 'monthly' },
+    { url: `${base}${CREW_PATH}`, changeFrequency: 'monthly' },
     ...docs.pages
       .filter((page) => !page.noIndex && !EXCLUDED_CMS_PAGES.has(page.slug))
       .map((page) => ({

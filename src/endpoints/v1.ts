@@ -1,3 +1,4 @@
+import { crewCopy, pivotDisplayName } from '@/lib/brand/crew'
 import { getContentTranslator, translateContent } from '@/lib/content-translations'
 import type { Endpoint, PayloadRequest } from 'payload'
 import { addDataAndFileToRequest } from 'payload'
@@ -98,10 +99,10 @@ async function requireAdmin(req: PayloadRequest) {
 function mascotPayload(branding: Record<string, any>) {
   const poses = (branding.poses ?? {}) as Record<string, any>
   return {
-    name: branding.mascotName ?? 'Siasat',
-    nickname: branding.mascotNickname ?? 'Sia',
-    tagline: branding.mascotTagline ?? null,
-    bio: branding.mascotBio ?? null,
+    name: pivotDisplayName(branding.mascotName),
+    nickname: pivotDisplayName(branding.mascotNickname),
+    tagline: typeof branding.mascotTagline === 'string' ? crewCopy(branding.mascotTagline) : null,
+    bio: typeof branding.mascotBio === 'string' ? crewCopy(branding.mascotBio) : null,
     settings: branding.mascotSettings ?? {},
     poses: Object.fromEntries(
       Object.entries(poses).map(([pose, value]) => [
@@ -109,14 +110,14 @@ function mascotPayload(branding: Record<string, any>) {
         {
           url: value?.image?.url ?? null,
           url2x: value?.image2x?.url ?? null,
-          alt: value?.alt ?? null,
+          alt: typeof value?.alt === 'string' ? crewCopy(value.alt) : null,
           placeholder: !value?.image?.url,
         },
       ]),
     ),
     lines: ((branding.lines as Record<string, any>[]) ?? [])
       .filter((line) => line.isActive !== false)
-      .map((line) => ({ pose: line.pose, text: line.text })),
+      .map((line) => ({ pose: line.pose, text: typeof line.text === 'string' ? crewCopy(line.text) : line.text })),
   }
 }
 

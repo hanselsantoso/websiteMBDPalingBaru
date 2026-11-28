@@ -37,7 +37,7 @@ export const HeroBlock = block('hero', 'HeroBlock', 'Hero dengan kata berputar',
     type: 'row',
     fields: [
       { name: 'primaryLabel', label: 'Label tombol utama', type: 'text', admin: { width: '50%', description: 'Kosongkan untuk memakai label dari Menu dan CTA.' } },
-      mascotPoseField('mascotPose', 'Pose Siasat', { defaultValue: 'greeting' }),
+      mascotPoseField('mascotPose', 'Pose Pivot', { defaultValue: 'greeting' }),
     ],
   },
   {
@@ -264,7 +264,7 @@ export const CtaBandBlock = block('ctaBand', 'CtaBandBlock', 'CTA band', [
   {
     type: 'row',
     fields: [
-      mascotPoseField('mascotPose', 'Pose Siasat', { defaultValue: 'pointing' }),
+      mascotPoseField('mascotPose', 'Pose Pivot', { defaultValue: 'pointing' }),
       { name: 'showSecondary', label: 'Tampilkan aksi sekunder', type: 'checkbox', defaultValue: true },
       { name: 'showDeadline', label: 'Tampilkan chip tenggat gelombang', type: 'checkbox', defaultValue: true },
     ],
@@ -292,11 +292,11 @@ export const ImageTextBlock = block('imageText', 'ImageTextBlock', 'Gambar dan t
   eyebrow(),
   heading(true),
   { name: 'body', label: 'Isi', type: 'richText', editor: sectionEditor },
-  { name: 'image', label: 'Gambar', type: 'upload', relationTo: 'media', admin: { description: 'Kosongkan untuk menampilkan Siasat.' } },
+  { name: 'image', label: 'Gambar', type: 'upload', relationTo: 'media', admin: { description: 'Kosongkan untuk menampilkan Pivot.' } },
   {
     type: 'row',
     fields: [
-      mascotPoseField('mascotPose', 'Pose Siasat (bila tanpa gambar)', { defaultValue: 'tablet' }),
+      mascotPoseField('mascotPose', 'Pose Pivot (bila tanpa gambar)', { defaultValue: 'tablet' }),
       {
         name: 'imagePosition',
         label: 'Posisi visual',

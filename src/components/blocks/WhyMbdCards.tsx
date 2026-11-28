@@ -48,17 +48,17 @@ const WHY_MBD_MASCOTS = {
   bisnis: {
     id: 'rara',
     pose: 'fokus',
-    analogy: 'Rara mulai dari kebutuhan pelanggan, lalu memilih ide bisnis yang bisa diuji.',
+    analogy: { id: 'Proto mulai dari kebutuhan pelanggan, lalu membuat prototipe yang bisa diuji.', en: 'Proto starts with customer needs and builds a prototype the team can test.' },
   },
   data: {
     id: 'kiko',
     pose: 'curiga',
-    analogy: 'Kiko mencari pola penjualan sebelum memutuskan produk mana yang perlu dipromosikan.',
+    analogy: { id: 'Metric mencari pola penjualan sebelum memilih produk yang akan dipromosikan.', en: 'Metric finds patterns in sales before choosing which products to promote.' },
   },
   teknologi: {
     id: 'uli',
     pose: 'dapat-ide',
-    analogy: 'Uli mencoba AI untuk merangkum masukan pelanggan, lalu memeriksa apakah hasilnya akurat.',
+    analogy: { id: 'Sage memakai AI untuk merangkum masukan pelanggan dan memeriksa hasilnya.', en: 'Sage uses AI to summarise customer feedback and checks the result.' },
   },
 } as const
 
@@ -174,7 +174,7 @@ export function WhyMbdCards({
                 </p>
                 {largeMascot ? (
                   <p className="mt-5 border-l-2 border-white/55 pl-3 text-sm leading-relaxed font-semibold">
-                    {largeMascot.analogy}
+                    {largeMascot.analogy[locale]}
                   </p>
                 ) : null}
                 <CourseCodes codes={large.courseCodes} onDark />
@@ -212,7 +212,7 @@ export function WhyMbdCards({
               <p className="mt-2 text-ink-600">
                 <TextOr value={card.body} show={showPlaceholders} />
               </p>
-              {mascot ? <p className="mt-3 border-l-2 border-blue/40 pl-3 text-sm leading-relaxed font-semibold">{copy(mascot.analogy)}</p> : null}
+              {mascot ? <p className="mt-3 border-l-2 border-blue/40 pl-3 text-sm leading-relaxed font-semibold">{mascot.analogy[locale]}</p> : null}
               <CourseCodes codes={card.courseCodes} />
             </Reveal>
           )
@@ -238,7 +238,7 @@ export function WhyMbdCards({
                 <p className="text-ink-600">
                   <TextOr value={card.body} show={showPlaceholders} />
                 </p>
-                {mascot ? <p className="mt-2 border-l-2 border-blue/40 pl-3 text-sm leading-relaxed font-semibold">{copy(mascot.analogy)}</p> : null}
+                {mascot ? <p className="mt-2 border-l-2 border-blue/40 pl-3 text-sm leading-relaxed font-semibold">{mascot.analogy[locale]}</p> : null}
               </div>
             </Reveal>
           )

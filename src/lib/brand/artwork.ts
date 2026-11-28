@@ -9,16 +9,16 @@ export const CURRICULUM_ART = '/images/illustrations/peta-semester-siasat-rara.w
 export const CURRICULUM_CARD_ART = '/images/illustrations/peta-kurikulum-uli.webp'
 const PAGE_ART_SIZE = { width: 960, height: 720 } as const
 export const PAGE_HEADER_ART = {
-  program: { ...PAGE_ART_SIZE, src: '/images/illustrations/hero-program-siasat.webp', alt: 'Rara dan Uli meninjau prototipe aplikasi' },
-  karier: { ...PAGE_ART_SIZE, src: '/images/illustrations/hero-karier-siasat.webp', alt: 'Kiko dan Bimo menjelajahi arah karier dengan grafik dan portofolio' },
-  blog: { ...PAGE_ART_SIZE, src: '/images/illustrations/hero-blog-siasat.webp', alt: 'Piko dan Uli bertukar ide untuk sebuah tulisan' },
-  pmb: { ...PAGE_ART_SIZE, src: '/images/illustrations/hero-pmb-siasat.webp', alt: 'Siasat menyambut calon mahasiswa dan Bimo menunjukkan daftar persiapan' },
+  program: { ...PAGE_ART_SIZE, src: '/images/illustrations/hero-program-siasat.webp', alt: 'Proto dan Sage meninjau prototipe aplikasi' },
+  karier: { ...PAGE_ART_SIZE, src: '/images/illustrations/hero-karier-siasat.webp', alt: 'Metric dan Flow menjelajahi arah karier dengan grafik dan portofolio' },
+  blog: { ...PAGE_ART_SIZE, src: '/images/illustrations/hero-blog-siasat.webp', alt: 'Reach dan Sage bertukar ide untuk sebuah tulisan' },
+  pmb: { ...PAGE_ART_SIZE, src: '/images/illustrations/hero-pmb-siasat.webp', alt: 'Pivot menyambut calon mahasiswa dan Flow menunjukkan daftar persiapan' },
 } as const
 export const FACULTY_ART = '/images/illustrations/faculty-editorial.webp'
 export const BLOG_COVER_ART = PAGE_HEADER_ART.blog.src
 export const SIASAT_GROUP_ART = {
   src: '/images/mascot/friends/siasat-dan-teman.webp',
-  alt: 'Bimo, Kiko, Siasat, Rara, Uli, dan Piko berpose bersama',
+  alt: 'MBD Crew (Pivot, Proto, Metric, Flow, Sage, Reach)',
   width: 1120,
   height: 682,
 } as const
@@ -57,6 +57,6 @@ export const SIASAT_VARIANTS = Object.keys(SIASAT_LABELS) as SiasatVariant[]
 export function getSiasatArtwork(variant: SiasatVariant) {
   return {
     url: `/images/mascot/toon/${variant}.webp`,
-    alt: `Siasat: ${SIASAT_LABELS[variant].toLowerCase()}`,
+    alt: `Pivot: ${SIASAT_LABELS[variant].toLowerCase()}`,
   }
 }

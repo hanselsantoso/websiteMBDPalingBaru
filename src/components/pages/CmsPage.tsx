@@ -1,3 +1,4 @@
+import { crewGalleryLabel } from '@/lib/brand/crew'
 import { uiCopy } from '@/lib/i18n-copy'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -29,7 +30,7 @@ export async function loadCmsPage(slug: string): Promise<Doc | null> {
 export async function cmsPageMetadata(slug: string, path: string, emptyTitle?: string, locale: Locale = 'id'): Promise<Metadata> {
   const [rawPage, rawSettings, cmsTranslate] = await Promise.all([loadCmsPage(slug), getSiteSettings(), getContentTranslator(locale)])
   const translate = (text: string) => uiCopy(locale, cmsTranslate(text))
-  const page = translateContent(rawPage, translate)
+  const page = translateContent(rawPage, (text) => uiCopy(locale, crewGalleryLabel(cmsTranslate(text))))
   const settings = translateContent(rawSettings, translate)
   if (!page) return { title: emptyTitle ?? (locale === 'en' ? 'Page not found' : 'Halaman tidak ditemukan'), robots: { index: false } }
   return docMetadata({
@@ -56,7 +57,7 @@ export async function CmsPage({
 }) {
   const [rawPage, rawSettings, cmsTranslate] = await Promise.all([loadCmsPage(slug), getSiteSettings(), getContentTranslator(locale)])
   const translate = (text: string) => uiCopy(locale, cmsTranslate(text))
-  const page = translateContent(rawPage, translate)
+  const page = translateContent(rawPage, (text) => uiCopy(locale, crewGalleryLabel(cmsTranslate(text))))
   const settings = translateContent(rawSettings, translate)
   if (!page) {
     await redirectIfConfigured(path, locale)

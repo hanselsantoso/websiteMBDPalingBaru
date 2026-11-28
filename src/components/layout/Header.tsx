@@ -1,5 +1,7 @@
 'use client'
 
+import { CREW_PATH } from '@/lib/brand/crew'
+
 import { withoutLocale } from '@/lib/i18n'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { uiCopy } from '@/lib/i18n-copy'
@@ -99,7 +101,7 @@ export function Header({ items, logoUrl }: { items: NavItem[]; logoUrl: string |
   const [drawerOpen, setDrawerOpen] = useState(false)
   const { isOtherPrimaryVisible } = useSite()
   const hideCta = isOtherPrimaryVisible('header')
-  const lightPage = pathname === '/kurikulum/cetak' || pathname === '/siasat'
+  const lightPage = pathname === '/kurikulum/cetak' || pathname === CREW_PATH
 
   useEffect(() => {
     let frame = 0

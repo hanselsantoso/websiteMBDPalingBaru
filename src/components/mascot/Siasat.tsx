@@ -4,6 +4,7 @@ import { AnimatePresence, m, useAnimate, useScroll, useTransform } from 'motion/
 import Image from '@/components/ui/CmsImage'
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useMotionPreference } from '@/components/providers/MotionProvider'
+import { useLocale } from '@/components/providers/LocaleProvider'
 import { useSite } from '@/components/providers/SiteProvider'
 import type { SiasatClipName } from '@/lib/brand/animation'
 import { getSiasatArtwork, type SiasatVariant } from '@/lib/brand/artwork'
@@ -84,6 +85,7 @@ export function Siasat({
   className,
 }: SiasatProps) {
   const { mascot, showPlaceholders } = useSite()
+  const locale = useLocale()
   const { reduced } = useMotionPreference()
   const [scope, animate] = useAnimate<HTMLDivElement>()
   const [bubble, setBubble] = useState<string | null>(say)
@@ -94,14 +96,14 @@ export function Siasat({
   const animated = loop && mascot.idleAnimation && !reduced
   const builtInClip = cmsAsset?.url ? undefined : clip
   const playClip = animated && Boolean(builtInClip)
-  const label = `${mascot.name}, rubah strategis MBD, sedang ${POSE_LABEL[pose]}`
+  const label = `${mascot.name}, ${POSE_LABEL[locale][pose]}`
 
   useEffect(() => setBubble(say), [say])
   useEffect(() => () => (timer.current ? clearTimeout(timer.current) : undefined), [])
 
   const speak = useCallback(() => {
     const fromCms = mascot.lines.filter((line) => line.pose === pose).map((line) => line.text)
-    const pool = fromCms.length ? fromCms : DEFAULT_LINES[pose]
+    const pool = fromCms.length ? fromCms : DEFAULT_LINES[locale][pose]
     const choices = pool.length > 1 ? pool.filter((line) => line !== bubble) : pool
     setBubble(choices[Math.floor(Math.random() * choices.length)] ?? null)
     if (playClip) setReplay((previous) => previous + 1)
@@ -109,7 +111,7 @@ export function Siasat({
       void animate(scope.current, { y: [0, -18, 0] }, { duration: 0.5, ease: 'easeOut' })
     if (timer.current) clearTimeout(timer.current)
     timer.current = setTimeout(() => setBubble(null), 4500)
-  }, [animate, bubble, mascot.lines, playClip, pose, reduced, scope])
+  }, [animate, bubble, locale, mascot.lines, playClip, pose, reduced, scope])
 
   const art = asset?.url ? (
     <m.div
@@ -189,7 +191,7 @@ export function Siasat({
         <button
           type="button"
           onClick={speak}
-          aria-label={`${mascot.name}: ketuk untuk mendengar pesan`}
+          aria-label={`${mascot.name}: ${locale === 'en' ? 'tap for a message' : 'ketuk untuk membaca pesan'}`}
           className="block w-full cursor-pointer rounded-[40%] focus-visible:outline-offset-4"
         >
           <div ref={scope}>{renderedArt}</div>

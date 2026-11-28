@@ -8,7 +8,7 @@ const require = createRequire(import.meta.url)
 const root = fileURLToPath(new URL('..', import.meta.url))
 const fixedPages = [
   '/', '/program', '/kurikulum', '/kurikulum/cetak', '/dosen', '/karier', '/blog',
-  '/pmb', '/kuis', '/kontak', '/siasat',
+  '/pmb', '/kuis', '/kontak', '/mbd-crew',
 ]
 const profiles = {
   desktop: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 },
@@ -58,7 +58,7 @@ const routeGroup = (route) => route === '/kurikulum/cetak' ? null : /^\/(blog|do
 function isPublicPage(route) {
   return /^\/(?:[a-z0-9%_-]+\/)*[a-z0-9%_-]*$/i.test(route)
     && !/^\/(?:api|admin|internal|pratinjau|unduh|health|_next|_not-found|_global-error)(?:\/|$)/.test(route)
-    && route !== '/blog/data' && route !== '/beranda'
+    && route !== '/blog/data' && route !== '/beranda' && route !== '/siasat'
 }
 
 function decodeXml(value) {

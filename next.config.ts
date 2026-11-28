@@ -3,6 +3,7 @@ import type { NextConfig } from 'next'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { buildUploadPolicy } from './src/lib/upload-policy'
+import { CREW_PATH } from './src/lib/brand/crew'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const site = process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined
@@ -11,6 +12,12 @@ if (!Number.isFinite(uploadMb) || uploadMb <= 0 || uploadMb > 100) throw new Err
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  async redirects() {
+    return [
+      { source: '/siasat', destination: CREW_PATH, permanent: true },
+      { source: '/en/siasat', destination: '/en' + CREW_PATH, permanent: true },
+    ]
+  },
   outputFileTracingIncludes: {
     // Payload inspects uploaded files through the Node entry point of strtok3.
     '/api/**': ['./node_modules/.pnpm/strtok3@*/node_modules/strtok3/lib/**/*.js'],

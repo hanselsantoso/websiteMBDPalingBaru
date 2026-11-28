@@ -1,3 +1,4 @@
+import { CREW_NAME, CREW_PATH } from '@/lib/brand/crew'
 import { uiCopy } from '@/lib/i18n-copy'
 import type { Locale } from '@/lib/i18n'
 import Image from '@/components/ui/CmsImage'
@@ -151,7 +152,7 @@ export function Footer({
             © {year} {settings.institutionName || INSTITUTION_NAME}.
           </p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            <Link href="/siasat" className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">{copy("Galeri Siasat")}</Link>
+            <Link href={CREW_PATH} className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">{CREW_NAME}</Link>
             <Link href={privacyHref} className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">{copy("Kebijakan privasi")}</Link>
             <Link href={termsHref} className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">{copy("Syarat dan ketentuan")}</Link>
             <ReducedMotionToggle />

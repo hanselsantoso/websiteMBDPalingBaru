@@ -1,3 +1,5 @@
+import { canonicalCrewHref } from './brand/crew'
+
 export type Locale = 'id' | 'en'
 
 export const localeTag = (locale: Locale) => locale === 'en' ? 'en-US' : 'id-ID'
@@ -12,7 +14,7 @@ export function withoutLocale(path: string): string {
 /** Localize navigable public pages. Keep infrastructure, files and external URLs shared. */
 export function withLocale(href: string, locale: Locale): string {
   if (!href.startsWith('/') || href.startsWith('//')) return href
-  const path = withoutLocale(href)
+  const path = withoutLocale(canonicalCrewHref(href))
   if (/^\/(?:api|admin|health|internal|pratinjau|unduh|images|_next)(?:[/?#]|$)/.test(path)
     || /\.[a-z0-9]+(?:[?#]|$)/i.test(path)) return path
   if (locale === 'id') return path

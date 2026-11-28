@@ -132,7 +132,7 @@ export const Programs: CollectionConfig = {
       fields: [
         { name: 'tag', label: 'Tag mono', type: 'text', admin: { width: '34%' } },
         { name: 'linkHref', label: 'Tautan', type: 'text', admin: { width: '33%' } },
-        mascotPoseField('mascotPose', 'Siasat di kartu'),
+        mascotPoseField('mascotPose', 'Pivot di kartu'),
       ],
     },
     iconField(),

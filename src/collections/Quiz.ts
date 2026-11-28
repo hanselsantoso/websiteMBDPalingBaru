@@ -116,7 +116,7 @@ export const QuizResults: CollectionConfig = {
     },
     { name: 'description', label: 'Deskripsi', type: 'textarea', required: true },
     { name: 'traits', label: 'Ciri khas', type: 'text', hasMany: true },
-    mascotPoseField('pose', 'Pose Siasat', { allowNone: false, defaultValue: 'celebrating' }),
+    mascotPoseField('pose', 'Pose Pivot', { allowNone: false, defaultValue: 'celebrating' }),
     {
       name: 'semesters',
       label: 'Semester yang cocok',

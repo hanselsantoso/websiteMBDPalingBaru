@@ -1,4 +1,4 @@
-import Page, { pageMetadata } from '@/components/pages/SiasatPage'
+import Page, { pageMetadata } from '@/components/pages/CrewPage'
 
 export const generateMetadata = () => pageMetadata('en')
 

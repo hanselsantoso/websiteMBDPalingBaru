@@ -19,6 +19,7 @@ const RESERVED = new Set([
   'kuis',
   'kontak',
   'siasat',
+  'mbd-crew',
 ])
 
 type Props = { params: Promise<{ path: string[] }> }

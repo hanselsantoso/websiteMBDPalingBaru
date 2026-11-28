@@ -6,7 +6,7 @@ import { DEFAULT_BRAND, MASCOT_COLORS } from '@/lib/brand/tokens'
 import { SIASAT_POSES, type SiasatPose } from '@/lib/brand/mascot'
 
 /**
- * Siasat ("Sia"), the MBD strategist fox — flat vector PLACEHOLDER art.
+ * Pivot, the MBD strategist fox — flat vector PLACEHOLDER art.
  * Every moving part is its own layer so it can animate independently
  * (float, breathing, tail sway, ear twitch, blink, eye-follow, pose loops).
  * Uploaded 3D renders from the CMS replace this per pose with no code change.
@@ -295,7 +295,7 @@ export function SiasatArt({
       focusable="false"
     >
       {title ? <title>{title}</title> : null}
-      <desc>Ilustrasi sementara (vektor) Siasat, rubah strategis MBD.</desc>
+      <desc>Ilustrasi sementara (vektor) Pivot, rubah strategis MBD.</desc>
       <defs>
         <clipPath id={`scarf-${uid}`}>
           <path d="M 116 230 C 130 216, 190 216, 204 230 C 206 242, 194 250, 160 251 C 126 250, 114 242, 116 230 Z" />

@@ -1,7 +1,7 @@
 const clips = {
-  sapaan: { title: 'Lambaian Siasat', action: 'Putar sapaan' },
-  berpikir: { title: 'Siasat sedang berpikir', action: 'Putar animasi berpikir' },
-  berhasil: { title: 'Siasat memberi jempol', action: 'Putar animasi jempol' },
+  sapaan: { title: 'Lambaian Pivot', action: 'Putar sapaan' },
+  berpikir: { title: 'Pivot sedang berpikir', action: 'Putar animasi berpikir' },
+  berhasil: { title: 'Pivot memberi jempol', action: 'Putar animasi jempol' },
 } as const
 
 export type SiasatClipName = keyof typeof clips

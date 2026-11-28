@@ -1,3 +1,4 @@
+import { CREW_PATH } from '@/lib/brand/crew'
 import { getContentTranslator, translateContent } from '@/lib/content-translations'
 import { uiCopy } from '@/lib/i18n-copy'
 import { withLocale, type Locale } from '@/lib/i18n'
@@ -74,7 +75,7 @@ export async function HeroBlock({ block, ctx }: BlockProps) {
       <PrimaryCta id="hero" tone="dark" placement="hero" label={block.primaryLabel} />
       <SecondaryActions placement="hero" labels={{ quiz: block.quizLabel, whatsapp: block.whatsappLabel, brochure: block.brochureLabel }} />
       {ctx.pageSlug === 'beranda' && !isHomeOpening ? (
-        <Link href="/siasat" className="inline-flex min-h-11 items-center gap-2 rounded-full font-semibold text-lime hover:underline">{copy("Lihat Galeri Siasat") + " "}<Icon name="arrow-right" size={18} />
+        <Link href={CREW_PATH} className="inline-flex min-h-11 items-center gap-2 rounded-full font-semibold text-lime hover:underline">{copy("Lihat MBD Crew") + " "}<Icon name="arrow-right" size={18} />
         </Link>
       ) : null}
     </div>
@@ -115,7 +116,7 @@ export async function HeroBlock({ block, ctx }: BlockProps) {
               ) : null}
               <div className="mt-2 text-center">
                 <Link
-                  href="/siasat#teman-siasat"
+                  href={CREW_PATH + "#characters"}
                   className="inline-flex min-h-11 items-center gap-2 rounded-full text-sm font-bold text-lime hover:underline"
                 >{copy("Kenali skill lulusan MBD") + " "}<Icon name="arrow-right" size={16} />
                 </Link>
