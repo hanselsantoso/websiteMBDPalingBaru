@@ -1,7 +1,8 @@
 import type { Payload } from 'payload'
+import { admissionWaveStatus } from '@/lib/domain/admission-wave'
 import { applicationStatusLabel } from '@/lib/domain/templates'
 import { phoneSuffix } from '@/lib/domain/phone'
-import { pairKeyOf, scoreQuiz } from '@/lib/domain/quiz'
+import { scoreQuiz, type QUIZ_ASSESSMENT_VERSION, type QuizAssessmentReview } from '@/lib/domain/quiz'
 import type {
   BrochureInput,
   ConsultationInput,
@@ -16,6 +17,7 @@ import { buildUploadPolicy, validateUploadMetadata } from '@/lib/upload-policy'
 import { recordEvent } from './events'
 import { upsertLead } from './leads'
 import { sendApplicationEmail } from './messages'
+import { evaluateAssessment, LEGACY_QUIZ_WHERE, loadAssessmentQuiz } from './quiz-assessment'
 import { failure, GENERIC_ERROR, success, type ServiceResult } from './result'
 
 const relId = (value: unknown) =>
@@ -150,9 +152,9 @@ export async function submitPmbApplication(
         .findGlobal({ slug: 'pmb-settings', depth: 0, overrideAccess: true })
         .catch(() => null),
     ])
-    const waveDoc = wave as { id: string; name?: string; status?: string } | null
+    const waveDoc = wave
     const trackDoc = track as { id: string; name?: string; isActive?: boolean } | null
-    if (!waveDoc || waveDoc.status !== 'dibuka') {
+    if (!waveDoc || admissionWaveStatus(waveDoc) !== 'dibuka') {
       return failure('invalid_wave', 'Gelombang ini sedang tidak dibuka.', {
         waveId: 'Pilih gelombang yang sedang dibuka.',
       })
@@ -332,6 +334,7 @@ export type QuizResultPayload = {
   matchPercent: number
   normalized: Record<string, number>
   pairKey: string
+  assessment?: { version: typeof QUIZ_ASSESSMENT_VERSION; review: QuizAssessmentReview[] }
   result: {
     archetype: string
     description: string
@@ -347,33 +350,38 @@ export async function submitQuizAttempt(
   input: QuizAttemptInput,
 ): Promise<ServiceResult<QuizResultPayload>> {
   try {
-    const questions = await payload.find({
+    const bank = input.assessment ? await loadAssessmentQuiz(payload) : null
+    if (bank && !bank.length) return failure('unavailable', 'Kuis kemampuan sedang disiapkan.')
+    const assessed = bank ? evaluateAssessment(bank, input.answers) : null
+    if (bank && !assessed) return failure('incomplete', 'Jawab semua kasus. Jika pertanyaannya berubah, muat ulang kuis.')
+
+    const questions = input.assessment ? null : await payload.find({
       collection: 'quiz-questions',
-      where: { isActive: { equals: true } },
+      where: LEGACY_QUIZ_WHERE,
       sort: 'sortOrder',
       limit: 50,
       depth: 0,
-      overrideAccess: true,
+      overrideAccess: false,
     })
-    const mapped = (questions.docs as Record<string, any>[]).map((q) => ({
+    const mapped = ((questions?.docs ?? []) as Record<string, any>[]).map((q) => ({
       id: String(q.id),
       options: ((q.options as Record<string, any>[]) ?? []).map((o) => ({
         id: String(o.id),
         weights: o.weights,
       })),
     }))
-    const score = scoreQuiz(mapped, input.answers)
-    if (score.answered < mapped.length) {
+    const score = assessed?.score ?? scoreQuiz(mapped, input.answers)
+    if (!score.total || score.answered < score.total) {
       return failure('incomplete', 'Jawab semua pertanyaan dulu, ya.')
     }
-    const results = await payload.find({
+    const results = assessed ? null : await payload.find({
       collection: 'quiz-results',
-      where: { pairKey: { equals: pairKeyOf(score.topPair[0], score.topPair[1]) } },
+      where: { pairKey: { equals: score.pairKey } },
       limit: 1,
       depth: 1,
       overrideAccess: true,
     })
-    const result = results.docs[0] as Record<string, any> | undefined
+    const result = results?.docs[0] as Record<string, any> | undefined
     const attempt = await payload.create({
       collection: 'quiz-attempts',
       overrideAccess: true,
@@ -382,7 +390,9 @@ export async function submitQuizAttempt(
         result: result?.id,
         matchPercent: score.matchPercent,
         answers: input.answers,
-        scores: { raw: score.raw, normalized: score.normalized },
+        scores: assessed
+          ? { assessment: assessed.assessment.version, raw: score.raw, normalized: score.normalized, max: score.max }
+          : { raw: score.raw, normalized: score.normalized },
         sessionId: input.sessionId,
         isTest: Boolean(input.isTest),
       } as never,
@@ -391,7 +401,9 @@ export async function submitQuizAttempt(
       await recordEvent(payload, {
         name: 'quiz_complete',
         sessionId: input.sessionId,
-        props: { archetype: String(result?.archetype ?? score.pairKey), match: score.matchPercent },
+        props: assessed
+          ? { assessment: assessed.assessment.version, score: score.matchPercent }
+          : { archetype: String(result?.archetype ?? score.pairKey), match: score.matchPercent },
       })
     }
     return success({
@@ -399,6 +411,7 @@ export async function submitQuizAttempt(
       matchPercent: score.matchPercent,
       normalized: score.normalized,
       pairKey: score.pairKey,
+      ...(assessed ? { assessment: assessed.assessment } : {}),
       result: result
         ? {
             archetype: result.archetype,

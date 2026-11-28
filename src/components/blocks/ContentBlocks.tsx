@@ -1,5 +1,7 @@
+import { translateContent } from '@/lib/content-translations'
+import { uiCopy } from '@/lib/i18n-copy'
 import Image from '@/components/ui/CmsImage'
-import Link from 'next/link'
+import { LocaleLink as Link } from '@/components/providers/LocaleProvider'
 import { Siasat } from '@/components/mascot/Siasat'
 import { Reveal, VideoEmbed } from '@/components/motion/Interactive'
 import { Star } from '@/components/patterns/Patterns'
@@ -64,7 +66,7 @@ export function ImageTextBlock({ block, ctx }: BlockProps) {
 }
 
 export async function FaqBlock({ block, ctx }: BlockProps) {
-  const faqs = await getFaqs(String(block.scope ?? 'umum'), Number(block.limit ?? 8))
+  const faqs = translateContent(await getFaqs(String(block.scope ?? 'umum'), Number(block.limit ?? 8)), ctx.translate)
   const visible = faqs.filter((faq) => ctx.showPlaceholders || !isPlaceholder(faq.answer))
   if (!visible.length) return null
   const structured = visible.filter((faq) => !isPlaceholder(faq.answer))
@@ -137,6 +139,7 @@ export function TimelineBlock({ block, ctx }: BlockProps) {
 }
 
 export function CardGridBlock({ block, ctx }: BlockProps) {
+  const copy = (text: string) => uiCopy(ctx.locale, text)
   const cards = (block.cards as Record<string, any>[]) ?? []
   if (!cards.length) return null
   const pose = isSiasatPose(block.mascotPose) ? block.mascotPose : null
@@ -186,8 +189,7 @@ export function CardGridBlock({ block, ctx }: BlockProps) {
               >
                 {inner}
                 {card.linkHref ? (
-                  <Link href={card.linkHref} className="mt-4 inline-flex items-center gap-1 font-semibold text-blue after:absolute after:inset-0">
-                    Selengkapnya <span className="sr-only">tentang {card.title}</span>
+                  <Link href={card.linkHref} className="mt-4 inline-flex items-center gap-1 font-semibold text-blue after:absolute after:inset-0">{copy("Selengkapnya") + " "}<span className="sr-only">{copy("tentang") + " "}{card.title}</span>
                     <Icon name="arrow-right" size={16} strokeWidth={2.5} />
                   </Link>
                 ) : null}

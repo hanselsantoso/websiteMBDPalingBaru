@@ -1,6 +1,11 @@
 'use client'
 
-import Link from 'next/link'
+import { withoutLocale } from '@/lib/i18n'
+import { LanguageSwitcher } from './LanguageSwitcher'
+import { uiCopy } from '@/lib/i18n-copy'
+import { LocaleLink as Link, useLocale } from '@/components/providers/LocaleProvider'
+
+
 import { usePathname } from 'next/navigation'
 import { useEffect, useId, useRef, useState } from 'react'
 import { PrimaryCta } from '@/components/cta/CtaLinks'
@@ -88,7 +93,8 @@ function NavGroup({ item, pathname }: { item: NavItem; pathname: string }) {
 }
 
 export function Header({ items, logoUrl }: { items: NavItem[]; logoUrl: string | null }) {
-  const pathname = usePathname() ?? '/'
+  const locale = useLocale()
+  const pathname = withoutLocale(usePathname() ?? '/')
   const [scrolled, setScrolled] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const { isOtherPrimaryVisible } = useSite()
@@ -121,7 +127,7 @@ export function Header({ items, logoUrl }: { items: NavItem[]; logoUrl: string |
     >
       <div className="container-arus flex h-[var(--header-h)] items-center justify-between gap-4">
         <Wordmark logoUrl={logoUrl} />
-        <nav aria-label="Menu utama" className="hidden xl:block">
+        <nav aria-label={uiCopy(locale, "Menu utama")} className="hidden xl:block">
           <ul className="flex items-center gap-0.5">
             {items.map((item) =>
               item.children?.length ? (
@@ -135,6 +141,7 @@ export function Header({ items, logoUrl }: { items: NavItem[]; logoUrl: string |
           </ul>
         </nav>
         <div className="flex items-center gap-2">
+          <LanguageSwitcher className="hidden xl:inline-flex" />
           <div
             className={cn('hidden transition-opacity duration-200 sm:block', hideCta ? 'invisible opacity-0' : 'opacity-100')}
             aria-hidden={hideCta ? true : undefined}
@@ -144,7 +151,7 @@ export function Header({ items, logoUrl }: { items: NavItem[]; logoUrl: string |
           <button
             type="button"
             className="grid size-12 place-items-center rounded-full border-2 border-white/40 text-white hover:border-lime xl:hidden"
-            aria-label="Buka menu"
+            aria-label={uiCopy(locale, "Buka menu")}
             aria-haspopup="dialog"
             aria-expanded={drawerOpen}
             onClick={() => setDrawerOpen(true)}

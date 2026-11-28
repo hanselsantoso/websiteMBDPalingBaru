@@ -343,6 +343,21 @@
   }
 }
 
+@keyframes why-mbd-enter {
+  from {
+    opacity: 0.45;
+    translate: var(--why-mbd-enter-offset, 18px) 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+[data-why-enter="previous"] {
+  --why-mbd-enter-offset: -18px;
+}
+
 .pattern-wave {
   opacity: var(--pattern-wave);
 }
@@ -422,6 +437,9 @@ html[data-motion="full"] .reveal-in {
   html[data-motion="full"] .anim-rise {
     animation: arus-rise 700ms var(--ease-soft) both;
     animation-delay: var(--rise-delay, 0ms);
+  }
+  html[data-motion="full"] [data-why-enter] {
+    animation: why-mbd-enter 320ms var(--ease-soft) both;
   }
 }
 

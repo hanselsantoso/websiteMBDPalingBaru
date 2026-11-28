@@ -1,4 +1,6 @@
-import Link from 'next/link'
+import { translateContent } from '@/lib/content-translations'
+import { uiCopy } from '@/lib/i18n-copy'
+import { LocaleLink as Link } from '@/components/providers/LocaleProvider'
 import { PrimaryCta, SecondaryActions } from '@/components/cta/CtaLinks'
 import { Siasat } from '@/components/mascot/Siasat'
 import { CountUp, Reveal } from '@/components/motion/Interactive'
@@ -6,14 +8,16 @@ import { Fin, Marquee, Star, StarField, Wave } from '@/components/patterns/Patte
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip, TextOr } from '@/components/ui/Isi'
 import { Eyebrow, SectionHeading } from '@/components/ui/Section'
-import { BUSINESS_STRATEGY_ART, HERO_WAVE_ART } from '@/lib/brand/artwork'
+import { HERO_WAVE_ART } from '@/lib/brand/artwork'
 import { isSiasatPose } from '@/lib/brand/mascot'
 import { programTotals } from '@/lib/domain/curriculum'
 import { isPlaceholder } from '@/lib/domain/placeholders'
 import { getCurriculum, getPartners, getPmbInfo } from '@/lib/data'
 import { asMedia, cn, formatDate } from '@/lib/utils'
+import type { WhyMbdBlock as WhyMbdBlockData } from '@/payload-types'
 import Image from '@/components/ui/CmsImage'
 import { anchor, type BlockProps } from './types'
+import { WhyMbdCards } from './WhyMbdCards'
 
 export async function StatsBlock({ block, ctx }: BlockProps) {
   const items = (block.items as Record<string, any>[]) ?? []
@@ -103,119 +107,23 @@ export async function StatsBlock({ block, ctx }: BlockProps) {
   )
 }
 
-function CourseCodes({ codes, onDark }: { codes?: string | null; onDark?: boolean }) {
-  const list = String(codes ?? '')
-    .split(',')
-    .map((code) => code.trim())
-    .filter(Boolean)
-  if (!list.length) return null
-  return (
-    <ul className="mt-auto flex flex-wrap gap-2 pt-5" aria-label="Mata kuliah terkait">
-      {list.map((code) => (
-        <li key={code}>
-          <Link
-            href={`/kurikulum/${code.toLowerCase()}`}
-            prefetch={false}
-            className={cn(
-              'label-mono inline-flex min-h-9 items-center rounded-full border-2 px-3 transition-colors duration-150',
-              onDark
-                ? 'border-white/60 text-white hover:bg-white hover:text-blue'
-                : 'border-navy text-navy hover:bg-navy hover:text-white',
-            )}
-          >
-            {code}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  )
-}
-
 export function WhyMbdBlock({ block, ctx }: BlockProps) {
-  const cards = (block.cards as Record<string, any>[]) ?? []
-  const large = cards.find((card) => card.size === 'large') ?? cards[0]
-  const strategyArtwork = large?.icon === 'bisnis'
-  const rest = cards.filter((card) => card !== large)
-  const small = rest.slice(0, 4)
-  const wide = rest.slice(4)
+  const cards = ((block.cards as WhyMbdBlockData['cards']) ?? []).map(({ id, title, body, icon, courseCodes, size }) => ({
+    id, title, body, icon, courseCodes, size,
+  }))
 
   return (
     <section data-tone="light" id={anchor(block)} className="relative bg-ink-50 py-20 lg:py-28">
       <div className="container-arus">
         <SectionHeading eyebrow={block.eyebrow} title={block.heading} intro={block.intro} />
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-12 lg:grid-rows-[auto_auto]">
-          {large ? (
-            <Reveal
-              as="article"
-              className={cn(
-                'group relative isolate flex min-h-[22rem] flex-col overflow-hidden rounded-[28px] border-2 border-navy bg-blue p-7 text-white shadow-hard transition-transform duration-200 hover:-rotate-[0.6deg] md:col-span-2 lg:col-span-6 lg:row-span-2 lg:p-9',
-                strategyArtwork && 'gap-4 lg:flex-row lg:gap-5',
-              )}
-            >
-              {strategyArtwork ? null : (
-                <Fin className="pattern-fin absolute -right-6 -bottom-8 -z-10 size-[min(70%,22rem)] text-lime transition-transform duration-500 group-hover:-translate-y-2" />
-              )}
-              <div className="flex min-w-0 flex-1 flex-col">
-                <span className="grid size-14 place-items-center rounded-2xl border-2 border-white/70 text-white">
-                  <Icon name={large.icon ?? 'bisnis'} size={28} strokeWidth={2} />
-                </span>
-                <h3 className="mt-6 max-w-sm text-[clamp(1.75rem,1.4rem+1.5vw,2.5rem)] leading-[1.05] font-bold">
-                  {large.title}
-                </h3>
-                <p className="mt-4 max-w-sm text-lead">
-                  <TextOr value={large.body} show={ctx.showPlaceholders} />
-                </p>
-                <CourseCodes codes={large.courseCodes} onDark />
-              </div>
-              {strategyArtwork ? (
-                <Image
-                  {...BUSINESS_STRATEGY_ART}
-                  alt=""
-                  sizes="(min-width: 1024px) 144px, 112px"
-                  className="h-auto w-28 shrink-0 self-end lg:w-36"
-                />
-              ) : null}
-            </Reveal>
-          ) : null}
-          {small.map((card, index) => (
-            <Reveal
-              as="article"
-              key={card.id ?? index}
-              delay={(index + 1) * 90}
-              className="sticker flex min-h-60 flex-col p-6 transition-transform duration-200 hover:rotate-[0.8deg] lg:col-span-3"
-            >
-              <span className="grid size-11 place-items-center rounded-xl bg-navy text-lime">
-                <Icon name={card.icon ?? 'bintang'} size={22} />
-              </span>
-              <h3 className="mt-5 text-xl leading-tight font-bold">{card.title}</h3>
-              <p className="mt-2 text-ink-600">
-                <TextOr value={card.body} show={ctx.showPlaceholders} />
-              </p>
-              <CourseCodes codes={card.courseCodes} />
-            </Reveal>
-          ))}
-          {wide.map((card, index) => (
-            <Reveal
-              as="article"
-              key={card.id ?? index}
-              className="flex flex-col gap-4 rounded-[28px] border-2 border-dashed border-navy bg-white p-6 md:col-span-2 md:flex-row md:items-center lg:col-span-12"
-            >
-              <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-navy text-lime">
-                <Icon name={card.icon ?? 'kampus'} size={22} />
-              </span>
-              <h3 className="text-xl font-bold md:w-72 md:shrink-0">{card.title}</h3>
-              <p className="text-ink-600">
-                <TextOr value={card.body} show={ctx.showPlaceholders} />
-              </p>
-            </Reveal>
-          ))}
-        </div>
+        <WhyMbdCards cards={cards} showPlaceholders={ctx.showPlaceholders} showMascots={ctx.pageSlug === 'beranda'} />
       </div>
     </section>
   )
 }
 
 export async function MarqueeBlock({ block, ctx }: BlockProps) {
+  const copy = (text: string) => uiCopy(ctx.locale, text)
   const tones: Record<string, { section: string; star: string; text: string }> = {
     navy: { section: 'bg-navy', star: 'text-lime', text: 'text-white' },
     blue: { section: 'bg-blue', star: 'text-lime', text: 'text-white' },
@@ -225,18 +133,18 @@ export async function MarqueeBlock({ block, ctx }: BlockProps) {
   const isDark = block.tone !== 'light'
 
   if (block.source === 'partners') {
-    const partners = await getPartners()
+    const partners = translateContent(await getPartners(), ctx.translate)
     if (!partners.length && !ctx.showPlaceholders) return null
     return (
       <section
         data-tone={isDark ? 'dark' : 'light'}
         id={anchor(block)}
         className={cn('py-8', tone.section)}
-        aria-label={block.label || 'Mitra industri'}
+        aria-label={block.label || copy("Mitra industri")}
       >
         <div className="container-arus mb-4">
           <p className={cn('label-mono', isDark ? 'text-white/70' : 'text-ink-600')}>
-            {block.label || 'Mitra industri'}
+            {block.label || copy("Mitra industri")}
           </p>
         </div>
         <Marquee duration={50}>
@@ -299,26 +207,29 @@ export async function MarqueeBlock({ block, ctx }: BlockProps) {
 }
 
 async function DeadlineChip({
+  ctx,
   label,
   showPlaceholders,
 }: {
+  ctx: BlockProps['ctx']
   label?: string | null
   showPlaceholders: boolean
 }) {
+  const copy = (text: string) => uiCopy(ctx.locale, text)
   const info = await getPmbInfo().catch(() => null)
-  const wave = info?.activeWave
+  const wave = translateContent(info?.activeWave, ctx.translate)
   if (!wave && !showPlaceholders) return null
-  const date = wave?.closeDate ? formatDate(wave.closeDate) : null
+  const date = wave?.closeDate ? formatDate(wave.closeDate, 'long', ctx.locale) : null
   return (
     <p className="label-mono inline-flex flex-wrap items-center gap-2 rounded-full border-2 border-lime px-4 py-2 text-lime">
       <Icon name="calendar" size={16} />
-      <span>{label || 'Batas akhir pendaftaran'}</span>
+      <span>{label || copy("Batas akhir pendaftaran")}</span>
       {wave?.name ? <span className="text-white">· {wave.name}</span> : null}
       <span className="text-white">·</span>
       {date ? (
         <span className="text-white">{date}</span>
       ) : (
-        <PendingChip hint="batas akhir pendaftaran gelombang berjalan" />
+        <PendingChip hint={copy("batas akhir pendaftaran gelombang berjalan")} />
       )}
     </p>
   )
@@ -339,7 +250,7 @@ export async function CtaBandBlock({ block, ctx }: BlockProps) {
               </h2>
               {block.body ? <p className="text-white/75">{block.body}</p> : null}
               {block.showDeadline ? (
-                <DeadlineChip label={block.deadlineLabel} showPlaceholders={ctx.showPlaceholders} />
+                <DeadlineChip ctx={ctx} label={block.deadlineLabel} showPlaceholders={ctx.showPlaceholders} />
               ) : null}
             </div>
             <div className="shrink-0">
@@ -386,7 +297,7 @@ export async function CtaBandBlock({ block, ctx }: BlockProps) {
             <PrimaryCta id={`band-${block.id ?? ctx.index}`} tone="dark" placement="cta-band" />
             {block.showSecondary ? <SecondaryActions placement="cta-band" /> : null}
             {block.showDeadline ? (
-              <DeadlineChip label={block.deadlineLabel} showPlaceholders={ctx.showPlaceholders} />
+              <DeadlineChip ctx={ctx} label={block.deadlineLabel} showPlaceholders={ctx.showPlaceholders} />
             ) : null}
           </div>
         </div>

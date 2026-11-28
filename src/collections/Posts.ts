@@ -112,7 +112,7 @@ export const Posts: CollectionConfig = {
       type: 'relationship',
       relationTo: 'admins',
       index: true,
-      defaultValue: ({ user }) => user?.id,
+      defaultValue: ({ user }) => user?.collection === 'admins' ? user.id : undefined,
       access: { create: fieldAllow('blog', 'terbitkan'), update: fieldAllow('blog', 'terbitkan') },
       admin: { position: 'sidebar' },
     },

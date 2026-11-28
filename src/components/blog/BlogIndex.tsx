@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react'
 import type { BlogPage } from '@/lib/blog-pagination'
 import { PostCard } from '@/components/cards/Cards'
+import { useLocale } from '@/components/providers/LocaleProvider'
+import { withLocale } from '@/lib/i18n'
 import { SelectField } from '@/components/forms/fields'
 import { Icon } from '@/components/ui/Icon'
 import { cn } from '@/lib/utils'
@@ -18,6 +20,9 @@ export function BlogIndex({
   tags: { name: string; slug: string }[]
   pageSize?: number
 }) {
+  const locale = useLocale()
+  const en = locale === 'en'
+  const dataUrl = withLocale('/blog/data', locale)
   const [category, setCategory] = useState('')
   const [tag, setTag] = useState('')
   const [query, setQuery] = useState('')
@@ -60,18 +65,18 @@ export function BlogIndex({
     params.set('limit', String(pageSize))
     const timer = setTimeout(async () => {
       try {
-        const response = await fetch(`/blog/data?${params}`, { signal: controller.signal })
+        const response = await fetch(`${dataUrl}?${params}`, { signal: controller.signal })
         if (!response.ok) throw new Error('request_failed')
         const result = await response.json() as BlogPage
         if (!controller.signal.aborted) setLoaded({ filter, page: result })
       } catch {
-        if (!controller.signal.aborted) setError('Artikel belum dapat dimuat.')
+        if (!controller.signal.aborted) setError((en ? "Articles could not be loaded." : 'Artikel belum dapat dimuat.'))
       } finally {
         if (!controller.signal.aborted) setLoading(false)
       }
     }, 300)
     return () => { clearTimeout(timer); controller.abort() }
-  }, [filter, pageSize, ready, initialPage, retry])
+  }, [filter, pageSize, ready, initialPage, retry, dataUrl, en])
 
   useEffect(() => () => requestRef.current?.abort(), [])
 
@@ -86,7 +91,7 @@ export function BlogIndex({
     params.set('page', String(page.page + 1))
     params.set('limit', String(pageSize))
     try {
-      const response = await fetch(`/blog/data?${params}`, { signal: controller.signal })
+      const response = await fetch(`${dataUrl}?${params}`, { signal: controller.signal })
       if (!response.ok) throw new Error('request_failed')
       const next = await response.json() as BlogPage
       if (!controller.signal.aborted) {
@@ -94,7 +99,7 @@ export function BlogIndex({
         setLoaded({ filter, page: { ...next, docs: [...page.docs, ...next.docs.filter((post) => !ids.has(post.id))] } })
       }
     } catch {
-      if (!controller.signal.aborted) setError('Artikel berikutnya belum dapat dimuat. Coba lagi.')
+      if (!controller.signal.aborted) setError((en ? "More articles could not be loaded. Try again." : 'Artikel berikutnya belum dapat dimuat. Coba lagi.'))
     } finally {
       if (!controller.signal.aborted) setLoading(false)
     }
@@ -110,8 +115,8 @@ export function BlogIndex({
   return (
     <div className="container-arus" aria-busy={loading}>
       <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-        <div role="group" aria-label="Kategori artikel" className="flex flex-wrap gap-2">
-          {[{ name: 'Semua', slug: '' }, ...categories].map((item) => (
+        <div role="group" aria-label={en ? "Article categories" : "Kategori artikel"} className="flex flex-wrap gap-2">
+          {[{ name: (en ? "All" : 'Semua'), slug: '' }, ...categories].map((item) => (
             <button
               key={item.slug || 'semua'}
               type="button"
@@ -131,7 +136,7 @@ export function BlogIndex({
         <div className="grid gap-3 sm:grid-cols-2 lg:w-[34rem]">
           <div className="grid gap-1.5">
             <label htmlFor="cari-artikel" className="font-semibold">
-              Cari artikel
+              {en ? 'Search articles' : 'Cari artikel'}
             </label>
             <div className="relative">
               <Icon
@@ -144,7 +149,7 @@ export function BlogIndex({
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Judul atau topik"
+                placeholder={en ? "Title or topic" : "Judul atau topik"}
                 className="h-12 w-full rounded-xl border-2 border-navy bg-white pr-4 pl-12 text-base placeholder:text-ink-500"
               />
             </div>
@@ -153,25 +158,25 @@ export function BlogIndex({
             id="filter-tag"
             label="Tag"
             options={tagOptions}
-            placeholder="Semua tag"
+            placeholder={en ? "All tags" : "Semua tag"}
             value={tag}
             onChange={(event) => setTag(event.target.value)}
           />
         </div>
       </div>
       <p className="sr-only" aria-live="polite">
-        {loading ? 'Memuat artikel…' : filtering && page ? `${page.totalDocs} artikel ditemukan.` : ''}
+        {loading ? (en ? "Loading articles…" : 'Memuat artikel…') : filtering && page ? (en ? `${page.totalDocs} ${page.totalDocs === 1 ? 'article' : 'articles'} found.` : `${page.totalDocs} artikel ditemukan.`) : ''}
       </p>
       {error ? (
         <div className="mt-4">
           <p role="alert" className="text-danger">{error}</p>
-          {!page ? <button type="button" className="pill mt-2 border-2 border-navy" onClick={() => setRetry((value) => value + 1)}>Coba lagi</button> : null}
+          {!page ? <button type="button" className="pill mt-2 border-2 border-navy" onClick={() => setRetry((value) => value + 1)}>{en ? 'Try again' : 'Coba lagi'}</button> : null}
         </div>
       ) : null}
 
       {featured ? (
         <div className="mt-10">
-          <PostCard post={featured} featured priority />
+          <PostCard locale={locale} post={featured} featured priority />
         </div>
       ) : null}
 
@@ -179,7 +184,7 @@ export function BlogIndex({
         <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map((post) => (
             <li key={post.id}>
-              <PostCard post={post} />
+              <PostCard locale={locale} post={post} />
             </li>
           ))}
         </ul>
@@ -189,8 +194,8 @@ export function BlogIndex({
         <div className="mt-10 rounded-[28px] border-2 border-dashed border-navy p-10 text-center">
           <p className="text-lg font-semibold">
             {initialPage.docs.length
-              ? `Belum ada artikel untuk “${query || category || tag}”.`
-              : 'Artikel pertama segera terbit.'}
+              ? (en ? `No articles found for “${query || category || tag}”.` : `Belum ada artikel untuk “${query || category || tag}”.`)
+              : (en ? "Our first article is coming soon." : 'Artikel pertama segera terbit.')}
           </p>
           {filtering ? (
             <button
@@ -202,7 +207,7 @@ export function BlogIndex({
               }}
               className="pill mt-4 border-2 border-navy bg-white text-navy"
             >
-              Hapus filter
+              {en ? 'Clear filters' : 'Hapus filter'}
             </button>
           ) : null}
         </div>
@@ -216,7 +221,7 @@ export function BlogIndex({
             disabled={loading}
             className="pill border-2 border-navy bg-white text-navy hover:bg-ink-50"
           >
-            {loading ? 'Memuat…' : 'Muat lebih banyak'}
+            {loading ? (en ? "Loading…" : 'Memuat…') : (en ? "Load more" : 'Muat lebih banyak')}
           </button>
         </div>
       ) : null}

@@ -1,0 +1,52 @@
+{
+  "tool": "ImageGen bawaan",
+  "menuSticker": {
+    "reference": "public/images/mascot/toon/greeting.webp",
+    "asset": "public/images/illustrations/nav-siasat-wink.webp",
+    "size": [128, 128],
+    "prompt": "Create a NEW square transparent website navigation sticker, using the supplied image as a reference for the existing MBD Siasat orange fox mascot’s identity and expressive flat retro comic ink style, not as an edit target. One compact oversized orange fox head, with cream cheek tufts, dark navy thick crisp contour, vibrant warm orange fur and a tiny matching waving paw at the left; emphatic friendly wink, raised eyebrow and warm grin, head tilted a touch left as though greeting whoever is reading the active navigation link. The character is original to the university’s mascot set. All components should form a bold tight readable silhouette at 32px, centered and filling a square with narrow transparent safety margin. A thin warm cream die-cut outline just around the full silhouette is fine for contrast against navy. Truly transparent outside, keep ear and paw tips in frame. Strong clean purposeful shapes from hand-drawn comic art, flat 2D coloring, no photorealism, no gradients, no cast shadow, no background or colored backing sticker shape, no text, no logo, no geometric triangle, no additional stars or characters."
+  },
+  "defaultFormat": {
+    "type": "WebP transparan",
+    "width": 960,
+    "height": 720
+  },
+  "pages": [
+    {
+      "slug": "program",
+      "refs": [
+        "friends/rara/fokus.webp",
+        "friends/uli/membaca.webp"
+      ],
+      "prompt": "Rara the copper female fox with swept fringe, purple glasses, teal clip, green varsity jacket, cream shirt and dark pants teams up with Uli the tawny owl with teal round glasses and plum sweater vest. Both are standing alongside one wide low campus worktable: Rara holds up a small prototype displayed on a teal tablet while Uli points thoughtfully at its unlabeled simple block layout with one wing. Place a single open sky-blue sketchbook beside them. Both faces clearly visible, bright, gently playful working expressions. Story is learning through building a digital product together. Create one polished original mascot scene for the right side of a responsive university Manajemen Bisnis Digital website header. Existing mascot references are identity and art-direction only. Flat 2D inked collegiate comic, near-black navy tapered outlines, confident expressive eyes and gestures, crisp cel colors, punchy accents, recognizably the same outfits and faces, no text, logo, letters, numbers, UI labels, watermarks, icons drifting away, or realism. Transparent background with clean alpha and entirely no background haze or atmosphere. Make a single compact roughly landscape 4:3 composition. Each character and meaningful prop is readable on dark navy at 300–400 pixels and within a 9% safe margin; cream or pastel surfaces and dark outlines for contrast. Avoid stickers separated from each other, 3D or plastic appearance, floor shadows, and crowded detail.",
+      "asset": "public/images/illustrations/hero-program-siasat.webp"
+    },
+    {
+      "slug": "karier",
+      "refs": [
+        "friends/kiko/curiga.webp",
+        "friends/bimo/menyapa.webp"
+      ],
+      "prompt": "Kiko the charcoal black cat with amber eyes, mustard hoodie and navy trousers and Bimo the cinnamon otter with blue varsity jacket and olive pants study a compact career-route board together. Kiko is focused with one finger on a simple rising bar chart; Bimo stands beside him, energized and giving a friendly thumbs-up while holding a cream portfolio folder with no text. Keep a very small path and simple three-bar diagram together on one compact light paper prop between them. No ladders, no trophies, no guaranteed jobs, no money motifs. Show them as confident college students exploring possibilities together. Create one polished original mascot scene for the right side of a responsive university Manajemen Bisnis Digital website header. Existing mascot references are identity and art-direction only. Flat 2D inked collegiate comic, near-black navy tapered outlines, confident expressive eyes and gestures, crisp cel colors, punchy accents, recognizably the same outfits and faces, no text, logo, letters, numbers, UI labels, watermarks, icons drifting away, or realism. Transparent background with clean alpha and entirely no background haze or atmosphere. Make a single compact roughly landscape 4:3 composition. Each character and meaningful prop is readable on dark navy at 300–400 pixels and within a 9% safe margin; cream or pastel surfaces and dark outlines for contrast. Avoid stickers separated from each other, 3D or plastic appearance, floor shadows, and crowded detail.",
+      "asset": "public/images/illustrations/hero-karier-siasat.webp"
+    },
+    {
+      "slug": "blog",
+      "refs": [
+        "friends/piko/antusias.webp",
+        "friends/uli/dapat-ide.webp"
+      ],
+      "prompt": "Piko the cream rabbit in a coral bomber jacket, navy striped tee, loose deep teal trousers and cobalt sneakers has just written down an exciting idea at a tiny editorial desk. He eagerly shows Uli a navy pencil sketch in an open cream notebook while Uli, the tawny owl with teal round glasses and purple vest, looks over with a delighted aha expression. The two characters are close; the small desk and notebook are visually secondary. The paper contains only simple abstract lined strokes, no readable text. This is student editorial storytelling and sharing campus ideas. Create one polished original mascot scene for the right side of a responsive university Manajemen Bisnis Digital website header. Existing mascot references are identity and art-direction only. Flat 2D inked collegiate comic, near-black navy tapered outlines, confident expressive eyes and gestures, crisp cel colors, punchy accents, recognizably the same outfits and faces, no text, logo, letters, numbers, UI labels, watermarks, icons drifting away, or realism. Transparent background with clean alpha and entirely no background haze or atmosphere. Make a single compact roughly landscape 4:3 composition. Each character and meaningful prop is readable on dark navy at 300–400 pixels and within a 9% safe margin; cream or pastel surfaces and dark outlines for contrast. Avoid stickers separated from each other, 3D or plastic appearance, floor shadows, and crowded detail.",
+      "asset": "public/images/illustrations/hero-blog-siasat.webp"
+    },
+    {
+      "slug": "pmb",
+      "refs": [
+        "toon/greeting.webp",
+        "friends/bimo/acung-jempol.webp"
+      ],
+      "prompt": "An admissions welcome scene with Siasat, the original orange fox in navy glasses, cobalt jacket, flowing cyan scarf, bright lime lanyard and dark tailored trousers, waving a friendly welcome to the viewer, while Bimo, cinnamon otter in cobalt varsity and olive pants, holds a cream clipboard with three large simple lime checkboxes with checkmarks only and indicates it with one paw. Use attentive expressions and warm body language. No acceptance certificates, awards, dates, percentages, documents with actual text, or other characters. Create one polished original mascot scene for the right side of a responsive university Manajemen Bisnis Digital website header. Existing mascot references are identity and art-direction only. Flat 2D inked collegiate comic, near-black navy tapered outlines, confident expressive eyes and gestures, crisp cel colors, punchy accents, recognizably the same outfits and faces, no text, logo, letters, numbers, UI labels, watermarks, icons drifting away, or realism. Transparent background with clean alpha and entirely no background haze or atmosphere. Make a single compact roughly landscape 4:3 composition. Each character and meaningful prop is readable on dark navy at 300–400 pixels and within a 9% safe margin; cream or pastel surfaces and dark outlines for contrast. Avoid stickers separated from each other, 3D or plastic appearance, floor shadows, and crowded detail.",
+      "asset": "public/images/illustrations/hero-pmb-siasat.webp"
+    }
+  ]
+}

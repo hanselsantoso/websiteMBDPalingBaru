@@ -1,6 +1,7 @@
 'use client'
 
-import Link from 'next/link'
+import { LocaleLink as Link, useLocale } from '@/components/providers/LocaleProvider'
+import { englishFormMessage } from './form-messages'
 import { forwardRef, useEffect, useRef, useState, type ComponentPropsWithoutRef, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -28,11 +29,12 @@ export function FieldShell({
   children: ReactNode
   className?: string
 }) {
+  const en = useLocale() === 'en'
   return (
     <div className={cn('grid gap-1.5', className)}>
       <label htmlFor={id} className="font-semibold text-navy">
         {label}
-        {optional ? <span className="ml-1 text-sm font-normal text-ink-600">(opsional)</span> : null}
+        {optional ? <span className="ml-1 text-sm font-normal text-ink-600">{en ? '(optional)' : '(opsional)'}</span> : null}
       </label>
       {hint ? (
         <p id={`${id}-hint`} className="text-sm text-ink-600">
@@ -43,7 +45,7 @@ export function FieldShell({
       {error ? (
         <p id={`${id}-error`} className="flex items-start gap-1.5 text-sm font-semibold text-danger">
           <span aria-hidden="true">!</span>
-          {error}
+          {en ? englishFormMessage(error) : error}
         </p>
       ) : null}
     </div>
@@ -103,9 +105,10 @@ type SelectProps = ComponentPropsWithoutRef<'select'> & {
 }
 
 export const SelectField = forwardRef<HTMLSelectElement, SelectProps>(function SelectField(
-  { id, label, hint, error, optional, className, options, placeholder = 'Pilih salah satu', ...rest },
+  { id, label, hint, error, optional, className, options, placeholder, ...rest },
   ref,
 ) {
+  const en = useLocale() === 'en'
   const fieldId = id ?? rest.name ?? 'field'
   return (
     <FieldShell id={fieldId} label={label} hint={hint} error={error} optional={optional} className={className}>
@@ -118,7 +121,7 @@ export const SelectField = forwardRef<HTMLSelectElement, SelectProps>(function S
           className={cn(control, 'h-12 appearance-none border-navy pr-10')}
           {...rest}
         >
-          <option value="">{placeholder}</option>
+          <option value="">{placeholder ?? (en ? 'Select an option' : 'Pilih salah satu')}</option>
           {options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
@@ -139,6 +142,7 @@ export const ConsentField = forwardRef<HTMLInputElement, ConsentProps>(function 
   { id = 'consent', error, privacyHref, children, ...rest },
   ref,
 ) {
+  const en = useLocale() === 'en'
   return (
     <div className="grid gap-1.5">
       <label htmlFor={id} className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-navy">
@@ -152,16 +156,16 @@ export const ConsentField = forwardRef<HTMLInputElement, ConsentProps>(function 
           {...rest}
         />
         <span>
-          {children ?? 'Saya setuju data ini disimpan dan dipakai tim MBD ISTTS untuk menghubungi saya terkait informasi pendaftaran.'}{' '}
+          {children ?? (en ? "I consent to MBD ISTTS storing and using this information to contact me about admissions." : 'Saya setuju data ini disimpan dan dipakai tim MBD ISTTS untuk menghubungi saya terkait informasi pendaftaran.')}{' '}
           <Link href={privacyHref} className="font-semibold text-blue underline underline-offset-2" target="_blank">
-            Baca kebijakan privasi
+            {en ? 'Read the privacy policy' : 'Baca kebijakan privasi'}
           </Link>
           .
         </span>
       </label>
       {error ? (
         <p id={`${id}-error`} className="text-sm font-semibold text-danger">
-          {error}
+          {en ? englishFormMessage(error) : error}
         </p>
       ) : null}
     </div>
@@ -170,10 +174,11 @@ export const ConsentField = forwardRef<HTMLInputElement, ConsentProps>(function 
 
 /** Hidden from people; bots tend to fill it. */
 export const Honeypot = forwardRef<HTMLInputElement, ComponentPropsWithoutRef<'input'>>(function Honeypot(props, ref) {
+  const en = useLocale() === 'en'
   return (
     <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
       <label>
-        Situs web
+        {en ? 'Website' : 'Situs web'}
         <input ref={ref} type="text" tabIndex={-1} autoComplete="off" {...props} />
       </label>
     </div>
@@ -182,6 +187,7 @@ export const Honeypot = forwardRef<HTMLInputElement, ComponentPropsWithoutRef<'i
 
 /** Polite live region listing errors after a failed submit. */
 export function ErrorSummary({ errors, message }: { errors: Record<string, { message?: string } | undefined>; message?: string | null }) {
+  const en = useLocale() === 'en'
   const ref = useRef<HTMLDivElement>(null)
   const list = Object.values(errors)
     .map((error) => error?.message)
@@ -192,11 +198,11 @@ export function ErrorSummary({ errors, message }: { errors: Record<string, { mes
   }, [message])
   return (
     <div ref={ref} tabIndex={-1} role="alert" aria-live="assertive" className={cn(visible ? 'rounded-2xl border-2 border-danger bg-white p-4' : 'sr-only')}>
-      {message ? <p className="font-semibold text-danger">{message}</p> : null}
+      {message ? <p className="font-semibold text-danger">{en ? englishFormMessage(message) : message}</p> : null}
       {list.length > 1 ? (
         <ul className="mt-1 list-disc pl-5 text-sm text-danger">
           {list.map((text) => (
-            <li key={text}>{text}</li>
+            <li key={text}>{en ? englishFormMessage(text) : text}</li>
           ))}
         </ul>
       ) : null}
@@ -213,6 +219,8 @@ declare global {
 /** Cloudflare Turnstile, rendered only when a site key is configured in the CMS. */
 export function Turnstile({ siteKey, onToken, resetKey = 0 }: { siteKey: string | null; onToken: (token: string) => void; resetKey?: number }) {
   const ref = useRef<HTMLDivElement>(null)
+  const locale = useLocale()
+  const en = locale === 'en'
   const onTokenRef = useRef(onToken)
   const [scriptFailed, setScriptFailed] = useState(false)
   const [retry, setRetry] = useState(0)
@@ -226,7 +234,7 @@ export function Turnstile({ siteKey, onToken, resetKey = 0 }: { siteKey: string 
     const mount = () => {
       if (!disposed && window.turnstile && ref.current && widgetId === null) {
         widgetId = window.turnstile.render(ref.current, {
-          sitekey: siteKey, language: 'id',
+          sitekey: siteKey, language: locale,
           callback: (token: string) => onTokenRef.current(token),
           'expired-callback': () => onTokenRef.current(''),
           'error-callback': () => onTokenRef.current(''),
@@ -254,15 +262,15 @@ export function Turnstile({ siteKey, onToken, resetKey = 0 }: { siteKey: string 
       script?.removeEventListener('error', handleScriptError)
       if (widgetId !== null) window.turnstile?.remove(widgetId)
     }
-  }, [siteKey, resetKey, retry])
+  }, [siteKey, resetKey, retry, locale])
   if (!siteKey) return null
   return (
     <div>
       <div ref={ref} className={scriptFailed ? 'hidden' : 'min-h-[65px]'} />
       {scriptFailed ? (
         <div>
-          <p role="alert">Verifikasi keamanan gagal dimuat.</p>
-          <button type="button" className="mt-1 font-semibold underline" onClick={() => setRetry((value) => value + 1)}>Muat ulang verifikasi</button>
+          <p role="alert">{en ? 'Security verification could not be loaded.' : 'Verifikasi keamanan gagal dimuat.'}</p>
+          <button type="button" className="mt-1 font-semibold underline" onClick={() => setRetry((value) => value + 1)}>{en ? 'Reload verification' : 'Muat ulang verifikasi'}</button>
         </div>
       ) : null}
     </div>

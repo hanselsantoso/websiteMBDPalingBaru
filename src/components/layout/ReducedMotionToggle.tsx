@@ -1,9 +1,13 @@
 'use client'
 
+import { uiCopy } from '@/lib/i18n-copy'
+import { useLocale } from '@/components/providers/LocaleProvider'
+
 import { useMotionPreference } from '@/components/providers/MotionProvider'
 import { cn } from '@/lib/utils'
 
 export function ReducedMotionToggle() {
+  const locale = useLocale()
   const { reduced, osReduced, setReduced } = useMotionPreference()
   return (
     <div className="flex flex-wrap items-center gap-3">
@@ -25,9 +29,9 @@ export function ReducedMotionToggle() {
             )}
           />
         </span>
-        Kurangi animasi
+        {uiCopy(locale, 'Kurangi animasi')}
       </button>
-      {osReduced ? <span className="text-sm text-white/65">Mengikuti pengaturan perangkatmu.</span> : null}
+      {osReduced ? <span className="text-sm text-white/65">{locale === 'en' ? 'Follows your device settings.' : 'Mengikuti pengaturan perangkatmu.'}</span> : null}
     </div>
   )
 }

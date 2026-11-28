@@ -222,8 +222,8 @@ export const getFaqs = cached('faqs', ['faqs'], async (scope: string, limit: num
   queries.fetchFaqs(await payload(), scope, limit),
 )
 
-export const getQuiz = cached('quiz', ['quiz', 'media'], async () =>
-  queries.fetchQuiz(await payload()),
+export const getQuiz = cached('quiz-public-v2', ['quiz', 'media'], async (assessment?: boolean) =>
+  queries.fetchQuiz(await payload(), assessment),
 )
 
 export const getRedirect = cached('redirect', ['redirects'], async (path: string) =>

@@ -1,16 +1,15 @@
 'use client'
 
-import Link from 'next/link'
+import { LocaleLink, useLocale } from '@/components/providers/LocaleProvider'
 import { useEffect, useId, useState, useTransition } from 'react'
 import { searchAction } from '@/app/(frontend)/actions'
 import { Icon } from '@/components/ui/Icon'
 import { track } from '@/lib/analytics'
 import type { SearchHit } from '@/server/services/search'
 
-const TYPE_LABEL: Record<SearchHit['type'], string> = {
-  'mata-kuliah': 'Mata kuliah',
-  dosen: 'Dosen',
-  artikel: 'Artikel',
+const TYPE_LABEL = {
+  id: { 'mata-kuliah': 'Mata kuliah', dosen: 'Dosen', artikel: 'Artikel' },
+  en: { 'mata-kuliah': 'Course', dosen: 'Lecturer', artikel: 'Article' },
 }
 
 export function SiteSearch({
@@ -20,6 +19,8 @@ export function SiteSearch({
   placeholder?: string | null
   dark?: boolean
 }) {
+  const locale = useLocale()
+  const en = locale === 'en'
   const id = useId()
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchHit[] | null>(null)
@@ -34,18 +35,18 @@ export function SiteSearch({
     }
     const timer = setTimeout(
       () => startTransition(async () => {
-        const hits = await searchAction(q)
+        const hits = await searchAction(q, locale)
         if (active) setResults(hits)
       }),
       300,
     )
     return () => { active = false; clearTimeout(timer) }
-  }, [query])
+  }, [query, locale])
 
   return (
     <div role="search" className="w-full">
       <label htmlFor={id} className={dark ? 'font-semibold text-white' : 'font-semibold'}>
-        Cari di situs
+        {en ? 'Search the site' : 'Cari di situs'}
       </label>
       <div className="relative mt-2">
         <Icon
@@ -58,7 +59,7 @@ export function SiteSearch({
           type="search"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder={placeholder ?? 'Cari mata kuliah, dosen, atau artikel'}
+          placeholder={placeholder ?? (en ? "Search for courses, lecturers, or articles" : 'Cari mata kuliah, dosen, atau artikel')}
           className="h-14 w-full rounded-full border-2 border-navy bg-white pr-5 pl-12 text-base text-navy placeholder:text-ink-500"
           aria-describedby={`${id}-status`}
         />
@@ -69,18 +70,18 @@ export function SiteSearch({
         aria-live="polite"
       >
         {pending
-          ? 'Mencari…'
+          ? (en ? "Searching…" : 'Mencari…')
           : results
             ? results.length
-              ? `${results.length} hasil ditemukan.`
-              : `Tidak ada hasil untuk “${query.trim()}”. Coba kata lain.`
+              ? (en ? `${results.length} ${results.length === 1 ? 'result' : 'results'} found.` : `${results.length} hasil ditemukan.`)
+              : (en ? `No results for “${query.trim()}”. Try a different search.` : `Tidak ada hasil untuk “${query.trim()}”. Coba kata lain.`)
             : ''}
       </p>
       {results?.length ? (
         <ul className="mt-3 grid gap-2">
           {results.map((hit) => (
             <li key={hit.href}>
-              <Link
+              <LocaleLink
                 href={hit.href}
                 className="flex min-h-14 items-center justify-between gap-4 rounded-2xl border-2 border-navy bg-white px-4 py-3 text-navy hover:bg-ink-50"
               >
@@ -89,9 +90,9 @@ export function SiteSearch({
                   <span className="label-mono text-ink-600">{hit.meta}</span>
                 </span>
                 <span className="label-mono shrink-0 rounded-full bg-ink-100 px-2.5 py-1">
-                  {TYPE_LABEL[hit.type]}
+                  {TYPE_LABEL[locale][hit.type]}
                 </span>
-              </Link>
+              </LocaleLink>
             </li>
           ))}
         </ul>

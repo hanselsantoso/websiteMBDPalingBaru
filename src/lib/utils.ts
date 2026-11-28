@@ -1,14 +1,16 @@
+import { localeTag, type Locale } from './i18n'
+
 export function cn(...classes: (string | false | null | undefined)[]): string {
   return classes.filter(Boolean).join(' ')
 }
 
 const TZ = 'Asia/Jakarta'
 
-export function formatDate(value: string | Date | null | undefined, style: 'long' | 'short' = 'long'): string {
+export function formatDate(value: string | Date | null | undefined, style: 'long' | 'short' = 'long', locale: Locale = 'id'): string {
   if (!value) return ''
   const date = typeof value === 'string' ? new Date(value) : value
   if (Number.isNaN(date.getTime())) return ''
-  return new Intl.DateTimeFormat('id-ID', {
+  return new Intl.DateTimeFormat(localeTag(locale), {
     timeZone: TZ,
     day: 'numeric',
     month: style === 'long' ? 'long' : 'short',
@@ -16,11 +18,11 @@ export function formatDate(value: string | Date | null | undefined, style: 'long
   }).format(date)
 }
 
-export function formatDateTime(value: string | null | undefined): string {
+export function formatDateTime(value: string | null | undefined, locale: Locale = 'id'): string {
   if (!value) return ''
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return ''
-  return new Intl.DateTimeFormat('id-ID', {
+  return new Intl.DateTimeFormat(localeTag(locale), {
     timeZone: TZ,
     day: 'numeric',
     month: 'long',

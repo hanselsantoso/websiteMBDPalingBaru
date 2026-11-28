@@ -11,9 +11,11 @@ import { fileURLToPath } from 'url'
 import { Courses, CurriculumVersions, Faculty } from './collections/Academic'
 import { MessageTemplates, PmbApplications, PmbDocuments, PmbTracks, PmbWaves } from './collections/Admissions'
 import { Admins } from './collections/Admins'
+import { ContentTranslations } from './collections/ContentTranslations'
 import { Folders } from './collections/Folders'
 import { ContactMessages, Leads } from './collections/Leads'
 import { Media } from './collections/Media'
+import { McpContentAccounts } from './collections/McpContentAccounts'
 import { CareerPaths, Faqs, JobPosts, Partners, Programs, Testimonials } from './collections/OtherContent'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
@@ -28,6 +30,7 @@ import { assertBrandContrast } from './lib/brand/tokens'
 import { PROGRAM_NAME } from './lib/brand/identity'
 import { pathForDoc, siteUrl } from './lib/preview'
 import { readServerEnvironment } from './server/environment'
+import { contentMcpConfig } from './server/content-mcp'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -104,6 +107,7 @@ export default buildConfig({
   collections: [
     // Konten
     Pages,
+    ContentTranslations,
     Posts,
     PostCategories,
     PostTags,
@@ -133,6 +137,7 @@ export default buildConfig({
     QuizAttempts,
     // Sistem
     Admins,
+    McpContentAccounts,
     Roles,
     Redirects,
     NotFoundLogs,
@@ -155,7 +160,7 @@ export default buildConfig({
     defaultLocale: 'en',
   },
   plugins: [
-    mcpPlugin({}),
+    mcpPlugin(contentMcpConfig),
     seoPlugin({
       collections: ['pages', 'posts', 'courses', 'faculty'],
       uploadsCollection: 'media',

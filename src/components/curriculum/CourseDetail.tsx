@@ -5,6 +5,7 @@ import { Star } from '@/components/patterns/Patterns'
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip, TextOr } from '@/components/ui/Isi'
 import { displayCourseCode } from '@/lib/domain/curriculum'
+import { withLocale } from '@/lib/i18n'
 import { isPlaceholder } from '@/lib/domain/placeholders'
 import { cn } from '@/lib/utils'
 
@@ -15,7 +16,8 @@ function SectionTitle({ children }: { children: ReactNode }) {
 }
 
 /** Presentational syllabus body, shared by the full course page and the side drawer. */
-export function CourseDetailBody({ course, showPlaceholders }: { course: Doc; showPlaceholders: boolean }) {
+export function CourseDetailBody({ course, showPlaceholders, locale = 'id' }: { course: Doc; showPlaceholders: boolean; locale?: 'id' | 'en' }) {
+  const en = locale === 'en'
   const cpmk = ((course.cpmk as Doc[]) ?? []).filter((item) => showPlaceholders || !isPlaceholder(item.text))
   const weekly = ((course.weeklyPlan as Doc[]) ?? []).filter((item) => showPlaceholders || !isPlaceholder(item.topic))
   const assessment = ((course.assessment as Doc[]) ?? []).filter((item) => showPlaceholders || !isPlaceholder(item.component))
@@ -24,25 +26,25 @@ export function CourseDetailBody({ course, showPlaceholders }: { course: Doc; sh
   const prerequisites = ((course.prerequisites as Doc[]) ?? []).filter((item) => item && typeof item === 'object')
   const lecturers = ((course.lecturers as Doc[]) ?? []).filter((item) => item && typeof item === 'object')
   const rps = course.rps && typeof course.rps === 'object' ? course.rps : null
-  const empty = <p className="text-ink-600">Informasi menyusul.</p>
+  const empty = <p className="text-ink-600">{en ? "Information coming soon." : "Informasi menyusul."}</p>
 
   return (
     <div className="grid gap-10">
       <section>
-        <SectionTitle>Deskripsi</SectionTitle>
+        <SectionTitle>{en ? "Description" : "Deskripsi"}</SectionTitle>
         <p className="max-w-[65ch] text-lg leading-relaxed">
-          <TextOr value={course.description || course.shortDescription} show={showPlaceholders} fallback="Deskripsi menyusul." hint="deskripsi mata kuliah" />
+          <TextOr value={course.description || course.shortDescription} show={showPlaceholders} fallback={en ? "Description coming soon." : "Deskripsi menyusul."} hint={en ? "Course description" : "deskripsi mata kuliah"} />
         </p>
       </section>
 
       <section>
-        <SectionTitle>Capaian pembelajaran (CPMK)</SectionTitle>
+        <SectionTitle>{en ? "Course learning outcomes" : "Capaian pembelajaran (CPMK)"}</SectionTitle>
         {cpmk.length ? (
           <ol className="grid gap-3">
             {cpmk.map((item, index) => (
               <li key={item.id ?? index} className="flex gap-3">
-                <span className="label-mono mt-1 shrink-0 text-blue">CPMK {index + 1}</span>
-                <span>{isPlaceholder(item.text) ? <PendingChip hint="capaian pembelajaran" /> : item.text}</span>
+                <span className="label-mono mt-1 shrink-0 text-blue">{en ? 'Outcome' : 'CPMK'} {index + 1}</span>
+                <span>{isPlaceholder(item.text) ? <PendingChip hint={en ? "Learning outcome" : "capaian pembelajaran"} /> : item.text}</span>
               </li>
             ))}
           </ol>
@@ -52,11 +54,11 @@ export function CourseDetailBody({ course, showPlaceholders }: { course: Doc; sh
       </section>
 
       <section>
-        <SectionTitle>Rencana mingguan</SectionTitle>
+        <SectionTitle>{en ? "Weekly plan" : "Rencana mingguan"}</SectionTitle>
         {weekly.length ? (
           <DataTable
-            label="Rencana mingguan"
-            columns={[{ label: 'Minggu' }, { label: 'Topik' }, { label: 'Metode' }, { label: 'CPMK' }]}
+            label={en ? "Weekly plan" : "Rencana mingguan"}
+            columns={[{ label: (en ? "Week" : 'Minggu') }, { label: (en ? "Topic" : 'Topik') }, { label: (en ? "Method" : 'Metode') }, { label: (en ? "Outcome" : 'CPMK') }]}
             rows={weekly.map((row, index) => ({
               id: row.id ?? index,
               values: [
@@ -65,7 +67,7 @@ export function CourseDetailBody({ course, showPlaceholders }: { course: Doc; sh
               ],
               cells: [
                 row.week ?? index + 1,
-                isPlaceholder(row.topic) ? <PendingChip key="topic" hint="topik pertemuan" /> : row.topic,
+                isPlaceholder(row.topic) ? <PendingChip key="topic" hint={en ? "Class topic" : "topik pertemuan"} /> : row.topic,
                 isPlaceholder(row.method) ? '—' : row.method,
                 isPlaceholder(row.outcome) ? '—' : row.outcome,
               ],
@@ -77,13 +79,13 @@ export function CourseDetailBody({ course, showPlaceholders }: { course: Doc; sh
       </section>
 
       <section>
-        <SectionTitle>Penilaian</SectionTitle>
+        <SectionTitle>{en ? "Assessment" : "Penilaian"}</SectionTitle>
         {assessment.length ? (
           <ul className="grid gap-3">
             {assessment.map((row, index) => (
               <li key={row.id ?? index} className="grid gap-1.5">
                 <div className="flex items-baseline justify-between gap-4">
-                  <span className="font-semibold">{isPlaceholder(row.component) ? <PendingChip hint="komponen penilaian" /> : row.component}</span>
+                  <span className="font-semibold">{isPlaceholder(row.component) ? <PendingChip hint={en ? "Assessment component" : "komponen penilaian"} /> : row.component}</span>
                   <span className="font-mono text-sm tabular-nums">{isPlaceholder(row.component) ? '—' : `${row.weight ?? 0}%`}</span>
                 </div>
                 {!isPlaceholder(row.component) ? (
@@ -101,12 +103,12 @@ export function CourseDetailBody({ course, showPlaceholders }: { course: Doc; sh
 
       <div className="grid gap-10 md:grid-cols-2">
         <section>
-          <SectionTitle>Prasyarat</SectionTitle>
+          <SectionTitle>{en ? "Prerequisites" : "Prasyarat"}</SectionTitle>
           {prerequisites.length ? (
             <ul className="grid gap-2">
               {prerequisites.map((item) => (
                 <li key={item.id}>
-                  <Link href={`/kurikulum/${item.slug}`} className="inline-flex min-h-10 items-center gap-2 font-semibold underline decoration-navy/30 underline-offset-4 hover:decoration-blue">
+                  <Link href={withLocale(`/kurikulum/${item.slug}`, locale)} className="inline-flex min-h-10 items-center gap-2 font-semibold underline decoration-navy/30 underline-offset-4 hover:decoration-blue">
                     <span className="font-mono text-xs text-blue">{displayCourseCode(item.code)}</span>
                     {item.name}
                   </Link>
@@ -114,16 +116,16 @@ export function CourseDetailBody({ course, showPlaceholders }: { course: Doc; sh
               ))}
             </ul>
           ) : (
-            <p className="text-ink-600">Tidak ada prasyarat.</p>
+            <p className="text-ink-600">{en ? "No prerequisites." : "Tidak ada prasyarat."}</p>
           )}
         </section>
         <section>
-          <SectionTitle>Tools dan software</SectionTitle>
+          <SectionTitle>{en ? "Tools and software" : "Tools dan software"}</SectionTitle>
           {tools.length ? (
             <ul className="flex flex-wrap gap-2">
               {tools.map((tool, index) => (
                 <li key={tool.id ?? index} className="rounded-full border-2 border-navy px-3 py-1 text-sm font-semibold">
-                  {isPlaceholder(tool.name) ? <PendingChip hint="tools" /> : tool.name}
+                  {isPlaceholder(tool.name) ? <PendingChip hint={en ? "Tools" : "tools"} /> : tool.name}
                 </li>
               ))}
             </ul>
@@ -134,13 +136,13 @@ export function CourseDetailBody({ course, showPlaceholders }: { course: Doc; sh
       </div>
 
       <section>
-        <SectionTitle>Buku dan referensi</SectionTitle>
+        <SectionTitle>{en ? "Books and references" : "Buku dan referensi"}</SectionTitle>
         {references.length ? (
           <ul className="grid gap-2">
             {references.map((ref, index) => (
               <li key={ref.id ?? index} className="flex gap-3">
                 <Star className="mt-1.5 size-3.5 shrink-0 text-blue" />
-                <span>{isPlaceholder(ref.text) ? <PendingChip hint="referensi" /> : ref.text}</span>
+                <span>{isPlaceholder(ref.text) ? <PendingChip hint={en ? "Reference" : "referensi"} /> : ref.text}</span>
               </li>
             ))}
           </ul>
@@ -150,19 +152,19 @@ export function CourseDetailBody({ course, showPlaceholders }: { course: Doc; sh
       </section>
 
       <section>
-        <SectionTitle>Dosen pengampu</SectionTitle>
+        <SectionTitle>{en ? "Course lecturers" : "Dosen pengampu"}</SectionTitle>
         {lecturers.length ? (
           <ul className="flex flex-wrap gap-3">
             {lecturers.map((lecturer) => (
               <li key={lecturer.id}>
-                <Link href={`/dosen/${lecturer.slug}`} className="inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-navy px-4 font-semibold hover:bg-navy hover:text-white">
-                  <TextOr value={lecturer.name} show={showPlaceholders} hint="nama dosen" />
+                <Link href={withLocale(`/dosen/${lecturer.slug}`, locale)} className="inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-navy px-4 font-semibold hover:bg-navy hover:text-white">
+                  <TextOr value={lecturer.name} show={showPlaceholders} hint={en ? "Lecturer name" : "nama dosen"} />
                 </Link>
               </li>
             ))}
           </ul>
         ) : showPlaceholders ? (
-          <PendingChip hint="dosen pengampu" />
+          <PendingChip hint={en ? "Course lecturer" : "dosen pengampu"} />
         ) : (
           empty
         )}
@@ -171,7 +173,7 @@ export function CourseDetailBody({ course, showPlaceholders }: { course: Doc; sh
       {rps?.url ? (
         <a href={rps.url} className={cn('pill w-fit border-2 border-navy bg-white text-navy hover:bg-ink-50')} target="_blank" rel="noopener">
           <Icon name="download" size={18} strokeWidth={2.5} />
-          Unduh RPS / silabus (PDF)
+          {en ? 'Download syllabus (PDF)' : 'Unduh RPS / silabus (PDF)'}
         </a>
       ) : null}
     </div>

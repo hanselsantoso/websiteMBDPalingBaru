@@ -7,6 +7,18 @@ export const DIMENSIONS = [
 
 export type DimensionKey = (typeof DIMENSIONS)[number]['key']
 export type DimensionScores = Record<DimensionKey, number>
+export const QUIZ_ASSESSMENT_VERSION = 'mbd-v1' as const
+export const QUIZ_ASSESSMENT_MARKER_PREFIX = 'Asesmen MBD v'
+
+export type QuizAssessmentReview = {
+  id: string
+  dimension: DimensionKey
+  question: string
+  selected: string
+  bestAnswer: string
+  explanation: string
+  points: number
+}
 
 export const PAIR_KEYS = [
   'bisnis-data',

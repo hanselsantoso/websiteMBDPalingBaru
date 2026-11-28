@@ -1,3 +1,4 @@
+import type { Locale } from '@/lib/i18n'
 import type { ReactNode } from 'react'
 import {
   CareerPathsBlock,
@@ -68,11 +69,15 @@ export function RenderBlocks({
   pageSlug,
   showPlaceholders,
   showTotalSks,
+  locale = 'id',
+  translate = (text) => text,
 }: {
   blocks: AnyBlock[] | null | undefined
   pageSlug: string
   showPlaceholders: boolean
   showTotalSks: boolean
+  locale?: Locale
+  translate?: (text: string) => string
 }) {
   const visible = (blocks ?? []).filter(
     (block) => block && block.visible !== false && REGISTRY[block.blockType],
@@ -88,6 +93,8 @@ export function RenderBlocks({
             ctx={{
               showPlaceholders,
               showTotalSks,
+              locale,
+              translate,
               pageSlug,
               index,
               isFirst: index === 0,

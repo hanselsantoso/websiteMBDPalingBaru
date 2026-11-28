@@ -1,0 +1,10 @@
+{
+  "tool": "ImageGen bawaan",
+  "references": [
+    "public/images/mascot/toon/greeting.webp",
+    "public/images/mascot/friends/rara/fokus.webp"
+  ],
+  "asset": "public/images/illustrations/peta-semester-siasat-rara.webp",
+  "view": "Ilustrasi pembuka halaman Kurikulum",
+  "prompt": "Create a polished full-bleed landscape 3:2 editorial 2D comic illustration for the top of a curriculum page of an Indonesian Digital Business Management degree. Use both local character references only for art direction and identity. Siasat is the orange male fox with dark navy eyeglasses, cobalt jacket, flowing cyan scarf, lime lanyard, navy trousers and pale paws. Rara is the red female fox with purple glasses, small teal hair clip, emerald varsity jacket, cream shirt, dark high-waisted pants and teal sneakers. In the new original scene, the two friendly college-age foxes stand facing each other on either side of one large horizontal unfolded learning roadmap at about chest height. Siasat holds one corner while confidently pointing out the start, and Rara uses her teal tablet to compare the later part of the route with a focused clever smile. Aim for a simple cohesive playful moment, with large expressive recognizable faces and poses, graphic dark navy brush outlines, and bold flat comic-color shapes. On the roadmap, a clear winding cobalt line with eight small simple round milestones progresses toward a single capstone pennant; optionally small restrained icons for a bar chart and a laptop, nothing crowded. No text, letters, numbers, logos, badges, mock UI, watermarks, or writing. The warm off-white paper background is visually spacious with a sparse mint and pale sky-blue abstract backdrop wash, full bleed to the edges. Leave sufficient safe margins, keep important features within the central 86% of the image, and make the illustration clear on a phone. Flat 2D retro collegiate cartoon style, sparse restrained cel shading, clean art direction, exciting illustrated storytelling. Avoid 3D rendering, realistic photos, dramatic light, noise, gradients and overdecorated map imagery. Nothing is glossy or rendered as product mockup."
+}

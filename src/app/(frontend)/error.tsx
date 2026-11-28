@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { LocaleLink as Link, useLocale } from '@/components/providers/LocaleProvider'
 import { useEffect } from 'react'
 import { Siasat } from '@/components/mascot/Siasat'
 import { Button, buttonStyles } from '@/components/ui/Button'
@@ -13,6 +13,7 @@ export default function ErrorPage({
   error: Error & { digest?: string }
   unstable_retry: () => void
 }) {
+  const en = useLocale() === 'en'
   useEffect(() => {
     console.error(error)
   }, [error])
@@ -21,18 +22,18 @@ export default function ErrorPage({
     <section className="grid min-h-[70vh] place-items-center bg-white px-6 py-20 text-center">
       <div className="grid max-w-xl justify-items-center gap-5">
         <Siasat pose="confused" size="md" />
-        <p className="label-mono text-blue">Terjadi kendala</p>
-        <h1 className="text-section font-bold">Ada yang tidak beres di sisi kami.</h1>
+        <p className="label-mono text-blue">{en ? 'Something went wrong' : 'Terjadi kendala'}</p>
+        <h1 className="text-section font-bold">{en ? 'We ran into an error' : 'Ada yang tidak beres di sisi kami.'}</h1>
         <p className="text-lead text-ink-600">
-          Coba muat ulang bagian ini. Kalau masih bermasalah, kabari kami lewat halaman Kontak.
+          {en ? 'Try reloading this section. If the problem continues, please contact us.' : 'Coba muat ulang bagian ini. Kalau masih bermasalah, kabari kami lewat halaman Kontak.'}
         </p>
-        {error.digest ? <p className="label-mono text-ink-500">Kode: {error.digest}</p> : null}
+        {error.digest ? <p className="label-mono text-ink-500">{en ? 'Error code' : 'Kode'} {error.digest}</p> : null}
         <div className="mt-2 flex flex-wrap justify-center gap-3">
           <Button onClick={() => unstable_retry()}>
-            <Icon name="refresh" size={18} strokeWidth={2.5} /> Coba lagi
+            <Icon name="refresh" size={18} strokeWidth={2.5} /> {en ? 'Try again' : 'Coba lagi'}
           </Button>
           <Link href="/" className={buttonStyles.secondary}>
-            Ke Beranda
+            {en ? 'Back to home' : 'Ke Beranda'}
           </Link>
         </div>
       </div>

@@ -1,9 +1,9 @@
-import type { CollectionConfig } from 'payload'
+import { ValidationError, type CollectionConfig } from 'payload'
 import { publicOr, staffRead, write } from '@/access'
 import { mascotPoseField, sortOrderField } from '@/fields'
 import { auditAfterChange, auditAfterDelete } from '@/hooks/audit'
 import { revalidateHooks } from '@/hooks/revalidate'
-import { DIMENSIONS, PAIR_KEYS } from '@/lib/domain/quiz'
+import { DIMENSIONS, PAIR_KEYS, QUIZ_ASSESSMENT_MARKER_PREFIX } from '@/lib/domain/quiz'
 
 const quizHooks = () => {
   const revalidation = revalidateHooks(() => ['quiz'])
@@ -40,7 +40,12 @@ export const QuizQuestions: CollectionConfig = {
   },
   fields: [
     { name: 'text', label: 'Pertanyaan', type: 'text', required: true },
-    { name: 'helpText', label: 'Keterangan kecil', type: 'text' },
+    {
+      name: 'helpText',
+      label: 'Keterangan kecil',
+      type: 'text',
+      admin: { description: 'Penanda versi asesmen ditetapkan saat soal dibuat.' },
+    },
     { name: 'image', label: 'Gambar (opsional)', type: 'upload', relationTo: 'media' },
     {
       name: 'options',
@@ -62,7 +67,22 @@ export const QuizQuestions: CollectionConfig = {
     { name: 'isActive', label: 'Aktif', type: 'checkbox', defaultValue: true, index: true, admin: { position: 'sidebar' } },
     sortOrderField,
   ],
-  hooks: quizHooks(),
+  hooks: {
+    ...quizHooks(),
+    beforeChange: [({ data, originalDoc }) => {
+      const previous = originalDoc?.helpText
+      const markerPrefix = QUIZ_ASSESSMENT_MARKER_PREFIX.toLowerCase()
+      const changesMarker = [previous, data.helpText].some(
+        (value) => typeof value === 'string' && value.trim().toLowerCase().startsWith(markerPrefix),
+      )
+      if (originalDoc && changesMarker && data.helpText !== undefined && data.helpText !== previous) {
+        throw new ValidationError({
+          errors: [{ path: 'helpText', message: 'Gunakan dokumen baru untuk versi asesmen yang berbeda.' }],
+        })
+      }
+      return data
+    }],
+  },
 }
 
 export const QuizResults: CollectionConfig = {
@@ -125,7 +145,12 @@ export const QuizAttempts: CollectionConfig = {
   },
   fields: [
     { name: 'result', label: 'Hasil', type: 'relationship', relationTo: 'quiz-results', index: true },
-    { name: 'matchPercent', label: 'Kecocokan (%)', type: 'number' },
+    {
+      name: 'matchPercent',
+      label: 'Skor (%)',
+      type: 'number',
+      admin: { description: 'Persentase poin studi kasus. Percobaan dari kuis sebelumnya memuat persentase kecocokan.' },
+    },
     { name: 'answers', label: 'Jawaban', type: 'json' },
     { name: 'scores', label: 'Skor', type: 'json' },
     { name: 'lead', label: 'Lead', type: 'relationship', relationTo: 'leads' },

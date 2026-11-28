@@ -303,4 +303,14 @@ describe('pickActiveWave', () => {
     ]
     expect(pickActiveWave(waves, now)?.id).toBe('sooner')
   })
+
+  it('keeps a deadline inclusive in Jakarta and excludes expired and future waves', () => {
+    const waves = [
+      { id: 'current', status: 'dibuka', openDate: '2026-11-01', closeDate: '2026-12-31' },
+      { id: 'next', status: 'dibuka', openDate: '2027-01-02' },
+    ]
+    expect(pickActiveWave(waves, new Date('2026-12-31T16:59:59Z'))?.id).toBe('current')
+    expect(pickActiveWave(waves, new Date('2026-12-31T17:00:00Z'))).toBeNull()
+    expect(pickActiveWave(waves, new Date('2027-01-01T17:00:00Z'))?.id).toBe('next')
+  })
 })

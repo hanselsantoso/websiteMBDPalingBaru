@@ -1,5 +1,6 @@
 'use client'
 
+import { useLocale } from '@/components/providers/LocaleProvider'
 import { useId, useState, type ReactNode } from 'react'
 import { getTableView, type TableRowValues, type TableSort } from '@/lib/data-table'
 import { cn } from '@/lib/utils'
@@ -25,6 +26,7 @@ export function DataTable({
   admin?: boolean
   className?: string
 }) {
+  const en = useLocale() === 'en'
   const printAll = !admin
   const id = useId()
   const [query, setQuery] = useState('')
@@ -37,8 +39,8 @@ export function DataTable({
   const input = admin ? '' : 'min-h-10 rounded-lg border border-ink-300 bg-white px-3 text-navy'
   const button = admin ? 'ad-btn' : 'min-h-10 rounded-lg border border-ink-300 bg-white px-3 text-sm font-semibold disabled:opacity-40'
   const status = view.total
-    ? `${(view.page - 1) * pageSize + 1}–${Math.min(view.page * pageSize, view.total)} dari ${view.total}`
-    : '0 baris'
+    ? `${(view.page - 1) * pageSize + 1}–${Math.min(view.page * pageSize, view.total)} ${en ? 'of' : 'dari'} ${view.total}`
+    : (en ? "0 rows" : '0 baris')
 
   function renderRows(shown: readonly DataTableRow[]) {
     return shown.map(row => (
@@ -60,13 +62,13 @@ export function DataTable({
       <div className={cn(controls, 'no-print')}>
         <label htmlFor={`${id}-search`} className={field}>
           Filter
-          <input id={`${id}-search`} type="search" className={input} value={query} placeholder="Cari dalam tabel" onChange={event => {
+          <input id={`${id}-search`} type="search" className={input} value={query} placeholder={en ? "Search this table" : "Cari dalam tabel"} onChange={event => {
             setQuery(event.target.value)
             setPage(1)
           }} />
         </label>
         <label htmlFor={`${id}-size`} className={field}>
-          Baris per halaman
+          {en ? 'Rows per page' : 'Baris per halaman'}
           <select id={`${id}-size`} value={pageSize} className={input} onChange={event => {
             setPageSize(Number(event.target.value))
             setPage(1)
@@ -75,7 +77,7 @@ export function DataTable({
           </select>
         </label>
       </div>
-      <div className={admin ? 'ad-table-wrap' : 'overflow-x-auto print:overflow-visible'} tabIndex={0} role="region" aria-label={`Tabel ${label}`}>
+      <div className={admin ? 'ad-table-wrap' : 'overflow-x-auto print:overflow-visible'} tabIndex={0} role="region" aria-label={en ? `${label} table` : `Tabel ${label}`}>
         <table className={admin ? 'ad-matrix' : 'w-full min-w-[24rem] border-collapse text-left text-sm print:min-w-0'}>
           <thead>
             <tr className={admin ? undefined : 'border-b-2 border-navy bg-ink-50'}>
@@ -97,7 +99,7 @@ export function DataTable({
           </thead>
           <tbody className={printAll ? 'no-print' : undefined}>
             {view.rows.length ? renderRows(view.rows) : (
-              <tr><td colSpan={columns.length} className={admin ? undefined : 'px-3 py-5'}>{query.trim() ? 'Tidak ada hasil yang cocok.' : 'Belum ada data.'}</td></tr>
+              <tr><td colSpan={columns.length} className={admin ? undefined : 'px-3 py-5'}>{query.trim() ? (en ? "No matching rows." : 'Tidak ada hasil yang cocok.') : (en ? "No data available." : 'Belum ada data.')}</td></tr>
             )}
           </tbody>
           {printAll ? <tbody className="hidden print:table-row-group">{renderRows(rows)}</tbody> : null}
@@ -105,9 +107,9 @@ export function DataTable({
       </div>
       <div className={cn(admin ? 'ad-table-controls' : 'flex flex-wrap items-center gap-2 py-3 text-sm', 'no-print')}>
         <span role="status" className={admin ? 'ad-note' : 'mr-auto text-ink-600'}>{status}</span>
-        <button type="button" className={button} disabled={view.page === 1} onClick={() => setPage(view.page - 1)}>Sebelumnya</button>
-        <span aria-label="Halaman saat ini">{view.page} / {view.pages}</span>
-        <button type="button" className={button} disabled={view.page === view.pages} onClick={() => setPage(view.page + 1)}>Berikutnya</button>
+        <button type="button" className={button} disabled={view.page === 1} onClick={() => setPage(view.page - 1)}>{en ? 'Previous' : 'Sebelumnya'}</button>
+        <span aria-label={en ? "Current page" : "Halaman saat ini"}>{view.page} / {view.pages}</span>
+        <button type="button" className={button} disabled={view.page === view.pages} onClick={() => setPage(view.page + 1)}>{en ? 'Next' : 'Berikutnya'}</button>
       </div>
     </section>
   )

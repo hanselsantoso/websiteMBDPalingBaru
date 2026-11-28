@@ -1,6 +1,8 @@
 import type { Payload, Where } from 'payload'
 import type { BlogPage, BlogPageInput } from './blog-pagination'
 import { PROGRAM_NAME } from './brand/identity'
+import { admissionWaveStatus } from './domain/admission-wave'
+import { LEGACY_QUIZ_WHERE, loadAssessmentQuiz } from '@/server/services/quiz-assessment'
 
 /**
  * Plain Payload reads shared by Next.js pages (through the cached wrappers in
@@ -176,11 +178,14 @@ export async function fetchPosts(payload: Payload, limit = 60): Promise<AnyDoc[]
   return result.docs as AnyDoc[]
 }
 
-export async function fetchPostsPage(payload: Payload, input: BlogPageInput): Promise<BlogPage> {
+export async function fetchPostsPage(payload: Payload, input: BlogPageInput, translatedMatches: string[] = []): Promise<BlogPage> {
   const and: Where[] = [{ _status: { equals: 'published' } }]
   if (input.category) and.push({ 'category.slug': { equals: input.category } })
   if (input.tag) and.push({ 'tags.slug': { equals: input.tag } })
-  if (input.query) and.push({ or: [{ title: { like: input.query } }, { excerpt: { like: input.query } }] })
+  if (input.query) and.push({ or: [
+    { title: { like: input.query } }, { excerpt: { like: input.query } },
+    ...(translatedMatches.length ? [{ title: { in: translatedMatches } }, { excerpt: { in: translatedMatches } }] : []),
+  ] })
   const result = await payload.find({
     collection: 'posts', page: input.page, limit: input.limit, depth: 1,
     sort: ['-featured', '-publishedAt', 'id'], where: { and }, overrideAccess: false,
@@ -341,17 +346,14 @@ export type PmbInfo = {
 }
 
 export function pickActiveWave(waves: AnyDoc[], now = new Date()): AnyDoc | null {
-  const open = waves.filter((w) => w.status === 'dibuka')
-  const upcoming = open
-    .filter(
-      (w) => !w.closeDate || new Date(w.closeDate).getTime() >= now.getTime() - 24 * 3600 * 1000,
-    )
+  const open = waves
+    .filter((wave) => admissionWaveStatus(wave, now) === 'dibuka')
     .sort(
       (a, b) =>
         (a.closeDate ? new Date(a.closeDate).getTime() : Infinity) -
         (b.closeDate ? new Date(b.closeDate).getTime() : Infinity),
     )
-  return upcoming[0] ?? open[0] ?? null
+  return open[0] ?? null
 }
 
 export async function fetchPmbInfo(payload: Payload): Promise<PmbInfo> {
@@ -395,9 +397,16 @@ export type PublicQuizQuestion = {
 }
 
 /** Quiz questions without scoring weights (scoring happens on the server). */
-export async function fetchQuiz(payload: Payload): Promise<PublicQuizQuestion[]> {
+export async function fetchQuiz(payload: Payload, assessment = false): Promise<PublicQuizQuestion[]> {
+  if (assessment) {
+    const questions = await loadAssessmentQuiz(payload)
+    return questions.map(({ id, text, options }) => ({
+      id, text, options: options.map((option) => ({ id: option.id, label: option.label })),
+    }))
+  }
   const result = await payload.find({
     collection: 'quiz-questions',
+    where: LEGACY_QUIZ_WHERE,
     sort: 'sortOrder',
     limit: 50,
     depth: 1,

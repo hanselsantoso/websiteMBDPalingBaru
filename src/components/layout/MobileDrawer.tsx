@@ -1,10 +1,15 @@
 'use client'
 
-import Link from 'next/link'
+import { LanguageSwitcher } from './LanguageSwitcher'
+import { uiCopy } from '@/lib/i18n-copy'
+import { LocaleLink as Link, useLocale } from '@/components/providers/LocaleProvider'
+
+
 import { useEffect, useRef } from 'react'
 import { PrimaryCta, SecondaryActions } from '@/components/cta/CtaLinks'
 import { Siasat } from '@/components/mascot/Siasat'
-import { Fin, Wave } from '@/components/patterns/Patterns'
+import { Wave } from '@/components/patterns/Patterns'
+import Image from '@/components/ui/CmsImage'
 import { Icon } from '@/components/ui/Icon'
 import { isActivePath, isExternalHref } from '@/lib/links'
 import { cn } from '@/lib/utils'
@@ -24,6 +29,7 @@ export function MobileDrawer({
   logoUrl: string | null
   pathname: string
 }) {
+  const locale = useLocale()
   const ref = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
@@ -37,7 +43,7 @@ export function MobileDrawer({
     <dialog
       ref={ref}
       onClose={onClose}
-      aria-label="Menu navigasi"
+      aria-label={uiCopy(locale, "Menu navigasi")}
       className="m-0 h-dvh max-h-none w-full max-w-none overflow-hidden bg-navy p-0 text-white backdrop:bg-navy"
     >
       <div className="relative flex h-full flex-col overflow-y-auto overscroll-contain">
@@ -47,12 +53,13 @@ export function MobileDrawer({
             type="button"
             onClick={onClose}
             className="grid size-12 place-items-center rounded-full border-2 border-white/40 hover:border-lime"
-            aria-label="Tutup menu"
+            aria-label={uiCopy(locale, "Tutup menu")}
           >
             <Icon name="close" size={22} strokeWidth={2.5} />
           </button>
         </div>
-        <nav aria-label="Menu utama" className="container-arus mt-4 flex-1 pb-56">
+        <nav aria-label={uiCopy(locale, "Menu utama")} className="container-arus mt-4 flex-1 pb-8">
+          <LanguageSwitcher className="mb-3" />
           <ul className="grid gap-1">
             {items.map((item, index) => {
               const active = isActivePath(pathname, item.href)
@@ -69,12 +76,20 @@ export function MobileDrawer({
                       active ? 'text-lime' : 'text-white hover:text-lime',
                     )}
                   >
-                    <span className="label-mono w-8 text-xs text-white/50">{String(index + 1).padStart(2, '0')}</span>
                     {item.label}
-                    {active ? <Fin className="size-6 text-lime" /> : null}
+                    {active ? (
+                      <Image
+                        src="/images/illustrations/nav-siasat-wink.webp"
+                        width={128}
+                        height={128}
+                        sizes="44px"
+                        alt=""
+                        className="size-11 shrink-0 object-contain"
+                      />
+                    ) : null}
                   </Link>
                   {item.children?.length ? (
-                    <ul className="mb-2 ml-11 grid gap-1">
+                    <ul className="mb-2 ml-4 grid gap-1">
                       {item.children.map((child) => (
                         <li key={child.href + child.label}>
                           <Link href={child.href} target={child.newTab || isExternalHref(child.href) ? '_blank' : undefined} rel={child.newTab || isExternalHref(child.href) ? 'noopener noreferrer' : undefined} onClick={onClose} className="inline-flex min-h-11 items-center text-lg font-semibold text-white/80 hover:text-lime">
@@ -93,11 +108,9 @@ export function MobileDrawer({
             <SecondaryActions placement="drawer" className="flex-col items-start gap-y-2" />
           </div>
         </nav>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40">
-          <Wave preset="toNavy" className="h-full" />
-        </div>
-        <div className="pointer-events-none absolute right-2 bottom-0 translate-y-[18%]">
-          <Siasat pose="greeting" size="md" decorative onDark loop={open} />
+        <div aria-hidden="true" className="pointer-events-none relative isolate flex shrink-0 justify-end overflow-hidden pr-4">
+          <Wave preset="toNavy" className="absolute inset-x-0 bottom-0 -z-10 h-28" />
+          <Siasat pose="greeting" size="sm" decorative onDark loop={open} />
         </div>
       </div>
     </dialog>

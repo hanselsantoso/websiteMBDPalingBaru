@@ -1,3 +1,4 @@
+import { withLocale } from '@/lib/i18n'
 import type { MetadataRoute } from 'next'
 import { getCurriculum, getSitemapDocs } from '@/lib/data'
 import { siteUrl } from '@/lib/preview'
@@ -8,7 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteUrl()
   const [docs, curriculum] = await Promise.all([getSitemapDocs(), getCurriculum()])
   const date = (value?: string | null) => (value ? new Date(value) : undefined)
-  return [
+  const pages: MetadataRoute.Sitemap = [
     { url: `${base}/siasat`, changeFrequency: 'monthly' },
     ...docs.pages
       .filter((page) => !page.noIndex && !EXCLUDED_CMS_PAGES.has(page.slug))
@@ -40,4 +41,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.6,
       })),
   ]
+  return pages.flatMap((page) => {
+    const en = base + withLocale(new URL(page.url).pathname, 'en')
+    const alternates = { languages: { id: page.url, en } }
+    return [{ ...page, alternates }, { ...page, url: en, alternates }]
+  })
 }

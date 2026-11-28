@@ -1,6 +1,9 @@
 'use client'
 
-import Link from 'next/link'
+import { uiCopy } from '@/lib/i18n-copy'
+import { LocaleLink as Link, useLocale } from '@/components/providers/LocaleProvider'
+
+
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { BrochureButton, QuizLink, WhatsAppLink } from '@/components/cta/CtaLinks'
@@ -14,6 +17,7 @@ import { cn } from '@/lib/utils'
  * the keyboard is open, during PMB form steps, or when another primary CTA is visible.
  */
 export function StickyBar() {
+  const locale = useLocale()
   const site = useSite()
   const pathname = usePathname()
   const [pastHero, setPastHero] = useState(false)
@@ -67,7 +71,7 @@ export function StickyBar() {
         visible ? 'translate-y-0 opacity-100' : 'pointer-events-none invisible translate-y-full opacity-0',
       )}
     >
-      <nav aria-label="Aksi cepat" className="flex h-16 items-center gap-2 px-3">
+      <nav aria-label={uiCopy(locale, "Aksi cepat")} className="flex h-16 items-center gap-2 px-3">
         {items.map((item) => {
           switch (item.kind) {
             case 'daftar':

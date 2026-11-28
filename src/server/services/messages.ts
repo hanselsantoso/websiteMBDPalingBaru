@@ -74,7 +74,7 @@ export async function sendTemplateTest(
 ): Promise<ServiceResult<{ sentTo: string }>> {
   try {
     const template = await req.payload.findByID({ collection: 'message-templates', id: templateId, depth: 0, overrideAccess: false, user: req.user, req })
-    const email = req.user?.email
+    const email = req.user?.collection === 'admins' ? req.user.email : undefined
     if (template.channel !== 'email' || !email) return failure('not_email', 'Tes kirim hanya untuk template email.')
     if (!template.body?.trim()) return failure('empty_template', 'Isi template email masih kosong.')
     const variables = {

@@ -1,0 +1,133 @@
+{
+  "tool": "ImageGen bawaan",
+  "format": "WebP transparan",
+  "dimensions": {
+    "width": 960,
+    "height": 720
+  },
+  "sharedPrompt": "Create one new isolated production cartoon illustration using the attached images as identity references only, in the order listed. Visually match each real reference character's species, silhouette, face shapes, glasses if present, outfit colors, and student trousers. Do not clone reference poses or transfer another character's clothes. Expressive original hand-inked 2D retro collegiate comic, heavy dark navy lines, crisp warm opaque cel colors, readable expressions and clean tangents. Characters have believable different heights and expressive silhouettes. Every character is clothed in a top and full trousers, all ears, paws, tails and shoes visible. One single cohesive compact landscape composition about 4:3, with an 8% safe margin around everything. Strong deliberate eye lines and genuinely interacting body language. On genuine fully transparent alpha, no cast shadow, floor, haze, colored backdrop, enclosing badge, gradient, photographic surface, rendering effects, words, letters, numbers, logos, or watermarks. A prop must have a clear connection to the action. Keep the palette in the same MBD mascot family.",
+  "scenes": [
+    {
+      "id": "tos-setelah-demo",
+      "title": "Tos setelah demo",
+      "cast": [
+        "Siasat",
+        "Bimo"
+      ],
+      "asset": "public/images/mascot/friends/interactions/tos-setelah-demo.webp",
+      "bytes": 106570,
+      "refs": [
+        "public/images/mascot/toon/greeting.webp",
+        "public/images/mascot/friends/bimo/menyapa.webp"
+      ],
+      "prompt": "Exactly two: Siasat the orange fox in blue jacket and cyan scarf and Bimo the cinnamon otter in blue varsity jacket and olive trousers. A buoyant mid-jump high five, hands meeting at the top middle of the composition, eye contact with joy, Siasat laughing with eyes squeezed, Bimo with one heel kicked back and a broad astonished grin. One closed slim portfolio tucked under Bimo's non-high-fiving arm. Athletic upward diagonal silhouettes, classic believable comic timing. One small impact tick next to the meeting paws only."
+    },
+    {
+      "id": "lempar-ide",
+      "title": "Lempar ide",
+      "cast": [
+        "Rara",
+        "Piko"
+      ],
+      "asset": "public/images/mascot/friends/interactions/lempar-ide.webp",
+      "bytes": 98468,
+      "refs": [
+        "public/images/mascot/friends/rara/fokus.webp",
+        "public/images/mascot/friends/piko/antusias.webp"
+      ],
+      "prompt": "Exactly two: Rara the copper female fox with teal clip, purple glasses and green jacket makes a playful forward release pose with one foot behind, as if just throwing a small cream paper airplane across the scene. Piko the pale cream rabbit with long floppy unequal ears, coral bomber jacket and teal trousers leans the opposite direction with paws open to catch it, lively startled eyes and open happy mouth. The airplane flies in the open gap at chest height. Narrow optional two short motion lines closely attached to the plane. Distinct poses and faces, no table."
+    },
+    {
+      "id": "paket-hampir-jatuh",
+      "title": "Paket hampir jatuh",
+      "cast": [
+        "Bimo",
+        "Kiko"
+      ],
+      "asset": "public/images/mascot/friends/interactions/paket-hampir-jatuh.webp",
+      "bytes": 115042,
+      "refs": [
+        "public/images/mascot/friends/bimo/menyapa.webp",
+        "public/images/mascot/friends/kiko/curiga.webp"
+      ],
+      "prompt": "Exactly two: Bimo the cinnamon otter in a blue varsity jacket and olive pants is leaning backward, balancing two plain warm-kraft shipping boxes, brows high with good-humored panic. Kiko the squat black cat with gold eyes and mustard hoodie crouches on the right, concentrated and helpful, catching one smaller teal parcel nearly slipping from the stack. Contact the parcel naturally with the paws. A clean descending diagonal tells the rescue. Only three boxes total, no address labels, no barcode."
+    },
+    {
+      "id": "teliti-bukti",
+      "title": "Teliti bukti",
+      "cast": [
+        "Kiko",
+        "Uli"
+      ],
+      "asset": "public/images/mascot/friends/interactions/teliti-bukti.webp",
+      "bytes": 106450,
+      "refs": [
+        "public/images/mascot/friends/kiko/curiga.webp",
+        "public/images/mascot/friends/uli/membaca.webp"
+      ],
+      "prompt": "Exactly two: Kiko the charcoal cat in mustard hoodie and navy trousers crouches behind the left edge of one cream report card with a tiny unlabeled three-bar chart, investigating one mark with a hand-held round magnifying glass. He has suspicious narrowing amber eyes. Uli the tawny owl in large teal glasses, plum vest and dark trousers is half-kneeling on the opposite side, makes a delighted aha face and points one wing tip at the same mark. Both gaze toward where the magnifier meets the report card. Card about the size of a clipboard, no desk or floor, credible drawn-chart with no labels."
+    },
+    {
+      "id": "studio-foto-produk",
+      "title": "Studio foto produk",
+      "cast": [
+        "Siasat",
+        "Piko"
+      ],
+      "asset": "public/images/mascot/friends/interactions/studio-foto-produk.webp",
+      "bytes": 119686,
+      "refs": [
+        "public/images/mascot/toon/greeting.webp",
+        "public/images/mascot/friends/piko/antusias.webp"
+      ],
+      "prompt": "Exactly two: Piko, pale cream rabbit in coral bomber and dark teal trousers, kneels with one bright expressive eye squeezed and holds a small cobalt smartphone horizontally, taking a photo of a teal insulated cup. Siasat, orange fox in blue jacket and cyan scarf, bends playfully to turn the cup toward the phone atop a single low ochre pedestal box. Siasat steadies it and smiles with proud tilted eyebrows. The two clearly share a task, both look at the product or phone, photo session direction line right to left, no phone interface text or floating symbols, no photo background."
+    },
+    {
+      "id": "satukan-potongan",
+      "title": "Satukan potongan",
+      "cast": [
+        "Uli",
+        "Rara"
+      ],
+      "asset": "public/images/mascot/friends/interactions/satukan-potongan.webp",
+      "bytes": 96562,
+      "refs": [
+        "public/images/mascot/friends/uli/membaca.webp",
+        "public/images/mascot/friends/rara/fokus.webp"
+      ],
+      "prompt": "Exactly two: Uli the tawny owl with teal spectacles and plum sweater vest, and Rara the feminine copper fox with violet glasses, teal hair clip and sea-green jacket, kneel on either side and actively slide two giant lightweight jigsaw pieces together in the center at ground level. The colors are cyan and apricot, two clear pieces about knee high, precisely one tab meets one socket. Uli looks intently at the join with concentrated comic brow and one wing steadying the piece, Rara grins empathetically with raised eyebrows while assisting with both paws. Their bodies orient toward each other across the same task, no floating icons, no tabletop, no other puzzle pieces."
+    },
+    {
+      "id": "dua-usulan",
+      "title": "Dua usulan",
+      "cast": [
+        "Rara",
+        "Kiko"
+      ],
+      "asset": "public/images/mascot/friends/interactions/dua-usulan.webp",
+      "bytes": 106972,
+      "refs": [
+        "public/images/mascot/friends/rara/fokus.webp",
+        "public/images/mascot/friends/kiko/curiga.webp"
+      ],
+      "prompt": "Exactly two: Rara the female copper fox with purple glasses, green jacket and navy pants and Kiko the short black cat in mustard hoodie and navy trousers. They face each other at a playful strategy standoff, Rara animatedly proposing a single orange design sketch sheet with only two unlabeled geometric wireframe boxes. Kiko raises one skeptical eyebrow while holding his blue alternative sketch, arm angled to show it to Rara. Expressive genuine engaged disagreement, not hostility; Rara smiling with one palm open and Kiko half smiling with tail curve. Both papers are small, ears and shoes clearly visible, with a tight seated-on-heels versus standing asymmetry, no table or board."
+    },
+    {
+      "id": "latihan-presentasi",
+      "title": "Latihan presentasi",
+      "cast": [
+        "Siasat",
+        "Uli",
+        "Bimo"
+      ],
+      "asset": "public/images/mascot/friends/interactions/latihan-presentasi.webp",
+      "bytes": 133180,
+      "refs": [
+        "public/images/mascot/toon/greeting.webp",
+        "public/images/mascot/friends/uli/membaca.webp",
+        "public/images/mascot/friends/bimo/menyapa.webp"
+      ],
+      "prompt": "Exactly three arranged in one depth-staggered arc: Siasat the orange fox in blue jacket, cyan scarf and dark pants is nervous but trying a rehearsal, standing left with one palm up and a small unmarked note card in the other paw. Uli, the tawny owl with teal glasses and plum vest, center slightly behind, smiles calmly and gives him an affirming small nod and one supportive wing gesture. Bimo is cinnamon otter right in blue varsity and olive pants, reacts with delighted wide-eyed encouragement and leans closer with a double thumbs-up. All fully dressed and clear of cropping. No podium, no background, no whiteboard, human warm expressions make it clear this is practice among friends."
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { uiCopy } from '@/lib/i18n-copy'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import type { ReactElement } from 'react'
@@ -6,6 +7,8 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import { getPage, getSiteSettings, isDraftMode } from '@/lib/data'
 import { redirectIfConfigured } from '@/lib/routing'
 import { breadcrumbLd, docMetadata } from '@/lib/seo'
+import { getContentTranslator, translateContent } from '@/lib/content-translations'
+import { withLocale, type Locale } from '@/lib/i18n'
 
 type Doc = Record<string, any>
 
@@ -23,11 +26,15 @@ export async function loadCmsPage(slug: string): Promise<Doc | null> {
   return getPage(slug, draft)
 }
 
-export async function cmsPageMetadata(slug: string, path: string, emptyTitle = 'Halaman tidak ditemukan'): Promise<Metadata> {
-  const [page, settings] = await Promise.all([loadCmsPage(slug), getSiteSettings()])
-  if (!page) return { title: emptyTitle, robots: { index: false } }
+export async function cmsPageMetadata(slug: string, path: string, emptyTitle?: string, locale: Locale = 'id'): Promise<Metadata> {
+  const [rawPage, rawSettings, cmsTranslate] = await Promise.all([loadCmsPage(slug), getSiteSettings(), getContentTranslator(locale)])
+  const translate = (text: string) => uiCopy(locale, cmsTranslate(text))
+  const page = translateContent(rawPage, translate)
+  const settings = translateContent(rawSettings, translate)
+  if (!page) return { title: emptyTitle ?? (locale === 'en' ? 'Page not found' : 'Halaman tidak ditemukan'), robots: { index: false } }
   return docMetadata({
     doc: page,
+    locale,
     path,
     // The home page keeps the site-wide default title from the layout.
     fallbackTitle: slug === 'beranda' ? null : page.title,
@@ -40,14 +47,19 @@ export async function CmsPage({
   slug,
   path,
   emptyState,
+  locale = 'id',
 }: {
   slug: string
   path: string
   emptyState?: ReactElement
+  locale?: Locale
 }) {
-  const [page, settings] = await Promise.all([loadCmsPage(slug), getSiteSettings()])
+  const [rawPage, rawSettings, cmsTranslate] = await Promise.all([loadCmsPage(slug), getSiteSettings(), getContentTranslator(locale)])
+  const translate = (text: string) => uiCopy(locale, cmsTranslate(text))
+  const page = translateContent(rawPage, translate)
+  const settings = translateContent(rawSettings, translate)
   if (!page) {
-    await redirectIfConfigured(path)
+    await redirectIfConfigured(path, locale)
     return emptyState ?? notFound()
   }
   const meta = (page.meta ?? {}) as Doc
@@ -56,12 +68,12 @@ export async function CmsPage({
       {meta.jsonLd !== false && path !== '/' ? (
         <JsonLd
           data={breadcrumbLd([
-            { name: 'Beranda', path: '/' },
-            { name: String(page.title ?? ''), path },
+            { name: locale === 'en' ? 'Home' : 'Beranda', path: withLocale('/', locale) },
+            { name: String(page.title ?? ''), path: withLocale(path, locale) },
           ])}
         />
       ) : null}
-      <RenderBlocks blocks={page.layout} pageSlug={slug} {...siteFlags(settings)} />
+      <RenderBlocks blocks={page.layout} pageSlug={slug} locale={locale} translate={translate} {...siteFlags(settings)} />
     </>
   )
 }

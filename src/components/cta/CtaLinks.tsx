@@ -1,7 +1,8 @@
 'use client'
 
 import { m, useMotionValue, useSpring } from 'motion/react'
-import Link from 'next/link'
+import { LocaleLink as Link, useLocale } from '@/components/providers/LocaleProvider'
+import { withLocale } from '@/lib/i18n'
 import { useEffect, useRef, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { useMotionPreference } from '@/components/providers/MotionProvider'
 import { useSite } from '@/components/providers/SiteProvider'
@@ -36,6 +37,7 @@ export function PrimaryCta({
   /** Content CTAs register their visibility; chrome CTAs (header, drawer) do not. */
   register?: boolean
 }) {
+  const en = useLocale() === 'en'
   const { cta, setPrimaryVisibility, isOtherPrimaryVisible } = useSite()
   const { reduced } = useMotionPreference()
   const ref = useRef<HTMLSpanElement>(null)
@@ -82,7 +84,7 @@ export function PrimaryCta({
       {cta.primaryExternal ? (
         <a href={cta.primaryHref} target="_blank" rel="noopener noreferrer" className={classes} onClick={onClick}>
           {content}
-          <span className="sr-only">(membuka situs pendaftaran ISTTS di tab baru)</span>
+          <span className="sr-only">{en ? '(opens the ISTTS admissions site in a new tab)' : '(membuka situs pendaftaran ISTTS di tab baru)'}</span>
         </a>
       ) : (
         <Link href={cta.primaryHref} className={classes} onClick={onClick}>
@@ -104,8 +106,10 @@ export function WhatsAppLink({
   children?: ReactNode
   label?: string | null
 }) {
+  const locale = useLocale()
+  const en = locale === 'en'
   const { cta } = useSite()
-  const href = cta.whatsappHref ?? '/kontak'
+  const href = cta.whatsappHref ?? withLocale('/kontak', locale)
   const external = Boolean(cta.whatsappHref)
   return (
     <a
@@ -114,7 +118,7 @@ export function WhatsAppLink({
       rel={external ? 'noopener noreferrer' : undefined}
       className={className}
       onClick={() => track('cta_whatsapp_click', { placement, configured: external })}
-      title={external ? undefined : 'Nomor WhatsApp belum diatur, menuju halaman kontak'}
+      title={external ? undefined : (en ? "WhatsApp is unavailable. This opens the contact page." : 'Nomor WhatsApp belum diatur, menuju halaman kontak')}
     >
       {children ?? (
         <>

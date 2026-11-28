@@ -1,0 +1,431 @@
+{
+  "slug": "pmb",
+  "title": "Penerimaan Mahasiswa Baru",
+  "importedOn": "2026-11-28",
+  "header": {
+    "eyebrow": "S1 MANAJEMEN BISNIS DIGITAL",
+    "title": "Penerimaan Mahasiswa Baru MBD",
+    "highlight": "Mahasiswa Baru",
+    "intro": "Temukan jalur masuk, berkas, jadwal, biaya kuliah, dan beasiswa MBD. Siapkan data yang dibutuhkan untuk mulai pra-pendaftaran.",
+    "actions": [
+      {
+        "label": "Mulai pra-pendaftaran",
+        "kind": "link",
+        "href": "#pra-pendaftaran"
+      },
+      {
+        "label": "Lihat jadwal dan biaya",
+        "kind": "link",
+        "href": "#jadwal"
+      },
+      {
+        "label": "Cek status",
+        "kind": "link",
+        "href": "#cek-status"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "blockType": "cardGrid",
+      "anchorId": "info-pendaftaran",
+      "heading": "Sebelum kamu mendaftar",
+      "intro": "Baca panduan penerimaan S1 Manajemen Bisnis Digital tahun akademik 2027/2028.",
+      "columns": "3",
+      "style": "sticker",
+      "cards": [
+        {
+          "title": "Jalur dan berkas",
+          "body": "Kenali jalur Prestasi dan Reguler, lalu siapkan kelengkapan yang tercantum pada formulir resmi.",
+          "icon": "target",
+          "linkHref": "#jalur"
+        },
+        {
+          "title": "Jadwal dan biaya",
+          "body": "Cek gelombang yang tersedia. Bandingkan uang sumbangan pendidikan dan biaya kuliah paket per semester.",
+          "icon": "bisnis",
+          "linkHref": "#jadwal"
+        },
+        {
+          "title": "Beasiswa",
+          "body": "Lihat manfaat dan ketentuan Beasiswa Program MBD serta opsi umum dari kampus.",
+          "icon": "beasiswa",
+          "linkHref": "#beasiswa"
+        }
+      ]
+    },
+    {
+      "blockType": "pmbInfo",
+      "section": "tracks",
+      "anchorId": "jalur",
+      "heading": "Jalur masuk S1 MBD",
+      "intro": "Jadwal penerimaan memuat jalur Prestasi dan Reguler. Pra-pendaftaran mengikuti pilihan yang sedang dibuka."
+    },
+    {
+      "blockType": "pmbInfo",
+      "section": "requirements",
+      "anchorId": "persyaratan",
+      "heading": "Berkas yang perlu disiapkan",
+      "intro": "Daftar ini berasal dari formulir resmi D3 dan S1. Siapkan berkas untuk tahap pengisian data penerimaan."
+    },
+    {
+      "blockType": "pmbInfo",
+      "section": "waves",
+      "anchorId": "jadwal",
+      "heading": "Jadwal penerimaan 2027/2028",
+      "intro": "Tanggal Jalur Prestasi mengikuti pengumuman penerimaan kampus. Portal administrasi mencantumkan tahun berbeda untuk periode itu. Konfirmasi jadwal dengan tim PMB sebelum mengatur pendaftaran atau pembayaran."
+    },
+    {
+      "blockType": "pmbInfo",
+      "section": "fees",
+      "anchorId": "biaya",
+      "eyebrow": null,
+      "heading": "Biaya kuliah S1 Manajemen Bisnis Digital",
+      "intro": "USP adalah uang sumbangan pendidikan. Biaya kuliah paket mencakup SPP dan SKS per semester."
+    },
+    {
+      "blockType": "cardGrid",
+      "anchorId": "beasiswa",
+      "heading": "Pilihan beasiswa",
+      "intro": "Beasiswa Program MBD khusus untuk calon mahasiswa MBD. Opsi umum berikut mengikuti syarat dan ketersediaan dari tim PMB.",
+      "columns": "3",
+      "style": "sticker",
+      "cards": [
+        {
+          "title": "Beasiswa Program MBD",
+          "body": "Khusus calon mahasiswa S1 MBD. Potongan 100% USP dan 50% biaya kuliah (SPP dan SKS). Program ini tidak bisa digabung dengan beasiswa atau promo lain.",
+          "icon": "beasiswa"
+        },
+        {
+          "title": "Putra dan Putri Guru",
+          "body": "Potongan 50% USP serta 50% SPP dan SKS. Orang tua mengajar aktif di SMA minimal 10 tahun. Siapkan surat pengangkatan, ikuti wawancara, dan raih TPA minimal 500.",
+          "icon": "beasiswa"
+        },
+        {
+          "title": "Silver Eagle",
+          "body": "Rata-rata rapor Matematika dan Bahasa Inggris di atas 75 serta TPA minimal 450. Potongan 75% USP dan biaya 6 SKS.",
+          "icon": "beasiswa"
+        },
+        {
+          "title": "Golden Eagle",
+          "body": "Rata-rata rapor Matematika dan Bahasa Inggris di atas 85 serta TPA minimal 500. Potongan 50% USP dan biaya 10 SKS.",
+          "icon": "beasiswa"
+        },
+        {
+          "title": "Minat dan Bakat",
+          "body": "Jalur OSIS memberi potongan 100% USP dan SPP dengan surat sekolah serta wawancara. Jalur lomba memberi potongan 50% USP dan 100% SPP untuk tiga besar lomba kota atau kabupaten dengan bukti prestasi dan surat sekolah.",
+          "icon": "beasiswa"
+        },
+        {
+          "title": "Keluarga ISTTS",
+          "body": "Keluarga kandung anggota sivitas dapat memperoleh tambahan potongan 40% USP dan potongan 20% SPP. Sepupu atau keponakan dapat memperoleh tambahan potongan 20% USP. Siapkan bukti hubungan keluarga dan identitas akademik terkait.",
+          "icon": "beasiswa"
+        },
+        {
+          "title": "Olimpiade Sains Nasional",
+          "body": "Potongan 50% USP dan 100% SKS. Syaratnya antara lain tiga besar olimpiade sains tingkat provinsi, rata-rata rapor di atas 90, bukti prestasi, TPA minimal 550, dan wawancara.",
+          "icon": "beasiswa"
+        },
+        {
+          "title": "Beasiswa Kerja Sama",
+          "body": "Ditujukan bagi siswa kelas XII dari SMA yang memiliki kerja sama dengan ISTTS. Tanyakan surat penawaran dan rincian program kepada sekolah atau tim PMB.",
+          "icon": "beasiswa"
+        }
+      ]
+    },
+    {
+      "blockType": "timeline",
+      "anchorId": "alur-pendaftaran",
+      "heading": "Langkah pra-pendaftaran MBD",
+      "items": [
+        {
+          "label": "Langkah 1",
+          "title": "Pilih jalur dan siapkan data",
+          "body": "Periksa jadwal, perkiraan biaya, dan syarat berkas sebelum mengisi formulir."
+        },
+        {
+          "label": "Langkah 2",
+          "title": "Isi pra-pendaftaran",
+          "body": "Masukkan data diri, asal sekolah, dan pilihan pendaftaran. Pastikan email dan WhatsApp aktif."
+        },
+        {
+          "label": "Langkah 3",
+          "title": "Simpan nomor registrasi",
+          "body": "Pakai nomor tersebut dan empat digit terakhir WhatsApp untuk mengecek status."
+        },
+        {
+          "label": "Langkah 4",
+          "title": "Ikuti arahan tim PMB",
+          "body": "Tim PMB akan memandu kelengkapan data dan tahap penerimaan. Ikuti instruksi resmi sebelum melakukan pembayaran."
+        }
+      ]
+    },
+    {
+      "blockType": "formEmbed",
+      "form": "pmb",
+      "anchorId": "pra-pendaftaran",
+      "heading": "Mulai pra-pendaftaran MBD",
+      "intro": "Siapkan nama, jurusan dan tahun lulus sekolah, email, serta nomor WhatsApp aktif. Nomor registrasi muncul setelah formulir terkirim.",
+      "mascotPose": "pointing"
+    },
+    {
+      "blockType": "formEmbed",
+      "form": "statusPmb",
+      "anchorId": "cek-status",
+      "heading": "Cek status pra-pendaftaran",
+      "intro": "Masukkan nomor registrasi dan empat digit terakhir WhatsApp yang dipakai saat mengisi formulir."
+    },
+    {
+      "blockType": "faq",
+      "scope": "pmb",
+      "anchorId": "faq-pmb",
+      "heading": "Pertanyaan tentang pendaftaran",
+      "limit": 8
+    }
+  ],
+  "settings": {
+    "academicYear": "2027/2028",
+    "requirements": [
+      {
+        "text": "Pasfoto berwarna ukuran 4 × 6."
+      },
+      {
+        "text": "Pindai rapor kelas X dan XI yang sudah dilegalisasi."
+      },
+      {
+        "text": "Pindai akta kelahiran asli."
+      },
+      {
+        "text": "Pindai Kartu Keluarga asli."
+      },
+      {
+        "text": "Pindai KTP asli bagi yang sudah memilikinya. Formulir menyediakan pengisian NIK dari KK bagi yang belum memiliki KTP."
+      },
+      {
+        "text": "Siapkan NISN, data sekolah, serta data orang tua atau wali untuk melengkapi formulir resmi."
+      }
+    ],
+    "fees": [
+      {
+        "item": "USP normal",
+        "amount": "Rp23.000.000",
+        "note": "Tarif dasar S1 MBD."
+      },
+      {
+        "item": "USP Jalur Prestasi I",
+        "amount": "Rp11.500.000",
+        "note": "Potongan 50% dari tarif dasar."
+      },
+      {
+        "item": "USP Jalur Prestasi II",
+        "amount": "Rp13.800.000",
+        "note": "Potongan 40% dari tarif dasar."
+      },
+      {
+        "item": "USP Jalur Reguler I",
+        "amount": "Rp16.100.000",
+        "note": "Potongan 30% dari tarif dasar."
+      },
+      {
+        "item": "USP Jalur Reguler II",
+        "amount": "Rp18.400.000",
+        "note": "Potongan 20% dari tarif dasar."
+      },
+      {
+        "item": "USP Jalur Reguler III",
+        "amount": "Rp20.700.000",
+        "note": "Potongan 10% dari tarif dasar."
+      },
+      {
+        "item": "Biaya kuliah paket normal",
+        "amount": "Rp22.200.000",
+        "note": "SPP dan SKS per semester."
+      },
+      {
+        "item": "Biaya kuliah paket dengan beasiswa 50%",
+        "amount": "Rp11.100.000",
+        "note": "Per semester untuk penerima potongan yang memenuhi ketentuan."
+      }
+    ],
+    "feesNote": "Biaya kuliah paket dengan beasiswa dapat diangsur tiga kali dalam satu semester sesuai ketentuan kampus. Konfirmasi tagihan dan potongan yang berlaku dengan tim PMB."
+  },
+  "tracks": [
+    {
+      "name": "Jalur Prestasi",
+      "description": "Gelombang Prestasi I dan II menggunakan pengurangan USP berdasarkan periode.",
+      "highlights": [
+        {
+          "text": "Prestasi I menerapkan potongan USP 50%."
+        },
+        {
+          "text": "Prestasi II menerapkan potongan USP 40%."
+        }
+      ],
+      "sortOrder": 1,
+      "isActive": true
+    },
+    {
+      "name": "Jalur Reguler",
+      "description": "Tiga gelombang reguler dengan tarif USP berbeda. Pilihan pra-pendaftaran mengikuti jadwal gelombang yang dikonfirmasi.",
+      "highlights": [
+        {
+          "text": "Reguler I menerapkan potongan USP 30%."
+        },
+        {
+          "text": "Reguler II menerapkan potongan USP 20%."
+        },
+        {
+          "text": "Reguler III menerapkan potongan USP 10%."
+        }
+      ],
+      "sortOrder": 2,
+      "isActive": false
+    }
+  ],
+  "waves": [
+    {
+      "name": "Jalur Prestasi I",
+      "openDate": "2026-08-01T05:00:00.000Z",
+      "closeDate": "2026-10-31T05:00:00.000Z",
+      "status": "ditutup",
+      "note": "Potongan USP 50%. Rincian nominal ada pada tabel biaya.",
+      "sortOrder": 1
+    },
+    {
+      "name": "Jalur Prestasi II",
+      "openDate": "2026-11-01T05:00:00.000Z",
+      "closeDate": "2026-12-31T05:00:00.000Z",
+      "status": "dibuka",
+      "note": "Potongan USP 40%. Konfirmasi jadwal dengan tim PMB sebelum membayar.",
+      "sortOrder": 2
+    },
+    {
+      "name": "Jalur Reguler I",
+      "status": "akan-datang",
+      "note": "Potongan USP 30%. Tanggal pembukaan menunggu konfirmasi tim PMB.",
+      "sortOrder": 3
+    },
+    {
+      "name": "Jalur Reguler II",
+      "status": "akan-datang",
+      "note": "Potongan USP 20%. Tanggal pembukaan menunggu konfirmasi tim PMB.",
+      "sortOrder": 4
+    },
+    {
+      "name": "Jalur Reguler III",
+      "status": "akan-datang",
+      "note": "Potongan USP 10%. Tanggal pembukaan menunggu konfirmasi tim PMB.",
+      "sortOrder": 5
+    }
+  ],
+  "faq": [
+    {
+      "question": "Apa fungsi pra-pendaftaran MBD?",
+      "answer": "Pra-pendaftaran mencatat minat dan data awalmu. Tim PMB akan mengarahkan tahap kelengkapan dan penerimaan resmi."
+    },
+    {
+      "question": "Informasi apa yang perlu disiapkan untuk formulir MBD?",
+      "answer": "Siapkan nama lengkap, kota, email, WhatsApp, nama dan jurusan sekolah, serta tahun lulus. Daftar berkas tahap resmi tersedia di bagian persyaratan."
+    },
+    {
+      "question": "Bagaimana cara melihat status pra-pendaftaran?",
+      "answer": "Buka bagian Cek status pra-pendaftaran, lalu masukkan nomor registrasi dan empat digit terakhir WhatsApp yang dipakai saat mengisi formulir."
+    },
+    {
+      "question": "Di mana saya bisa melihat biaya dan jadwal terbaru?",
+      "answer": "Jadwal gelombang dan tabel USP serta biaya paket tersedia di halaman PMB ini. Konfirmasikan gelombang dengan tim PMB sebelum melakukan pembayaran."
+    },
+    {
+      "question": "Apakah ada beasiswa untuk calon mahasiswa MBD?",
+      "answer": "Ada Beasiswa Program MBD dan opsi umum. Baca manfaat serta persyaratannya di bagian Pilihan beasiswa. Tim PMB mengonfirmasi ketersediaan dan penggabungan potongan."
+    },
+    {
+      "question": "Bagaimana jika saya masih ingin mengenal program MBD?",
+      "answer": "Buka menu Program dan Kurikulum untuk melihat kegiatan belajar serta mata kuliah. Gunakan halaman Kontak untuk bertanya kepada tim MBD."
+    }
+  ],
+  "blog": {
+    "tags": [
+      {
+        "name": "Event",
+        "slug": "event"
+      },
+      {
+        "name": "Prestasi",
+        "slug": "prestasi"
+      }
+    ],
+    "posts": [
+      {
+        "slug": "campus-visit-mbd-juni-2026",
+        "title": "Mahasiswa MBD ikut menyelenggarakan Campus Visit 2026",
+        "excerpt": "Siswa dari SMAK Santa Maria dan SMAK Frateran mengenal perkuliahan lewat workshop, tur kampus, dan pameran karya.",
+        "publishedAt": "2026-06-09T05:00:00.000Z",
+        "tag": "event",
+        "paragraphs": [
+          "Pada 8 dan 9 Juni 2026, Institut STTS menerima 194 peserta dari SMAK Santa Maria dan SMAK Frateran Surabaya dalam PMB Expo dan Campus Visit. Mahasiswa Manajemen Bisnis Digital dan Desain Komunikasi Visual turut menjalankan kegiatan.",
+          "Peserta melihat karya mahasiswa, mengikuti workshop, dan berdiskusi mengenai pilihan program studi serta prospek kerja. Rangkaian kunjungan memberi kesempatan bagi siswa untuk bertanya langsung tentang pengalaman kuliah."
+        ],
+        "source": "https://istts.ac.id/events/campus-visit-sma-santa-maria-dan-sma-frateran-surabaya-ke-institut-stts/"
+      },
+      {
+        "slug": "mahasiswa-mbd-google-student-ambassador",
+        "title": "Mahasiswa MBD terpilih sebagai Google Student Ambassador",
+        "excerpt": "Innani Fiddinillah mengikuti program Google Student Ambassador sejak semester pertama di Manajemen Bisnis Digital.",
+        "publishedAt": "2026-03-11T05:00:00.000Z",
+        "tag": "prestasi",
+        "paragraphs": [
+          "Innani Fiddinillah, mahasiswa Manajemen Bisnis Digital Institut STTS, terpilih pada angkatan nasional pertama Google Student Ambassador. Ia mendaftar saat masih berada di semester pertama.",
+          "Program ini membekali peserta dengan pemanfaatan teknologi AI dan kegiatan edukasi untuk komunitas kampus. Pengalaman Innani menunjukkan bagaimana mahasiswa dapat mulai menjajal program di luar kelas sejak awal kuliah."
+        ],
+        "source": "https://istts.ac.id/2026/03/11/hebat-mahasiswa-semester-awal-istts-lolos-program-google-student-ambassador/"
+      }
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://istts.ac.id/pendaftaran/",
+      "scope": "Jadwal Prestasi tahun akademik 2027/2028 dan biaya paket"
+    },
+    {
+      "url": "https://pmb.istts.ac.id/manajemen/?menu=content&page=umum&kode=jalur_pendaftaran",
+      "scope": "Daftar lima jalur; tahun tanggal pada tabel berbeda dengan pengumuman kampus."
+    },
+    {
+      "url": "https://pmb.istts.ac.id/manajemen/?menu=content&page=umum&kode=biaya_study",
+      "scope": "Enam tarif USP MBD dan biaya paket"
+    },
+    {
+      "url": "https://pmb.istts.ac.id/manajemen/?menu=pendaftaran_online&page=pendaftaran_s1",
+      "scope": "Berkas dan data formulir resmi D3/S1"
+    },
+    {
+      "url": "https://istts.ac.id/beasiswa-program-mbd/",
+      "scope": "Beasiswa Program MBD"
+    },
+    {
+      "url": "https://istts.ac.id/beasiswa-putra-putri-guru/",
+      "scope": "Beasiswa Putra dan Putri Guru"
+    },
+    {
+      "url": "https://istts.ac.id/beasiswa-silver-eagle/",
+      "scope": "Silver Eagle"
+    },
+    {
+      "url": "https://istts.ac.id/2026/01/19/beasiswa-golden-eagle/",
+      "scope": "Golden Eagle"
+    },
+    {
+      "url": "https://istts.ac.id/2026/01/19/beasiswa-minat-dan-bakat/",
+      "scope": "Minat dan Bakat"
+    },
+    {
+      "url": "https://istts.ac.id/2026/01/19/beasiswa-keluarga-istts/",
+      "scope": "Keluarga ISTTS"
+    },
+    {
+      "url": "https://istts.ac.id/beasiswa-olimpiade-sains-nasional/",
+      "scope": "Olimpiade Sains Nasional"
+    }
+  ]
+}

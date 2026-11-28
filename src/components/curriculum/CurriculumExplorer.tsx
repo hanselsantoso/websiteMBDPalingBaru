@@ -1,11 +1,14 @@
 'use client'
 
+import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import { DataTable } from '@/components/ui/DataTable'
 import { Fin, Star } from '@/components/patterns/Patterns'
+import { useLocale } from '@/components/providers/LocaleProvider'
 import { useMotionPreference } from '@/components/providers/MotionProvider'
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip } from '@/components/ui/Isi'
+import { getSiasatArtwork, SIASAT_GROUP_ART } from '@/lib/brand/artwork'
 import { COURSE_TAGS, displayCourseCode, programTotals } from '@/lib/domain/curriculum'
 import { isPlaceholder, placeholderHint } from '@/lib/domain/placeholders'
 import { cn } from '@/lib/utils'
@@ -13,6 +16,24 @@ import { CourseDrawer } from './CourseDrawer'
 import type { TrackCourse, TrackSemester } from './types'
 
 const ALL = 'Semua'
+const EN_TAGS: Record<string, string> = {
+  Semua: 'All',
+  Bisnis: 'Business',
+  Teknologi: 'Technology',
+  Kreatif: 'Creative',
+  Umum: 'General',
+}
+
+const SEMESTER_MASCOTS: Partial<Record<number, { name: string; src: string; wide?: boolean }>> = {
+  1: { name: 'Siasat', src: getSiasatArtwork('greeting').url },
+  2: { name: 'Kiko', src: '/images/mascot/friends/kiko/curiga.webp' },
+  3: { name: 'Piko', src: '/images/mascot/friends/piko/antusias.webp' },
+  4: { name: 'Uli', src: '/images/mascot/friends/uli/dapat-ide.webp' },
+  5: { name: 'Siasat', src: getSiasatArtwork('tablet').url },
+  6: { name: 'Bimo', src: '/images/mascot/friends/bimo/menyapa.webp' },
+  7: { name: 'Rara', src: '/images/mascot/friends/rara/fokus.webp' },
+  8: { name: 'Tim Siasat', src: SIASAT_GROUP_ART.src, wide: true },
+}
 
 export function CurriculumExplorer({
   semesters,
@@ -35,6 +56,10 @@ export function CurriculumExplorer({
   showTotalSks: boolean
   versionName?: string | null
 }) {
+  const en = useLocale() === 'en'
+  const tagLabel = (value: string) => en ? EN_TAGS[value] ?? value : value
+  const creditUnit = en ? 'credits' : 'SKS'
+  const countLabel = (count: number) => `${count} ${en ? (count === 1 ? 'course' : 'courses') : 'mata kuliah'}`
   const { reduced } = useMotionPreference()
   const [query, setQuery] = useState('')
   const [tag, setTag] = useState<string>(ALL)
@@ -89,13 +114,13 @@ export function CurriculumExplorer({
           {intro ? <p className="mt-3 max-w-2xl text-lead text-ink-600">{intro}</p> : null}
           <p className="label-mono mt-4 text-ink-600">
             {versionName ? `${versionName} · ` : ''}
-            {totals.count} mata kuliah{showTotalSks ? ` · ${totals.credits} SKS` : ''}
+            {countLabel(totals.count)}{showTotalSks ? ` · ${totals.credits} ${creditUnit}` : ''}
           </p>
         </div>
         {showSearch ? (
           <div className="lg:col-span-5">
             <label htmlFor="cari-matkul" className="font-semibold">
-              Cari mata kuliah
+              {en ? 'Search courses' : 'Cari mata kuliah'}
             </label>
             <div className="relative mt-2">
               <Icon
@@ -108,7 +133,7 @@ export function CurriculumExplorer({
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Kode atau nama, mis. BD401 atau data"
+                placeholder={en ? "Code or name, e.g. BD401 or data" : "Kode atau nama, mis. BD401 atau data"}
                 className="h-12 w-full rounded-full border-2 border-navy bg-white pr-4 pl-12 text-base placeholder:text-ink-500"
               />
             </div>
@@ -118,7 +143,7 @@ export function CurriculumExplorer({
 
       {showSearch ? (
         <div className="container-arus mt-6">
-          <div role="group" aria-label="Saring berdasarkan jalur" className="flex flex-wrap gap-2">
+          <div role="group" aria-label={en ? "Filter by pathway" : "Saring berdasarkan jalur"} className="flex flex-wrap gap-2">
             {[ALL, ...usedTags].map((item) => (
               <button
                 key={item}
@@ -130,12 +155,12 @@ export function CurriculumExplorer({
                   tag === item ? 'bg-navy text-white' : 'bg-white text-navy hover:bg-ink-100',
                 )}
               >
-                {item}
+                {tagLabel(item)}
               </button>
             ))}
           </div>
           <p className="sr-only" aria-live="polite">
-            {filtering ? `${filtered.length} mata kuliah ditemukan.` : ''}
+            {filtering ? (en ? `${countLabel(filtered.length)} found.` : `${countLabel(filtered.length)} ditemukan.`) : ''}
           </p>
         </div>
       ) : null}
@@ -143,7 +168,7 @@ export function CurriculumExplorer({
       {showPathMap && tag !== ALL ? (
         <div className="container-arus mt-8">
           <div className="overflow-x-auto rounded-[28px] border-2 border-navy bg-navy p-6 text-white">
-            <p className="label-mono text-lime">Peta jalur · {tag}</p>
+            <p className="label-mono text-lime">{en ? 'Pathway map' : 'Peta jalur'} · {tagLabel(tag)}</p>
             <ol className="relative mt-6 grid min-w-[44rem] grid-cols-8 gap-3">
               <li
                 aria-hidden="true"
@@ -189,7 +214,7 @@ export function CurriculumExplorer({
       ) : null}
 
       <nav
-        aria-label="Navigasi semester"
+        aria-label={en ? "Semester navigation" : "Navigasi semester"}
         className="sticky top-[var(--header-h)] z-30 mt-10 border-y-2 border-navy bg-white"
       >
         <div className="container-arus">
@@ -224,7 +249,7 @@ export function CurriculumExplorer({
       <div className="container-arus grid gap-14 py-12">
         {filtering && filtered.length === 0 ? (
           <div className="rounded-[28px] border-2 border-dashed border-navy p-10 text-center">
-            <p className="text-lg font-semibold">Tidak ada mata kuliah untuk “{query || tag}”.</p>
+            <p className="text-lg font-semibold">{en ? `No courses found for “${query || tagLabel(tag)}”.` : `Tidak ada mata kuliah untuk “${query || tag}”.`}</p>
             <button
               type="button"
               onClick={() => {
@@ -233,7 +258,7 @@ export function CurriculumExplorer({
               }}
               className="pill mt-4 border-2 border-navy bg-white text-navy"
             >
-              Hapus filter
+              {en ? 'Clear filters' : 'Hapus filter'}
             </button>
           </div>
         ) : null}
@@ -243,6 +268,7 @@ export function CurriculumExplorer({
           if (filtering && !shown.length) return null
           const total = list.reduce((sum, course) => sum + course.credits, 0)
           const enrichment = semester.number === 6
+          const mascot = SEMESTER_MASCOTS[semester.number]
           return (
             <section
               key={semester.number}
@@ -251,32 +277,48 @@ export function CurriculumExplorer({
               aria-labelledby={`semester-${semester.number}-judul`}
               className="min-w-0 scroll-mt-40"
             >
-              <div className="flex flex-wrap items-end justify-between gap-4 border-b-2 border-navy pb-4">
-                <div>
-                  <p className="font-mono text-sm text-blue">SEM {semester.number}</p>
-                  <h3
-                    id={`semester-${semester.number}-judul`}
-                    className="mt-1 text-title font-bold"
-                  >
-                    {semester.title}
-                  </h3>
+              <div className="flex items-end gap-3 border-b-2 border-navy pb-4 sm:gap-6">
+                <div className="flex min-w-0 flex-1 flex-wrap items-end justify-between gap-x-4 gap-y-2">
+                  <div>
+                    <p className="font-mono text-sm text-blue">SEM {semester.number}</p>
+                    <h3
+                      id={`semester-${semester.number}-judul`}
+                      className="mt-1 text-title font-bold"
+                    >
+                      {semester.title}
+                    </h3>
+                  </div>
+                  <p className="label-mono rounded-full bg-navy px-3 py-1.5 text-white">
+                    {countLabel(list.length)} · {total} {creditUnit}
+                  </p>
                 </div>
-                <p className="label-mono rounded-full bg-navy px-3 py-1.5 text-white">
-                  {list.length} mata kuliah · {total} SKS
-                </p>
+                {mascot ? (
+                  <figure className={cn('shrink-0 text-center', mascot.wide ? 'w-28 sm:w-44' : 'w-20 sm:w-28')}>
+                    <div className={cn('relative', mascot.wide ? 'aspect-[3/2]' : 'aspect-square')}>
+                      <Image
+                        src={mascot.src}
+                        alt=""
+                        fill
+                        sizes={mascot.wide ? '(min-width: 640px) 176px, 112px' : '(min-width: 640px) 112px, 80px'}
+                        className="object-contain"
+                      />
+                    </div>
+                    <figcaption className="mt-1 text-xs font-semibold text-ink-700">{en && mascot.wide ? 'Team Siasat' : mascot.name}</figcaption>
+                  </figure>
+                ) : null}
               </div>
               {semester.description && !enrichment ? (
                 <p className="mt-3 max-w-3xl text-ink-600">{semester.description}</p>
               ) : null}
               {enrichment ? (
                 <aside className="mt-4 rounded-[24px] border-2 border-navy bg-lime/40 p-5">
-                  <p className="label-mono text-navy">Program Enrichment</p>
+                  <p className="label-mono text-navy">{en ? 'Enrichment program' : 'Program Enrichment'}</p>
                   <p className="mt-2 max-w-3xl">
                     {semester.description && isPlaceholder(semester.description) ? (
                       showPlaceholders ? (
-                        <PendingChip hint={placeholderHint(semester.description)} />
+                        <PendingChip hint={en ? undefined : placeholderHint(semester.description)} />
                       ) : (
-                        'Penjelasan program enrichment segera tersedia.'
+                        (en ? "Enrichment program details are coming soon." : 'Penjelasan program enrichment segera tersedia.')
                       )
                     ) : (
                       semester.description
@@ -285,19 +327,19 @@ export function CurriculumExplorer({
                 </aside>
               ) : null}
               <DataTable
-                label={`Mata kuliah semester ${semester.number}`}
+                label={en ? `Semester ${semester.number} courses` : `Mata kuliah semester ${semester.number}`}
                 className="mt-4"
                 columns={[
-                  { label: 'Kode', className: 'w-24' },
-                  { label: 'Mata kuliah' },
-                  { label: 'SKS', className: 'w-16' },
-                  { label: 'Jalur' },
+                  { label: (en ? "Code" : 'Kode'), className: 'w-24' },
+                  { label: (en ? "Course" : 'Mata kuliah') },
+                  { label: (en ? "Credits" : 'SKS'), className: 'w-16' },
+                  { label: (en ? "Pathway" : 'Jalur') },
                 ]}
                 rows={shown.map(course => ({
                   id: course.id,
-                  values: [course.code ?? '', [course.name, course.nameSource].filter(Boolean).join(' '), course.credits, course.tags.join(' ')],
+                  values: [course.code ?? '', [course.name, course.nameSource].filter(Boolean).join(' '), course.credits, course.tags.map(tagLabel).join(' ')],
                   cells: [
-                    <span className="font-mono text-blue">{course.code ? displayCourseCode(course.code) : showPlaceholders ? <PendingChip hint="kode" /> : '—'}</span>,
+                    <span className="font-mono text-blue">{course.code ? displayCourseCode(course.code) : showPlaceholders ? <PendingChip hint={en ? "Course code" : "kode"} /> : '—'}</span>,
                     <>
                       <button
                         type="button"
@@ -310,7 +352,7 @@ export function CurriculumExplorer({
                     </>,
                     <span className="font-mono tabular-nums">{course.credits}</span>,
                     <span className="flex flex-wrap gap-1">
-                      {course.tags.map(item => <span key={item} className="label-mono rounded-full bg-ink-100 px-2 py-0.5 text-[0.6875rem]">{item}</span>)}
+                      {course.tags.map(item => <span key={item} className="label-mono rounded-full bg-ink-100 px-2 py-0.5 text-[0.6875rem]">{tagLabel(item)}</span>)}
                     </span>,
                   ],
                 }))}
@@ -320,7 +362,7 @@ export function CurriculumExplorer({
         })}
         {showTotalSks ? (
           <p className="label-mono text-right text-ink-600">
-            Total program: {totals.count} mata kuliah · {totals.credits} SKS
+            {en ? 'Program total' : 'Total program'}: {countLabel(totals.count)} · {totals.credits} {creditUnit}
           </p>
         ) : null}
       </div>

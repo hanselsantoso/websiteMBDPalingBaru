@@ -2,7 +2,7 @@
 
 import { m, useScroll, useTransform } from 'motion/react'
 import Image from 'next/image'
-import Link from 'next/link'
+import { LocaleLink as Link, useLocale } from '@/components/providers/LocaleProvider'
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { Siasat } from '@/components/mascot/Siasat'
 import { useMotionPreference } from '@/components/providers/MotionProvider'
@@ -11,7 +11,7 @@ import { StarField } from '@/components/patterns/Patterns'
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip } from '@/components/ui/Isi'
 import { Eyebrow } from '@/components/ui/Section'
-import { CURRICULUM_ART } from '@/lib/brand/artwork'
+import { CURRICULUM_CARD_ART } from '@/lib/brand/artwork'
 import { displayCourseCode } from '@/lib/domain/curriculum'
 import { isPlaceholder, placeholderHint } from '@/lib/domain/placeholders'
 import { cn } from '@/lib/utils'
@@ -26,6 +26,7 @@ function SemesterCard({
   courses: TrackCourse[]
   showPlaceholders: boolean
 }) {
+  const en = useLocale() === 'en'
   const total = courses.reduce((sum, course) => sum + course.credits, 0)
   return (
     <article
@@ -40,7 +41,7 @@ function SemesterCard({
           </span>
           {semester.number}
         </p>
-        <span className="label-mono rounded-full bg-navy px-3 py-1.5 text-white">{total} SKS</span>
+        <span className="label-mono rounded-full bg-navy px-3 py-1.5 text-white">{total} {en ? 'credits' : 'SKS'}</span>
       </div>
       <h3 id={`sem-${semester.number}-title`} className="mt-4 text-2xl leading-tight font-bold">
         {semester.title}
@@ -49,7 +50,7 @@ function SemesterCard({
         <p className="mt-2 line-clamp-2 text-sm text-ink-600">
           {isPlaceholder(semester.description) ? (
             showPlaceholders ? (
-              <PendingChip hint={placeholderHint(semester.description)} />
+              <PendingChip hint={en ? undefined : placeholderHint(semester.description)} />
             ) : null
           ) : (
             semester.description
@@ -108,6 +109,7 @@ export function CurriculumTrack({
   showPlaceholders: boolean
   anchorId?: string
 }) {
+  const en = useLocale() === 'en'
   const { reduced } = useMotionPreference()
   const sectionRef = useRef<HTMLDivElement>(null)
   const viewportRef = useRef<HTMLDivElement>(null)
@@ -187,7 +189,7 @@ export function CurriculumTrack({
             type="button"
             onClick={() => step(-1)}
             className="grid size-12 place-items-center rounded-full border-2 border-white/60 text-white hover:border-lime hover:text-lime"
-            aria-label="Semester sebelumnya"
+            aria-label={en ? "Previous semester" : "Semester sebelumnya"}
           >
             <Icon name="arrow-left" size={20} strokeWidth={2.5} />
           </button>
@@ -195,7 +197,7 @@ export function CurriculumTrack({
             type="button"
             onClick={() => step(1)}
             className="grid size-12 place-items-center rounded-full border-2 border-white/60 text-white hover:border-lime hover:text-lime"
-            aria-label="Semester berikutnya"
+            aria-label={en ? "Next semester" : "Semester berikutnya"}
           >
             <Icon name="arrow-right" size={20} strokeWidth={2.5} />
           </button>
@@ -207,18 +209,18 @@ export function CurriculumTrack({
   const finalCard = (
     <Link
       href="/kurikulum"
-      className="group flex h-full min-h-72 flex-col justify-between rounded-[28px] border-2 border-dashed border-lime p-6 text-white transition-colors duration-200 hover:bg-white/5"
+      className="group flex h-full min-h-72 flex-col justify-center rounded-[28px] border-2 border-dashed border-lime p-6 text-white transition-colors duration-200 hover:bg-white/5"
     >
       <div className="relative mb-5 aspect-[3/2] overflow-hidden rounded-2xl bg-ink-50">
-        <Image src={CURRICULUM_ART} alt="" fill sizes="(min-width: 1024px) 272px, 70vw" className="object-cover" />
+        <Image src={CURRICULUM_CARD_ART} alt="" fill sizes="(min-width: 1024px) 272px, 70vw" className="object-cover" />
       </div>
       <div>
         <p className="text-2xl leading-tight font-bold">
-          {finalCardTitle || 'Lihat kurikulum lengkap'}
+          {finalCardTitle || (en ? "Explore the full curriculum" : 'Lihat kurikulum lengkap')}
         </p>
         {finalCardBody ? <p className="mt-2 text-white/75">{finalCardBody}</p> : null}
         <span className="mt-6 inline-flex items-center gap-2 font-semibold text-lime">
-          Buka kurikulum{' '}
+          {en ? 'Open the curriculum' : 'Buka kurikulum'}{' '}
           <Icon
             name="arrow-right"
             size={18}
@@ -267,7 +269,7 @@ export function CurriculumTrack({
           <div
             ref={viewportRef}
             role="region"
-            aria-label="Jalur kurikulum 8 semester. Gunakan tombol panah kiri dan kanan untuk berpindah semester."
+            aria-label={en ? "Eight-semester curriculum. Use the left and right arrow keys to move between semesters." : "Jalur kurikulum 8 semester. Gunakan tombol panah kiri dan kanan untuk berpindah semester."}
             tabIndex={0}
             onKeyDown={onKeyDown}
             className={cn(

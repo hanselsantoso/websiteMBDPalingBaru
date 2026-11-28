@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, type ReactNode } from 'react'
 import { Siasat } from '@/components/mascot/Siasat'
+import { useLocale } from '@/components/providers/LocaleProvider'
+import { englishFormMessage } from './form-messages'
 import { cn } from '@/lib/utils'
 
 /** Success panel with the celebrating fox; moves focus so screen readers announce it. */
@@ -35,6 +37,7 @@ export function SuccessPanel({
 
 /** Server failure feedback with a reassuring expression. */
 export function FailureNote({ message }: { message: string | null }) {
+  const en = useLocale() === 'en'
   if (!message) return null
   return (
     <div
@@ -42,7 +45,7 @@ export function FailureNote({ message }: { message: string | null }) {
       role="alert"
     >
       <Siasat pose="confused" expression="reassuring" size="xs" decorative />
-      <p className="font-semibold text-danger">{message}</p>
+      <p className="font-semibold text-danger">{en ? englishFormMessage(message) : message}</p>
     </div>
   )
 }

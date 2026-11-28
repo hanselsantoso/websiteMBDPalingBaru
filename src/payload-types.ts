@@ -110,10 +110,12 @@ export type LexicalNodes_3DE324E4 =
 export interface Config {
   auth: {
     admins: AdminAuthOperations;
+    'mcp-content-accounts': McpContentAccountAuthOperations;
   };
   blocks: {};
   collections: {
     pages: Page;
+    'content-translations': ContentTranslation;
     posts: Post;
     'post-categories': PostCategory;
     'post-tags': PostTag;
@@ -140,6 +142,7 @@ export interface Config {
     'quiz-results': QuizResult;
     'quiz-attempts': QuizAttempt;
     admins: Admin;
+    'mcp-content-accounts': McpContentAccount;
     roles: Role;
     redirects: Redirect;
     'not-found-logs': NotFoundLog;
@@ -162,6 +165,7 @@ export interface Config {
   };
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
+    'content-translations': ContentTranslationsSelect<false> | ContentTranslationsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     'post-categories': PostCategoriesSelect<false> | PostCategoriesSelect<true>;
     'post-tags': PostTagsSelect<false> | PostTagsSelect<true>;
@@ -188,6 +192,7 @@ export interface Config {
     'quiz-results': QuizResultsSelect<false> | QuizResultsSelect<true>;
     'quiz-attempts': QuizAttemptsSelect<false> | QuizAttemptsSelect<true>;
     admins: AdminsSelect<false> | AdminsSelect<true>;
+    'mcp-content-accounts': McpContentAccountsSelect<false> | McpContentAccountsSelect<true>;
     roles: RolesSelect<false> | RolesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     'not-found-logs': NotFoundLogsSelect<false> | NotFoundLogsSelect<true>;
@@ -231,7 +236,7 @@ export interface Config {
     activity: ActivityWidget;
     'upload-dropzone': UploadDropzoneWidget;
   };
-  user: Admin;
+  user: Admin | McpContentAccount;
   jobs: {
     tasks: {
       schedulePublish: TaskSchedulePublish;
@@ -244,6 +249,24 @@ export interface Config {
   };
 }
 export interface AdminAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface McpContentAccountAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -329,14 +352,24 @@ export interface Page {
    * Status Draft, Terbit, dan Terjadwal diatur dengan tombol di atas.
    */
   reviewStatus?: ('none' | 'review' | 'archived') | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -703,14 +736,24 @@ export interface Media {
   _h_folders?: (string | null) | Folder;
   _h_tags?: (string | Tag)[] | null;
   uploadedBy?: (string | null) | Admin;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -741,14 +784,24 @@ export interface Folder {
   id: string;
   _h_folders?: (string | null) | Folder;
   name: string;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
   _h_slugPath?: string | null;
@@ -765,14 +818,24 @@ export interface Admin {
   name?: string | null;
   role?: (string | null) | Role;
   status?: ('aktif' | 'nonaktif') | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -819,16 +882,62 @@ export interface Role {
     | number
     | boolean
     | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * Buat satu akun dan API key terpisah untuk setiap konektor konten.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mcp-content-accounts".
+ */
+export interface McpContentAccount {
+  id: string;
+  name: string;
+  mode: 'reader' | 'editor';
+  active?: boolean | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedAt: string;
+  createdAt: string;
+  apiKey?: string | null;
+  apiKeyLast4?: string | null;
+  apiKeyIndex?: string | null;
+  collection: 'mcp-content-accounts';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -838,14 +947,24 @@ export interface Tag {
   id: string;
   _h_tags?: (string | null) | Tag;
   name: string;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
   _h_slugPath?: string | null;
@@ -1149,6 +1268,41 @@ export interface NotFoundHeroBlock {
   blockType: 'notFoundHero';
 }
 /**
+ * Saving a translation updates matching copy on the English site.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content-translations".
+ */
+export interface ContentTranslation {
+  id: string;
+  /**
+   * Copy the original text exactly, including spaces, capitalization, and punctuation.
+   */
+  source: string;
+  english: string;
+  sourceKey: string;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
@@ -1204,14 +1358,24 @@ export interface Post {
    * Status Draft, Terbit, dan Terjadwal diatur dengan tombol di atas.
    */
   reviewStatus?: ('none' | 'review' | 'archived') | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1230,14 +1394,24 @@ export interface PostCategory {
    * Angka kecil tampil lebih dulu.
    */
   sortOrder?: number | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1249,14 +1423,24 @@ export interface PostTag {
   id: string;
   name: string;
   slug: string;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1278,14 +1462,24 @@ export interface Testimonial {
    * Angka kecil tampil lebih dulu.
    */
   sortOrder?: number | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1333,14 +1527,24 @@ export interface CareerPath {
    * Angka kecil tampil lebih dulu.
    */
   sortOrder?: number | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1443,14 +1647,24 @@ export interface Course {
    * Dihitung otomatis dari 6 bagian silabus.
    */
   syllabusCompleteness?: number | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1525,14 +1739,24 @@ export interface Faculty {
    * Angka kecil tampil lebih dulu.
    */
   sortOrder?: number | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1565,14 +1789,24 @@ export interface CurriculumVersion {
         id?: string | null;
       }[]
     | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1591,14 +1825,24 @@ export interface Partner {
    * Angka kecil tampil lebih dulu.
    */
   sortOrder?: number | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1639,14 +1883,24 @@ export interface Program {
    * Angka kecil tampil lebih dulu.
    */
   sortOrder?: number | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1666,14 +1920,24 @@ export interface JobPost {
   applyUrl: string;
   description?: string | null;
   isActive?: boolean | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1691,14 +1955,24 @@ export interface Faq {
    * Angka kecil tampil lebih dulu.
    */
   sortOrder?: number | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1764,14 +2038,24 @@ export interface PmbApplication {
     | number
     | boolean
     | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1797,14 +2081,24 @@ export interface PmbWave {
    * Angka kecil tampil lebih dulu.
    */
   sortOrder?: number | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1827,14 +2121,24 @@ export interface PmbTrack {
    * Angka kecil tampil lebih dulu.
    */
   sortOrder?: number | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1849,14 +2153,24 @@ export interface PmbDocument {
   label?: string | null;
   type?: ('rapor' | 'ijazah' | 'identitas' | 'foto' | 'prestasi' | 'lainnya') | null;
   application?: (string | null) | PmbApplication;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1919,14 +2233,24 @@ export interface Lead {
   deletionRequested?: boolean | null;
   lastActivityAt?: string | null;
   phoneNormalized?: string | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
   deletedAt?: string | null;
@@ -1938,6 +2262,9 @@ export interface Lead {
 export interface QuizAttempt {
   id: string;
   result?: (string | null) | QuizResult;
+  /**
+   * Persentase poin studi kasus. Percobaan dari kuis sebelumnya memuat persentase kecocokan.
+   */
   matchPercent?: number | null;
   answers?:
     | {
@@ -1960,14 +2287,24 @@ export interface QuizAttempt {
   lead?: (string | null) | Lead;
   sessionId?: string | null;
   isTest?: boolean | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -1987,14 +2324,24 @@ export interface QuizResult {
   pose?: ('greeting' | 'pointing' | 'thinking' | 'celebrating' | 'confused' | 'tablet') | null;
   semesters?: ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')[] | null;
   courses?: (string | Course)[] | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -2018,14 +2365,24 @@ export interface ContactMessage {
   internalNote?: string | null;
   lead?: (string | null) | Lead;
   repliedAt?: string | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -2043,14 +2400,24 @@ export interface MessageTemplate {
   subject?: string | null;
   body: string;
   isActive?: boolean | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -2063,6 +2430,9 @@ export interface MessageTemplate {
 export interface QuizQuestion {
   id: string;
   text: string;
+  /**
+   * Penanda versi asesmen ditetapkan saat soal dibuat.
+   */
   helpText?: string | null;
   image?: (string | null) | Media;
   options?:
@@ -2082,14 +2452,24 @@ export interface QuizQuestion {
    * Angka kecil tampil lebih dulu.
    */
   sortOrder?: number | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -2111,14 +2491,24 @@ export interface Redirect {
   to: string;
   statusCode?: ('301' | '302') | null;
   note?: string | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -2139,14 +2529,24 @@ export interface NotFoundLog {
    */
   redirectTo?: string | null;
   resolved?: boolean | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -2173,14 +2573,24 @@ export interface AuditLog {
     | boolean
     | null;
   ip?: string | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -2216,14 +2626,24 @@ export interface AnalyticsEvent {
     | boolean
     | null;
   lead?: (string | null) | Lead;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -2366,6 +2786,10 @@ export interface PayloadLockedDocument {
         value: string | Page;
       } | null)
     | ({
+        relationTo: 'content-translations';
+        value: string | ContentTranslation;
+      } | null)
+    | ({
         relationTo: 'posts';
         value: string | Post;
       } | null)
@@ -2470,6 +2894,10 @@ export interface PayloadLockedDocument {
         value: string | Admin;
       } | null)
     | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null)
+    | ({
         relationTo: 'roles';
         value: string | Role;
       } | null)
@@ -2490,10 +2918,15 @@ export interface PayloadLockedDocument {
         value: string | AnalyticsEvent;
       } | null);
   globalSlug?: string | null;
-  user: {
-    relationTo: 'admins';
-    value: string | Admin;
-  };
+  user:
+    | {
+        relationTo: 'admins';
+        value: string | Admin;
+      }
+    | {
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      };
   updatedAt: string;
   createdAt: string;
 }
@@ -2503,10 +2936,15 @@ export interface PayloadLockedDocument {
  */
 export interface PayloadPreference {
   id: string;
-  user: {
-    relationTo: 'admins';
-    value: string | Admin;
-  };
+  user:
+    | {
+        relationTo: 'admins';
+        value: string | Admin;
+      }
+    | {
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      };
   key?: string | null;
   value?:
     | {
@@ -2542,14 +2980,24 @@ export interface PayloadLlmInstruction {
   entityType: 'collection' | 'global';
   additionalInstructions?: LexicalRichText<LexicalNodes_3DE324E4> | null;
   systemInstructions?: LexicalRichText<LexicalNodes_3DE324E4> | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt: string;
   createdAt: string;
 }
@@ -3080,6 +3528,19 @@ export interface NotFoundHeroBlockSelect<T extends boolean = true> {
   buttonLabel?: T;
   id?: T;
   blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content-translations_select".
+ */
+export interface ContentTranslationsSelect<T extends boolean = true> {
+  source?: T;
+  english?: T;
+  sourceKey?: T;
+  createdBy?: T;
+  updatedBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3764,6 +4225,22 @@ export interface AdminsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mcp-content-accounts_select".
+ */
+export interface McpContentAccountsSelect<T extends boolean = true> {
+  name?: T;
+  mode?: T;
+  active?: T;
+  createdBy?: T;
+  updatedBy?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  apiKey?: T;
+  apiKeyLast4?: T;
+  apiKeyIndex?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "roles_select".
  */
 export interface RolesSelect<T extends boolean = true> {
@@ -4009,14 +4486,24 @@ export interface SiteSetting {
     video?: number | null;
     model?: number | null;
   };
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -4101,14 +4588,24 @@ export interface Branding {
     starEnabled?: boolean | null;
     starIntensity?: number | null;
   };
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -4232,14 +4729,24 @@ export interface Navigation {
         }[]
       | null;
   };
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -4283,14 +4790,24 @@ export interface PmbSetting {
   successTitle?: string | null;
   successBody?: string | null;
   statusIntro?: string | null;
-  createdBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
-  updatedBy?: {
-    relationTo: 'admins';
-    value: string | Admin;
-  } | null;
+  createdBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
+  updatedBy?:
+    | ({
+        relationTo: 'admins';
+        value: string | Admin;
+      } | null)
+    | ({
+        relationTo: 'mcp-content-accounts';
+        value: string | McpContentAccount;
+      } | null);
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -4699,6 +5216,7 @@ export interface CollectionQueryWidget {
     title?: string | null;
     relatedCollection:
       | 'pages'
+      | 'content-translations'
       | 'posts'
       | 'post-categories'
       | 'post-tags'
@@ -4725,6 +5243,7 @@ export interface CollectionQueryWidget {
       | 'quiz-results'
       | 'quiz-attempts'
       | 'admins'
+      | 'mcp-content-accounts'
       | 'roles'
       | 'redirects'
       | 'not-found-logs'
@@ -4754,6 +5273,7 @@ export interface ActivityWidget {
     excludedCollections?:
       | (
           | 'pages'
+          | 'content-translations'
           | 'posts'
           | 'post-categories'
           | 'post-tags'
@@ -4780,6 +5300,7 @@ export interface ActivityWidget {
           | 'quiz-results'
           | 'quiz-attempts'
           | 'admins'
+          | 'mcp-content-accounts'
           | 'roles'
           | 'redirects'
           | 'not-found-logs'
@@ -4818,10 +5339,15 @@ export interface TaskSchedulePublish {
           value: string | Post;
         } | null);
     global?: string | null;
-    user?: {
-      relationTo: 'admins';
-      value: string | Admin;
-    } | null;
+    user?:
+      | ({
+          relationTo: 'admins';
+          value: string | Admin;
+        } | null)
+      | ({
+          relationTo: 'mcp-content-accounts';
+          value: string | McpContentAccount;
+        } | null);
   };
   output?: unknown;
 }

@@ -154,9 +154,11 @@ public/images/illustrations/*.webp -filter -diff -merge -text
 public/images/brand/mbd-jejak-siasat.webp -filter -diff -merge -text
 public/images/brand/mbd-siasat-icon.png -filter -diff -merge -text
 public/images/mascot/toon/*.webp -filter -diff -merge -text
+public/images/mascot/friends/**/*.webp -filter -diff -merge -text
 public/images/mascot/animation/*.webp -filter -diff -merge -text
 # Design deliverables can be opened directly after an ordinary checkout.
 output/**/*.png -filter -diff -merge -text
 output/**/*.jpg -filter -diff -merge -text
 output/**/*.webp -filter -diff -merge -text
+output/gif-maskot-mbd/*.gif -filter -diff -merge -text
 output/*.zip -filter -diff -merge -text

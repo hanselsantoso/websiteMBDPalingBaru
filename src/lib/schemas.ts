@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { normalizePhone } from './domain/phone'
+import { QUIZ_ASSESSMENT_VERSION } from './domain/quiz'
 import { jakartaYear } from './domain/reg-number'
 
 /** Shared form schemas: used by client components (React Hook Form) and server actions. */
@@ -160,6 +161,7 @@ export const pmbStatusSchema = z.object({
 export type PmbStatusInput = z.infer<typeof pmbStatusSchema>
 
 export const quizAttemptSchema = z.object({
+  assessment: z.literal(QUIZ_ASSESSMENT_VERSION).optional(),
   answers: z
     .record(z.string().max(64), z.string().max(64))
     .refine((value) => Object.keys(value).length > 0 && Object.keys(value).length <= 40, 'Jawab pertanyaan kuis terlebih dahulu.'),

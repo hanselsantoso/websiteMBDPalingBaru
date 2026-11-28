@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { LocaleLink as Link } from '@/components/providers/LocaleProvider'
 import type { ComponentProps, ReactNode } from 'react'
 import { isExternalHref } from '@/lib/links'
 import { cn } from '@/lib/utils'

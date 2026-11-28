@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { siteUrl } from '@/lib/preview'
+import { localizedAlternates, withLocale, type Locale } from '@/lib/i18n'
 
 type Doc = Record<string, any>
 
@@ -29,6 +30,7 @@ export function docMetadata({
   type = 'website',
   publishedTime,
   modifiedTime,
+  locale = 'id',
 }: {
   doc: Doc | null | undefined
   path: string
@@ -38,6 +40,7 @@ export function docMetadata({
   type?: 'website' | 'article' | 'profile'
   publishedTime?: string | null
   modifiedTime?: string | null
+  locale?: Locale
 }): Metadata {
   const meta = (doc?.meta ?? {}) as Doc
   // The SEO plugin generates complete titles ("… · MBD ISTTS"); use them verbatim.
@@ -48,10 +51,11 @@ export function docMetadata({
     fallbackDescription ||
     undefined
   const image = mediaOf(meta.image) ?? mediaOf(fallbackImage)
+  const alternates = localizedAlternates(path, locale)
   const canonical =
-    typeof meta.canonicalUrl === 'string' && meta.canonicalUrl.trim()
+    locale === 'id' && typeof meta.canonicalUrl === 'string' && meta.canonicalUrl.trim()
       ? meta.canonicalUrl.trim()
-      : path
+      : alternates.canonical
   const images = image?.url
     ? [
         {
@@ -65,14 +69,15 @@ export function docMetadata({
   return {
     ...(title ? { title: metaTitle ? { absolute: metaTitle } : title } : {}),
     description,
-    alternates: { canonical },
+    alternates: { ...alternates, canonical },
     ...(meta.noIndex || meta.noFollow
       ? { robots: { index: !meta.noIndex, follow: !meta.noFollow } }
       : {}),
     openGraph: {
       type,
-      locale: 'id_ID',
-      url: path,
+      locale: locale === 'en' ? 'en_US' : 'id_ID',
+      alternateLocale: locale === 'en' ? ['id_ID'] : ['en_US'],
+      url: withLocale(path, locale),
       ...(title ? { title: metaTitle ?? title } : {}),
       ...(description ? { description } : {}),
       ...(images ? { images } : {}),

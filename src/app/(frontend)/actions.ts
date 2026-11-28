@@ -1,6 +1,8 @@
 'use server'
 
 import { headers } from 'next/headers'
+import { getContentTranslator, translateContent } from '@/lib/content-translations'
+import type { Locale } from '@/lib/i18n'
 import type { z } from 'zod'
 import { getPayloadClient } from '@/lib/payload'
 import {
@@ -98,29 +100,31 @@ export async function submitPmbAction(formData: FormData) {
   })
 }
 
-export async function checkPmbStatusAction(raw: unknown) {
+export async function checkPmbStatusAction(raw: unknown, locale: Locale = 'id') {
   const limited = rateLimit(`pmb-status:${clientIp(await headers())}`, 5, 60_000)
   if (!limited.ok) return { ok: false as const, message: `Terlalu banyak percobaan. Coba lagi dalam ${limited.retryAfter} detik.` }
   const parsed = pmbStatusSchema.safeParse(raw)
   if (!parsed.success) return { ok: false as const, message: INVALID, fieldErrors: fieldErrors(parsed.error) }
-  return toAction(await forms.checkPmbStatus(await getPayloadClient(), parsed.data))
+  const result = toAction(await forms.checkPmbStatus(await getPayloadClient(), parsed.data))
+  return locale === 'en' ? translateContent(result, await getContentTranslator('en')) : result
 }
 
-export async function submitQuizAction(raw: unknown) {
+export async function submitQuizAction(raw: unknown, locale: Locale = 'id') {
   const limited = rateLimit(`quiz:${clientIp(await headers())}`, 10, 60_000)
   if (!limited.ok) return { ok: false as const, message: 'Terlalu banyak percobaan. Tunggu sebentar, ya.' }
   const parsed = quizAttemptSchema.safeParse(raw)
   if (!parsed.success) return { ok: false as const, message: 'Jawab semua pertanyaan dulu, ya.' }
-  return toAction(await forms.submitQuizAttempt(await getPayloadClient(), parsed.data))
+  const result = toAction(await forms.submitQuizAttempt(await getPayloadClient(), parsed.data))
+  return locale === 'en' ? translateContent(result, await getContentTranslator('en')) : result
 }
 
 export async function submitQuizLeadAction(raw: unknown) {
   return guarded(quizLeadSchema, raw, 'kuis-lead', { name: '' }, async (input) => forms.submitQuizLead(await getPayloadClient(), input))
 }
 
-export async function searchAction(query: string) {
+export async function searchAction(query: string, locale: Locale = 'id') {
   const limited = rateLimit(`search:${clientIp(await headers())}`, 30, 60_000)
   if (!limited.ok) return []
   const { searchSite } = await import('@/server/services/search')
-  return searchSite(await getPayloadClient(), String(query ?? '').slice(0, 80))
+  return searchSite(await getPayloadClient(), String(query ?? '').slice(0, 80), locale === 'en' ? 'en' : 'id')
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { LocaleLink as Link, useLocale } from '@/components/providers/LocaleProvider'
 import { useEffect, useRef, useState } from 'react'
 import { Icon } from '@/components/ui/Icon'
 import { displayCourseCode } from '@/lib/domain/curriculum'
@@ -18,6 +18,8 @@ export function CourseDrawer({
   onClose: () => void
   showPlaceholders: boolean
 }) {
+  const locale = useLocale()
+  const en = locale === 'en'
   const ref = useRef<HTMLDialogElement>(null)
   const [state, setState] = useState<{
     status: 'idle' | 'loading' | 'ready' | 'error'
@@ -35,7 +37,7 @@ export function CourseDrawer({
     if (!slug) return
     let cancelled = false
     setState({ status: 'loading' })
-    fetch(`/api/v1/courses/${encodeURIComponent(slug)}`)
+    fetch(`/api/v1/courses/${encodeURIComponent(slug)}${en ? '?locale=en' : ''}`)
       .then((response) => response.json())
       .then((json: { data?: Doc }) => {
         if (!cancelled)
@@ -45,7 +47,7 @@ export function CourseDrawer({
     return () => {
       cancelled = true
     }
-  }, [slug])
+  }, [slug, en])
 
   const course = state.course
 
@@ -64,7 +66,7 @@ export function CourseDrawer({
           {course ? (
             <>
               <p className="label-mono text-blue">
-                {displayCourseCode(course.code)} · Semester {course.semester} · {course.credits} SKS
+                {displayCourseCode(course.code)} · Semester {course.semester} · {course.credits} {en ? 'credits' : 'SKS'}
               </p>
               <h2 id="drawer-title" className="mt-2 text-title font-bold">
                 {course.name}
@@ -75,7 +77,7 @@ export function CourseDrawer({
             </>
           ) : (
             <h2 id="drawer-title" className="text-title font-bold">
-              {state.status === 'error' ? 'Silabus belum bisa dimuat' : 'Memuat silabus…'}
+              {state.status === 'error' ? (en ? "Syllabus could not be loaded" : 'Silabus belum bisa dimuat') : (en ? "Loading syllabus…" : 'Memuat silabus…')}
             </h2>
           )}
         </div>
@@ -83,7 +85,7 @@ export function CourseDrawer({
           type="button"
           onClick={() => ref.current?.close()}
           className="grid size-11 shrink-0 place-items-center rounded-full border-2 border-navy hover:bg-ink-50"
-          aria-label="Tutup silabus"
+          aria-label={en ? "Close syllabus" : "Tutup silabus"}
         >
           <Icon name="close" size={18} strokeWidth={2.5} />
         </button>
@@ -98,21 +100,21 @@ export function CourseDrawer({
         ) : null}
         {state.status === 'error' ? (
           <p className="text-ink-600">
-            Periksa koneksi lalu coba lagi, atau buka{' '}
+            {en ? 'Check your connection and try again, or open the' : 'Periksa koneksi lalu coba lagi, atau buka'}{' '}
             <Link href={`/kurikulum/${slug}`} className="font-semibold text-blue underline">
-              halaman mata kuliah
+              {en ? 'course page' : 'halaman mata kuliah'}
             </Link>
             .
           </p>
         ) : null}
         {course ? (
           <>
-            <CourseDetailBody course={course} showPlaceholders={showPlaceholders} />
+            <CourseDetailBody locale={locale} course={course} showPlaceholders={showPlaceholders} />
             <Link
               href={`/kurikulum/${course.slug}`}
               className="pill mt-10 border-2 border-navy bg-blue text-white shadow-hard"
             >
-              Buka halaman lengkap
+              {en ? 'Open full course page' : 'Buka halaman lengkap'}
               <Icon name="arrow-right" size={18} strokeWidth={2.5} />
             </Link>
           </>

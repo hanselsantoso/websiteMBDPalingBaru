@@ -1,9 +1,21 @@
 import * as migration_20261125_011658_standalone_initial from './20261125_011658_standalone_initial';
+import * as migration_20261128_014822_mcp_content_accounts from './20261128_014822_mcp_content_accounts';
+import * as migration_20261128_063057_content_translations from './20261128_063057_content_translations';
 
 export const migrations = [
   {
     up: migration_20261125_011658_standalone_initial.up,
     down: migration_20261125_011658_standalone_initial.down,
-    name: '20261125_011658_standalone_initial'
+    name: '20261125_011658_standalone_initial',
+  },
+  {
+    up: migration_20261128_014822_mcp_content_accounts.up,
+    down: migration_20261128_014822_mcp_content_accounts.down,
+    name: '20261128_014822_mcp_content_accounts',
+  },
+  {
+    up: migration_20261128_063057_content_translations.up,
+    down: migration_20261128_063057_content_translations.down,
+    name: '20261128_063057_content_translations'
   },
 ];

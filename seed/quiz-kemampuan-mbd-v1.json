@@ -1,0 +1,146 @@
+[
+  {
+    "code": "B01",
+    "dimension": "bisnis",
+    "text": "Kamu menjual bekal seharga Rp25.000. Biaya bahan Rp13.000, kemasan Rp2.000, dan biaya platform Rp3.000 per pesanan. Berapa sisa dari satu pesanan sebelum biaya tetap?",
+    "options": [
+      { "label": "Rp12.000, karena hanya biaya bahan yang dikurangi.", "points": 1 },
+      { "label": "Rp7.000, setelah bahan, kemasan, dan platform dikurangi.", "points": 5 },
+      { "label": "Rp10.000, setelah bahan dan kemasan dikurangi.", "points": 3 },
+      { "label": "Rp25.000, karena itu uang yang dibayar pelanggan.", "points": 0 }
+    ],
+    "explanation": "Pendapatan per pesanan dikurangi seluruh biaya yang berubah bersama jumlah pesanan. Rp25.000 − Rp13.000 − Rp2.000 − Rp3.000 = Rp7.000."
+  },
+  {
+    "code": "D01",
+    "dimension": "data",
+    "text": "Promosi A menghasilkan 20 pesanan dari 100 pengunjung. Promosi B menghasilkan 40 pesanan dari 400 pengunjung. Promosi mana yang lebih sering mengubah pengunjung menjadi pembeli?",
+    "options": [
+      { "label": "B, karena jumlah pengunjungnya paling tinggi.", "points": 0 },
+      { "label": "B, karena total pesanannya dua kali lipat.", "points": 1 },
+      { "label": "A, karena 20% pengunjung memesan dibandingkan dengan 10% pada B.", "points": 5 },
+      { "label": "Saya akan membandingkan pesanan per pengunjung, tetapi belum memilih promosi.", "points": 3 }
+    ],
+    "explanation": "Bandingkan rasio jika jumlah pengunjungnya berbeda. 20 ÷ 100 = 20%, sedangkan 40 ÷ 400 = 10%."
+  },
+  {
+    "code": "T01",
+    "dimension": "teknologi",
+    "text": "AI menyusun jawaban tentang kebijakan pengembalian barang. Tim akan memakai jawaban itu di situs toko. Apa yang kamu lakukan dulu?",
+    "options": [
+      { "label": "Cocokkan tiap syarat penting dengan kebijakan resmi toko dan perbaiki yang keliru.", "points": 5 },
+      { "label": "Terbitkan jawaban jika bahasanya meyakinkan.", "points": 0 },
+      { "label": "Minta AI memperpendek jawaban agar mudah dibaca.", "points": 1 },
+      { "label": "Periksa batas waktu pengembalian di kebijakan resmi, lalu baca ulang jawabannya.", "points": 3 }
+    ],
+    "explanation": "Bahasa yang meyakinkan belum membuktikan isinya akurat. Periksa batas waktu, kondisi barang, biaya, dan pengecualian terhadap sumber resmi."
+  },
+  {
+    "code": "K01",
+    "dimension": "kreatif",
+    "text": "Saat mencoba prototipe toko, empat dari lima pengguna berhenti karena tidak menemukan tombol bayar. Perubahan apa yang paling tepat diuji berikutnya?",
+    "options": [
+      { "label": "Ganti warna semua halaman supaya tampilannya segar.", "points": 1 },
+      { "label": "Tambah gambar di bagian atas halaman supaya pengguna tertarik.", "points": 0 },
+      { "label": "Perbesar tombol bayar di posisi lama, lalu coba lagi.", "points": 3 },
+      { "label": "Pindahkan tombol ke lokasi yang mudah ditemukan dengan label jelas, lalu uji tugas pembayaran lagi.", "points": 5 }
+    ],
+    "explanation": "Mulai dari hambatan yang terlihat. Mengubah letak dan label menyasar masalah menemukan tombol, lalu pengujian ulang menunjukkan dampaknya."
+  },
+  {
+    "code": "B02",
+    "dimension": "bisnis",
+    "text": "Tim punya ide layanan antar bekal di kampus, tetapi belum tahu apakah mahasiswa mau membayar. Anggarannya cukup untuk satu percobaan kecil. Apa yang kamu pilih?",
+    "options": [
+      { "label": "Survei apakah calon pelanggan tertarik jika layanan ini tersedia.", "points": 3 },
+      { "label": "Buat video promosi dan nilai ide dari jumlah tayangan.", "points": 1 },
+      { "label": "Pesan stok untuk satu bulan berdasarkan perkiraan tim.", "points": 0 },
+      { "label": "Tawarkan pra-pesan terbatas dengan harga nyata dan catat berapa yang bersedia membayar.", "points": 5 }
+    ],
+    "explanation": "Pra-pesan pada harga nyata menguji kesediaan membayar. Minat dalam survei atau jumlah tayangan memberi petunjuk, tetapi belum menunjukkan keputusan membeli."
+  },
+  {
+    "code": "D02",
+    "dimension": "data",
+    "text": "Laporan pesanan mendadak melonjak setelah dua file harian digabungkan. Banyak baris mempunyai ID pesanan yang sama. Apa langkah pertama yang paling masuk akal?",
+    "options": [
+      { "label": "Telusuri ID yang berulang ke data sumber, pisahkan duplikat dari pesanan sah, lalu hitung ulang.", "points": 5 },
+      { "label": "Umumkan bahwa promosi berhasil karena angka gabungan naik.", "points": 0 },
+      { "label": "Bandingkan total kedua file untuk mencari perbedaan ukuran.", "points": 1 },
+      { "label": "Tandai semua ID berulang dan hitung jumlahnya untuk melihat besarnya masalah.", "points": 3 }
+    ],
+    "explanation": "Periksa sumber sebelum menghapus data. Sebagian ID yang berulang bisa valid, misalnya jika satu pesanan berisi beberapa item."
+  },
+  {
+    "code": "T02",
+    "dimension": "teknologi",
+    "text": "Tim ingin memakai AI untuk mengelompokkan keluhan pelanggan. File berisi nama, nomor telepon, dan isi keluhan. Cara kerja mana yang paling tepat?",
+    "options": [
+      { "label": "Unggah semua data ke alat AI publik agar ringkasannya lengkap.", "points": 0 },
+      { "label": "Hapus nama pelanggan, tetapi biarkan nomor telepon untuk membantu pengelompokan.", "points": 1 },
+      { "label": "Buang identitas yang tidak diperlukan, cek isi teks bebas, dan gunakan alat yang disetujui sebelum memeriksa hasilnya.", "points": 5 },
+      { "label": "Hapus nama dan nomor telepon dari kolom, lalu lanjut tanpa memeriksa isi keluhan.", "points": 3 }
+    ],
+    "explanation": "Untuk mengelompokkan tema, identitas pelanggan biasanya tidak diperlukan. Teks bebas juga dapat memuat identitas dan hasil AI tetap perlu ditinjau."
+  },
+  {
+    "code": "K02",
+    "dimension": "kreatif",
+    "text": "Desain formulir terlihat bagus di laptop, tetapi di HP tombol kirim sulit ditekan dan ada teks kecil berwarna abu-abu muda. Apa revisi yang paling membantu?",
+    "options": [
+      { "label": "Perkecil jarak antar elemen supaya semua tetap muat dalam satu layar.", "points": 0 },
+      { "label": "Perbesar area sentuh, tingkatkan keterbacaan teks, lalu uji formulir di layar kecil.", "points": 5 },
+      { "label": "Perbesar tombol kirim tanpa mengubah bagian lain.", "points": 3 },
+      { "label": "Ubah ilustrasi judul dengan versi resolusi lebih tinggi.", "points": 1 }
+    ],
+    "explanation": "Revisi yang baik mengatasi dua hambatan yang ditemukan sekaligus. Uji pada perangkat kecil untuk memastikan tombol terjangkau dan teks terbaca."
+  },
+  {
+    "code": "B03",
+    "dimension": "bisnis",
+    "text": "Pesanan lewat aplikasi banyak, tetapi sebagian pelanggan batal saat mengetahui biaya kirim. Tim hanya punya waktu mencoba satu perubahan minggu ini. Percobaan mana yang paling berguna?",
+    "options": [
+      { "label": "Ubah logo agar pembeli lebih percaya pada merek.", "points": 1 },
+      { "label": "Tambah anggaran iklan supaya lebih banyak calon pembeli datang.", "points": 0 },
+      { "label": "Tampilkan estimasi ongkir lebih awal dan bandingkan tingkat penyelesaian pesanan sebelum dan sesudahnya.", "points": 5 },
+      { "label": "Wawancarai beberapa pelanggan yang batal untuk memahami keluhan tentang biaya.", "points": 3 }
+    ],
+    "explanation": "Percobaan menyasar titik pelanggan berhenti dan memakai ukuran keberhasilan yang relevan. Wawancara berguna sebagai pendukung, terutama untuk memahami penyebab lain."
+  },
+  {
+    "code": "D03",
+    "dimension": "data",
+    "text": "Penjualan naik saat tim mengubah foto produk, tetapi pada hari yang sama toko juga memberi diskon. Apa kesimpulan dan langkah lanjut yang paling tepat?",
+    "options": [
+      { "label": "Foto baru pasti penyebabnya, karena penjualan langsung naik.", "points": 0 },
+      { "label": "Catat bahwa dua perubahan terjadi bersamaan, lalu kumpulkan data beberapa hari lagi.", "points": 3 },
+      { "label": "Diskon pasti penyebabnya, karena harga turun.", "points": 1 },
+      { "label": "Penyebabnya belum bisa dipisahkan. Bandingkan dua versi foto pada kelompok serupa dengan diskon yang sama.", "points": 5 }
+    ],
+    "explanation": "Jika dua hal berubah bersamaan, kenaikan saja tidak memisahkan dampaknya. Bandingkan versi foto dengan kondisi harga yang sama."
+  },
+  {
+    "code": "T03",
+    "dimension": "teknologi",
+    "text": "Tim mau otomatis mengirim pesan pengingat pembayaran. Sebagian status pembayaran terlambat diperbarui. Bagaimana cara menguji otomatisasi itu?",
+    "options": [
+      { "label": "Uji contoh pembayaran berhasil, gagal, dan tertunda; tahan pesan untuk status meragukan sampai diperiksa.", "points": 5 },
+      { "label": "Jalankan langsung pada semua pelanggan untuk melihat apa yang terjadi.", "points": 0 },
+      { "label": "Uji beberapa pesanan reguler dan sediakan tombol berhenti manual.", "points": 3 },
+      { "label": "Perbaiki kata-kata pengingat supaya terdengar ramah.", "points": 1 }
+    ],
+    "explanation": "Uji jalur normal dan kondisi bermasalah. Menahan kasus meragukan mengurangi risiko pelanggan yang sudah membayar menerima pengingat yang salah."
+  },
+  {
+    "code": "K03",
+    "dimension": "kreatif",
+    "text": "Dua rancangan halaman katalog sama-sama disukai tim. Tujuannya membantu pengguna menemukan produk dengan cepat. Bagaimana memilih desain?",
+    "options": [
+      { "label": "Pilih yang mendapat suara terbanyak dari tim desain.", "points": 1 },
+      { "label": "Beri calon pengguna tugas yang sama pada kedua rancangan, lalu bandingkan keberhasilan dan waktu yang dibutuhkan.", "points": 5 },
+      { "label": "Pilih desain milik anggota yang paling senior.", "points": 0 },
+      { "label": "Tanyakan kepada beberapa calon pengguna desain mana yang terasa lebih mudah.", "points": 3 }
+    ],
+    "explanation": "Uji tugas langsung mengukur tujuan desain. Preferensi tetap berguna, tetapi keberhasilan menemukan produk dan waktu yang dibutuhkan memberi bukti yang lebih relevan."
+  }
+]

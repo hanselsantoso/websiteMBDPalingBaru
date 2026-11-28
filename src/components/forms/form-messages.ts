@@ -1,0 +1,63 @@
+const ENGLISH_MESSAGES = new Map(Object.entries({
+  'Tulis nama lengkap, minimal 2 huruf.': 'Enter your full name, using at least 2 letters.',
+  'Nama terlalu panjang, maksimal 100 karakter.': 'Your name must be 100 characters or fewer.',
+  'Email wajib diisi.': 'Enter your email address.',
+  'Email terlalu panjang.': 'Your email address is too long.',
+  'Masukkan email yang valid, misalnya nama@email.com.': 'Enter a valid email address, such as name@example.com.',
+  'Nomor WhatsApp wajib diisi.': 'Enter your WhatsApp number.',
+  'Masukkan nomor WhatsApp aktif, misalnya 0812 3456 7890.': 'Enter an active WhatsApp number, such as 0812 3456 7890.',
+  'Centang persetujuan agar kami boleh menyimpan dan menggunakan datamu.': 'Check the box to consent to the use and storage of your information.',
+  'Pilih topik pesanmu.': 'Select a topic for your message.',
+  'Ceritakan pertanyaanmu minimal 10 karakter.': 'Enter at least 10 characters in your message.',
+  'Pesan terlalu panjang, maksimal 2.000 karakter.': 'Your message must be 2,000 characters or fewer.',
+  'Pilih tanggal konsultasi.': 'Select a consultation date.',
+  'Pilih tanggal mulai hari ini.': 'Choose today or a later date.',
+  'Pilih slot waktu.': 'Select a time slot.',
+  'Catatan maksimal 1.000 karakter.': 'Your notes must be 1,000 characters or fewer.',
+  'Tulis kota domisilimu.': 'Enter the city where you live.',
+  'Nama kota terlalu panjang.': 'The city name is too long.',
+  'Tulis nama sekolah asalmu.': 'Enter the name of your previous school.',
+  'Nama sekolah terlalu panjang.': 'The school name is too long.',
+  'Tulis jurusanmu, misalnya IPS atau Akuntansi.': 'Enter your field of study, for example Social Sciences or Accounting.',
+  'Tulis tahun lulus 4 digit, misalnya 2026.': 'Enter a four-digit graduation year, such as 2026.',
+  'Pilih jalur pendaftaran.': 'Select an admissions track.',
+  'Pilih gelombang pendaftaran.': 'Select an intake period.',
+  'Pilih dari mana kamu mengenal MBD.': 'Select how you heard about MBD.',
+  'Tulis nomor pendaftaran dengan format MBD-2026-0001.': 'Enter an application number in the format MBD-2026-0001.',
+  'Tulis 4 digit terakhir nomor WhatsApp yang kamu daftarkan.': 'Enter the last four digits of the WhatsApp number you registered.',
+  'Periksa kembali isian yang ditandai.': 'Check the highlighted fields.',
+  'Maaf, kami belum bisa menyimpan datamu. Periksa koneksi lalu coba lagi.': 'We could not save your information. Check your connection and try again.',
+  'Verifikasi keamanan gagal. Muat ulang halaman lalu coba lagi.': 'Security verification failed. Reload the page and try again.',
+  'Gelombang ini sedang tidak dibuka.': 'This intake period is closed.',
+  'Pilih gelombang yang sedang dibuka.': 'Select an intake period that is open.',
+  'Jalur ini tidak tersedia.': 'This admissions track is unavailable.',
+  'Pilih jalur pendaftaran yang tersedia.': 'Select an available admissions track.',
+  'Unggah dokumen belum tersedia. Hubungi tim PMB untuk melengkapi dokumen.': 'Document uploads are currently unavailable. Contact the admissions team to complete your paperwork.',
+  'Unggah dokumen belum tersedia. Hubungi tim PMB.': 'Document uploads are currently unavailable. Contact the admissions team.',
+  'Unggah dokumen belum tersedia.': 'Document uploads are currently unavailable.',
+  'Dokumen tidak valid.': 'The document is invalid.',
+  'Format dokumen tidak didukung.': 'The document format is unsupported.',
+  'Dokumen terlalu besar.': 'The document is too large.',
+  'Unggah maksimal empat dokumen.': 'Upload up to four documents.',
+  'Unggah dokumen PDF, JPG, atau PNG.': 'Upload PDF, JPG, or PNG documents.',
+  'Ukuran dokumen melebihi batas atau file kosong.': 'A document exceeds the size limit or is empty.',
+  'Ukuran total dokumen melebihi batas.': 'The documents exceed the combined size limit.',
+  'Pendaftaran belum dapat diproses. Coba lagi atau hubungi tim PMB.': 'We could not process your application. Try again or contact the admissions team.',
+  'Belum tersimpan. Hubungi tim PMB dengan nomor pendaftaran ini.': 'This document could not be saved. Contact the admissions team with this application number.',
+  'Data tidak ditemukan. Periksa nomor pendaftaran dan 4 digit terakhir WhatsApp yang kamu daftarkan.': 'We could not find your application. Check your application number and the last four digits of your registered WhatsApp number.',
+  'Terlalu banyak percobaan. Tunggu sebentar, ya.': 'Too many attempts. Please wait a moment.',
+  'Jawab semua pertanyaan dulu, ya.': 'Answer all the questions first.',
+  'Jawab pertanyaan kuis terlebih dahulu.': 'Answer the quiz questions first.',
+  'Kuis kemampuan sedang disiapkan.': 'The skills quiz is coming soon.',
+  'Jawab semua kasus. Jika pertanyaannya berubah, muat ulang kuis.': 'Answer every case. If the questions have changed, reload the quiz.',
+  'Maaf, hasil kuis belum bisa dihitung. Coba lagi sebentar lagi.': 'We could not calculate your results. Try again in a moment.',
+}))
+
+/** Localizes existing validation and action messages, retaining filenames and limits. */
+export function englishFormMessage(message: string): string {
+  return ENGLISH_MESSAGES.get(message) ?? message
+    .replace(/^Terlalu banyak percobaan\. Coba lagi dalam (\d+) detik\.$/, 'Too many attempts. Try again in $1 seconds.')
+    .replace(/^Tahun lulus harus antara (\d+) dan (\d+)\.$/, 'Your graduation year must be between $1 and $2.')
+    .replace(/: unggah PDF, JPG, atau PNG\.$/, ': upload a PDF, JPG, or PNG.')
+    .replace(/ melebihi ([\d.]+) MB\.$/, ' exceeds $1 MB.')
+}

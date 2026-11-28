@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { FacultyCard } from '@/components/cards/Cards'
+import { useLocale } from '@/components/providers/LocaleProvider'
 import { SelectField } from '@/components/forms/fields'
 import { Icon } from '@/components/ui/Icon'
 import { isPlaceholder } from '@/lib/domain/placeholders'
@@ -34,6 +35,8 @@ export function FacultyDirectory({
   heading?: string | null
   intro?: string | null
 }) {
+  const locale = useLocale()
+  const en = locale === 'en'
   const [query, setQuery] = useState('')
   const [expertise, setExpertise] = useState('')
   const [course, setCourse] = useState('')
@@ -43,17 +46,17 @@ export function FacultyDirectory({
       Array.from(
         new Set(members.flatMap((member) => member.expertise).filter((tag) => !isPlaceholder(tag))),
       )
-        .sort()
+        .sort((a, b) => a.localeCompare(b, locale))
         .map((tag) => ({ value: tag, label: tag })),
-    [members],
+    [members, locale],
   )
   const courseOptions = useMemo(() => {
     const map = new Map<string, string>()
     members.forEach((member) => member.courses.forEach((item) => map.set(item.slug, item.name)))
     return [...map.entries()]
-      .sort((a, b) => a[1].localeCompare(b[1]))
+      .sort((a, b) => a[1].localeCompare(b[1], locale))
       .map(([value, label]) => ({ value, label }))
-  }, [members])
+  }, [members, locale])
 
   const q = query.trim().toLowerCase()
   const results = members.filter(
@@ -71,7 +74,7 @@ export function FacultyDirectory({
       <div className="mt-8 grid gap-4 rounded-[28px] border-2 border-navy bg-ink-50 p-5 md:grid-cols-3">
         <div className="grid gap-1.5">
           <label htmlFor="cari-dosen" className="font-semibold">
-            Cari nama
+            {en ? 'Search by name' : 'Cari nama'}
           </label>
           <div className="relative">
             <Icon
@@ -84,30 +87,30 @@ export function FacultyDirectory({
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Nama dosen"
+              placeholder={en ? "Lecturer’s name" : "Nama dosen"}
               className="h-12 w-full rounded-xl border-2 border-navy bg-white pr-4 pl-12 text-base placeholder:text-ink-500"
             />
           </div>
         </div>
         <SelectField
           id="filter-keahlian"
-          label="Bidang keahlian"
+          label={en ? "Areas of expertise" : "Bidang keahlian"}
           options={expertiseOptions}
-          placeholder="Semua keahlian"
+          placeholder={en ? "All areas" : "Semua keahlian"}
           value={expertise}
           onChange={(event) => setExpertise(event.target.value)}
         />
         <SelectField
           id="filter-matkul"
-          label="Mata kuliah yang diampu"
+          label={en ? "Courses taught" : "Mata kuliah yang diampu"}
           options={courseOptions}
-          placeholder="Semua mata kuliah"
+          placeholder={en ? "All courses" : "Semua mata kuliah"}
           value={course}
           onChange={(event) => setCourse(event.target.value)}
         />
       </div>
       <p className="sr-only" aria-live="polite">
-        {filtering ? `${results.length} dosen ditemukan.` : ''}
+        {filtering ? (en ? `${results.length} ${results.length === 1 ? 'lecturer' : 'lecturers'} found.` : `${results.length} dosen ditemukan.`) : ''}
       </p>
       {results.length ? (
         <ul className="mt-12 grid gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
@@ -115,6 +118,7 @@ export function FacultyDirectory({
             <li key={member.id}>
               <FacultyCard
                 member={member}
+                locale={locale}
                 showPlaceholders={showPlaceholders}
                 mask={index % 2 === 0 ? 'fin' : 'round'}
               />
@@ -125,8 +129,8 @@ export function FacultyDirectory({
         <div className="mt-12 rounded-[28px] border-2 border-dashed border-navy p-10 text-center">
           <p className="text-lg font-semibold">
             {members.length
-              ? 'Tidak ada dosen yang cocok dengan filter ini.'
-              : 'Profil dosen segera hadir.'}
+              ? (en ? "No lecturers match these filters." : 'Tidak ada dosen yang cocok dengan filter ini.')
+              : (en ? "Lecturer profiles are coming soon." : 'Profil dosen segera hadir.')}
           </p>
           {filtering ? (
             <button
@@ -138,7 +142,7 @@ export function FacultyDirectory({
               }}
               className="pill mt-4 border-2 border-navy bg-white text-navy"
             >
-              Hapus filter
+              {en ? 'Clear filters' : 'Hapus filter'}
             </button>
           ) : null}
         </div>

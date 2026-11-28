@@ -36,6 +36,11 @@ const invalidForm = {
 }
 
 async function main() {
+  await request('/api/mcp', [401], {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' },
+    body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/list' }),
+  })
   const health = await request('/health?ready=1', [200])
   assert.equal((await health.json()).status, 'ok')
   const admin = await request('/admin', [200, 302, 307])

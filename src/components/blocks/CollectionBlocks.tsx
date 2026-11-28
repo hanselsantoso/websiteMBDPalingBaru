@@ -1,5 +1,7 @@
+import { translateContent } from '@/lib/content-translations'
+import { uiCopy } from '@/lib/i18n-copy'
 import Image from '@/components/ui/CmsImage'
-import Link from 'next/link'
+import { LocaleLink as Link } from '@/components/providers/LocaleProvider'
 import { WhatsAppLink } from '@/components/cta/CtaLinks'
 import { ArrowLink, FacultyCard, PostCard } from '@/components/cards/Cards'
 import { Siasat } from '@/components/mascot/Siasat'
@@ -25,7 +27,8 @@ import { asMedia, cn, formatDate } from '@/lib/utils'
 import { anchor, type BlockProps } from './types'
 
 export async function FacultyHighlightBlock({ block, ctx }: BlockProps) {
-  const all = await getFacultyList()
+  const copy = (text: string) => uiCopy(ctx.locale, text)
+  const all = translateContent(await getFacultyList(), ctx.translate)
   const members = all.filter((member) => member.showOnHome).slice(0, Number(block.limit ?? 4))
   if (!members.length) return null
   return (
@@ -35,7 +38,7 @@ export async function FacultyHighlightBlock({ block, ctx }: BlockProps) {
           eyebrow={block.eyebrow}
           title={block.heading}
           intro={block.intro}
-          aside={<ArrowLink href="/dosen">{block.linkLabel || 'Kenal semua dosen'}</ArrowLink>}
+          aside={<ArrowLink href="/dosen">{block.linkLabel || copy("Kenal semua dosen")}</ArrowLink>}
         />
         <ul className="mt-12 grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
           {members.map((member, index) => (
@@ -45,7 +48,7 @@ export async function FacultyHighlightBlock({ block, ctx }: BlockProps) {
               delay={index * 90}
               className={cn(index % 2 === 1 && 'lg:translate-y-10')}
             >
-              <FacultyCard
+              <FacultyCard locale={ctx.locale}
                 member={member}
                 showPlaceholders={ctx.showPlaceholders}
                 mask={index % 2 === 0 ? 'fin' : 'round'}
@@ -58,8 +61,8 @@ export async function FacultyHighlightBlock({ block, ctx }: BlockProps) {
   )
 }
 
-export async function TestimonialsBlock({ block }: BlockProps) {
-  const testimonials = (await getTestimonials())
+export async function TestimonialsBlock({ block, ctx }: BlockProps) {
+  const testimonials = (translateContent(await getTestimonials(), ctx.translate))
     .filter((item) => !isPlaceholder(item.quote))
     .slice(0, Number(block.limit ?? 3))
   if (!testimonials.length) return null
@@ -127,8 +130,9 @@ function Attribution({ item }: { item: Record<string, any> }) {
   )
 }
 
-export async function LatestPostsBlock({ block }: BlockProps) {
-  const posts = await getLatestPosts(Number(block.limit ?? 3))
+export async function LatestPostsBlock({ block, ctx }: BlockProps) {
+  const copy = (text: string) => uiCopy(ctx.locale, text)
+  const posts = translateContent(await getLatestPosts(Number(block.limit ?? 3)), ctx.translate)
   if (!posts.length) return null
   const [feature, ...rest] = posts
   return (
@@ -137,11 +141,11 @@ export async function LatestPostsBlock({ block }: BlockProps) {
         <SectionHeading
           eyebrow={block.eyebrow}
           title={block.heading}
-          aside={<ArrowLink href="/blog">{block.linkLabel || 'Semua artikel'}</ArrowLink>}
+          aside={<ArrowLink href="/blog">{block.linkLabel || copy("Semua artikel")}</ArrowLink>}
         />
         <div className="mt-12 grid gap-5 lg:grid-cols-12">
           <Reveal className="lg:col-span-7">
-            <PostCard post={feature} featured={false} />
+            <PostCard locale={ctx.locale} post={feature} featured={false} />
           </Reveal>
           <div className="grid gap-5 lg:col-span-5">
             {rest.map((post, index) => (
@@ -159,7 +163,7 @@ export async function LatestPostsBlock({ block }: BlockProps) {
                     </Link>
                   </h3>
                   <p className="label-mono text-ink-600">
-                    {formatDate(post.publishedAt)}
+                    {formatDate(post.publishedAt, 'long', ctx.locale)}
                     {post.readingMinutes ? ` · ${post.readingMinutes} menit baca` : ''}
                   </p>
                 </article>
@@ -173,7 +177,8 @@ export async function LatestPostsBlock({ block }: BlockProps) {
 }
 
 export async function ProgramsBlock({ block, ctx }: BlockProps) {
-  const programs = await getPrograms()
+  const copy = (text: string) => uiCopy(ctx.locale, text)
+  const programs = translateContent(await getPrograms(), ctx.translate)
   if (!programs.length) return null
   return (
     <section data-tone="light" id={anchor(block)} className="bg-white py-20 lg:py-28">
@@ -194,13 +199,13 @@ export async function ProgramsBlock({ block, ctx }: BlockProps) {
                 )}
               >
                 {image ? (
-                  <div className="relative aspect-[16/9] border-b-2 border-navy">
+                  <div className="relative aspect-[16/9] border-b-2 border-navy bg-ink-50">
                     <Image
                       src={image.url!}
                       alt={image.alt ?? ''}
                       fill
                       sizes="(min-width: 1024px) 400px, 100vw"
-                      className="object-cover"
+                      className="object-contain p-4"
                     />
                   </div>
                 ) : null}
@@ -236,8 +241,7 @@ export async function ProgramsBlock({ block, ctx }: BlockProps) {
                         'mt-5 inline-flex items-center gap-1 font-semibold',
                         pose ? 'text-lime' : 'text-blue',
                       )}
-                    >
-                      Lihat detail <span className="sr-only">{program.title}</span>
+                    >{copy("Lihat detail") + " "}<span className="sr-only">{program.title}</span>
                       <Icon name="arrow-right" size={16} strokeWidth={2.5} />
                     </Link>
                   ) : null}
@@ -252,7 +256,8 @@ export async function ProgramsBlock({ block, ctx }: BlockProps) {
 }
 
 export async function CareerPathsBlock({ block, ctx }: BlockProps) {
-  const careers = await getCareerPaths()
+  const copy = (text: string) => uiCopy(ctx.locale, text)
+  const careers = translateContent(await getCareerPaths(), ctx.translate)
   if (!careers.length) return null
   return (
     <section data-tone="light" id={anchor(block)} className="bg-white py-20 lg:py-28">
@@ -267,6 +272,7 @@ export async function CareerPathsBlock({ block, ctx }: BlockProps) {
               new Set(courses.map((course) => Number(course.semester)).filter(Boolean)),
             ).sort((a, b) => a - b)
             const skills = (career.skills as string[]) ?? []
+            const showSalary = ctx.showPlaceholders || !isPlaceholder(career.salaryNote)
             return (
               <Reveal
                 as="li"
@@ -275,8 +281,7 @@ export async function CareerPathsBlock({ block, ctx }: BlockProps) {
                 className="sticker grid min-w-0 gap-6 p-6 lg:grid-cols-12 lg:p-8"
               >
                 <div className="min-w-0 lg:col-span-4">
-                  <p className="label-mono text-blue">Peran {String(index + 1).padStart(2, '0')}</p>
-                  <h3 className="mt-2 text-2xl leading-tight font-bold">{career.role}</h3>
+                  <h3 className="text-2xl leading-tight font-bold">{career.role}</h3>
                   <p className="mt-3 text-ink-600">{career.summary}</p>
                 </div>
                 {block.showRoadmap ? (
@@ -284,7 +289,7 @@ export async function CareerPathsBlock({ block, ctx }: BlockProps) {
                     className="min-w-0 lg:col-span-5"
                     aria-label={`Peta jalan menuju ${career.role}`}
                   >
-                    <p className="label-mono text-ink-600">Semester → skill → peran</p>
+                    <p className="label-mono text-ink-600">{copy("Semester → skill → peran")}</p>
                     <ol className="mt-3 flex flex-wrap items-center gap-2">
                       {semesters.map((semester) => (
                         <li
@@ -332,7 +337,7 @@ export async function CareerPathsBlock({ block, ctx }: BlockProps) {
                 ) : null}
                 <dl className="grid content-start gap-4 text-sm lg:col-span-3">
                   <div>
-                    <dt className="label-mono text-ink-600">Contoh tempat kerja</dt>
+                    <dt className="label-mono text-ink-600">{copy("Contoh tempat kerja")}</dt>
                     <dd className="mt-1">
                       <TextOr
                         value={career.employers}
@@ -341,16 +346,14 @@ export async function CareerPathsBlock({ block, ctx }: BlockProps) {
                       />
                     </dd>
                   </div>
-                  <div>
-                    <dt className="label-mono text-ink-600">Kisaran gaji indikatif</dt>
-                    <dd className="mt-1">
-                      <TextOr
-                        value={career.salaryNote}
-                        show={ctx.showPlaceholders}
-                        fallback="Informasi menyusul"
-                      />
-                    </dd>
-                  </div>
+                  {showSalary ? (
+                    <div>
+                      <dt className="label-mono text-ink-600">{copy("Kisaran gaji indikatif")}</dt>
+                      <dd className="mt-1">
+                        <TextOr value={career.salaryNote} show={ctx.showPlaceholders} />
+                      </dd>
+                    </div>
+                  ) : null}
                 </dl>
               </Reveal>
             )
@@ -369,9 +372,10 @@ const JOB_TYPES: Record<string, string> = {
   freelance: 'Lepas',
 }
 
-export async function JobBoardBlock({ block }: BlockProps) {
+export async function JobBoardBlock({ block, ctx }: BlockProps) {
+  const copy = (text: string) => uiCopy(ctx.locale, text)
   const now = Date.now()
-  const jobs = (await getJobs()).filter(
+  const jobs = (translateContent(await getJobs(), ctx.translate)).filter(
     (job) => !job.deadline || new Date(job.deadline).getTime() + 24 * 3600 * 1000 > now,
   )
   return (
@@ -393,7 +397,7 @@ export async function JobBoardBlock({ block }: BlockProps) {
                   <p className="text-ink-600">
                     {job.company}
                     {job.location ? ` · ${job.location}` : ''}
-                    {job.deadline ? ` · Tenggat ${formatDate(job.deadline)}` : ''}
+                    {job.deadline ? ` · Tenggat ${formatDate(job.deadline, 'long', ctx.locale)}` : ''}
                   </p>
                 </div>
                 <a
@@ -412,7 +416,7 @@ export async function JobBoardBlock({ block }: BlockProps) {
           <div className="mt-10 flex flex-col items-center gap-4 rounded-[28px] border-2 border-dashed border-navy bg-white p-10 text-center">
             <Siasat pose="thinking" size="sm" decorative />
             <p className="max-w-md font-semibold">
-              {block.emptyText || 'Belum ada lowongan aktif.'}
+              {block.emptyText || copy("Belum ada lowongan aktif.")}
             </p>
           </div>
         )}
@@ -422,7 +426,8 @@ export async function JobBoardBlock({ block }: BlockProps) {
 }
 
 export async function ContactInfoBlock({ block, ctx }: BlockProps) {
-  const settings = await getSiteSettings()
+  const copy = (text: string) => uiCopy(ctx.locale, text)
+  const settings = translateContent(await getSiteSettings(), ctx.translate)
   const lat = Number(settings.mapLat)
   const lng = Number(settings.mapLng)
   const hasMap =
@@ -434,16 +439,16 @@ export async function ContactInfoBlock({ block, ctx }: BlockProps) {
   const rows = [
     {
       icon: 'map-pin',
-      label: 'Alamat',
+      label: copy("Alamat"),
       value: settings.address,
       hint: 'alamat kampus ISTTS',
       show: true,
     },
-    { icon: 'phone', label: 'Telepon', value: settings.phone, hint: 'nomor telepon', show: true },
+    { icon: 'phone', label: copy("Telepon"), value: settings.phone, hint: 'nomor telepon', show: true },
     { icon: 'mail', label: 'Email', value: settings.email, hint: 'email', show: true },
     {
       icon: 'clock',
-      label: 'Jam layanan',
+      label: copy("Jam layanan"),
       value: settings.serviceHours,
       hint: 'jam layanan',
       show: block.showHours !== false,
@@ -479,7 +484,7 @@ export async function ContactInfoBlock({ block, ctx }: BlockProps) {
             <WhatsAppLink placement="kontak" className={buttonStyles.primary} />
             {block.showSocials !== false ? (
               socials.length ? (
-                <ul className="flex gap-2" aria-label="Media sosial">
+                <ul className="flex gap-2" aria-label={copy("Media sosial")}>
                   {socials.map((social) => (
                     <li key={social.url}>
                       <a
@@ -495,7 +500,7 @@ export async function ContactInfoBlock({ block, ctx }: BlockProps) {
                   ))}
                 </ul>
               ) : ctx.showPlaceholders ? (
-                <PendingChip hint="media sosial" />
+                <PendingChip hint={copy("media sosial")} />
               ) : null
             ) : null}
           </div>
@@ -505,7 +510,7 @@ export async function ContactInfoBlock({ block, ctx }: BlockProps) {
             {hasMap ? (
               <div className="relative aspect-[4/3] overflow-hidden rounded-[28px] border-2 border-navy shadow-hard-lg lg:aspect-auto lg:h-full lg:min-h-[26rem]">
                 <iframe
-                  title="Peta lokasi kampus ISTTS"
+                  title={copy("Peta lokasi kampus ISTTS")}
                   src={`https://www.openstreetmap.org/export/embed.html?bbox=${lng - 0.008}%2C${lat - 0.005}%2C${lng + 0.008}%2C${lat + 0.005}&layer=mapnik&marker=${lat}%2C${lng}`}
                   loading="lazy"
                   className="absolute inset-0 size-full"
@@ -531,9 +536,9 @@ export async function ContactInfoBlock({ block, ctx }: BlockProps) {
                     <Icon name="map-pin" size={26} />
                   </span>
                   {ctx.showPlaceholders ? (
-                    <PendingChip hint="koordinat peta kampus" />
+                    <PendingChip hint={copy("koordinat peta kampus")} />
                   ) : (
-                    <p className="font-semibold">Peta segera tersedia</p>
+                    <p className="font-semibold">{copy("Peta segera tersedia")}</p>
                   )}
                 </div>
               </div>

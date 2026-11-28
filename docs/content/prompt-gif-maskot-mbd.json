@@ -1,0 +1,118 @@
+{
+  "tool": "ImageGen bawaan",
+  "sharedPrompt": "Make one 2x2 animation key-pose sprite sheet with a square or near-square canvas, four strictly equal quadrants, same upright character head size, feet baseline, perspective, contours, palette, face design, glasses and clothing in every quadrant. Cells are in read order top-left, top-right, bottom-left, bottom-right. Each figure is fully visible head to toe including trousers, paws, feet and tail or ears, centered in its quadrant. Keep at least 10% of each cell as clear transparent padding on all four edges and a generous empty cross between cells, no touching cells, no numbering, no text, no cell boundaries, no separator lines. Fully transparent outside all figures. Flat saturated warm cartoon fills, crisp thick navy collegiate comic line art as in identity references, no gradients, floor, scenery or dropshadow. Camera locked for actual frame cuts. Show four subtle connected poses of the same action, use the same continuous prop if any, with extremely consistent head and body proportions from cell to cell. Treat supplied images as character identity and clothes references only and do not print the reference itself. Transparent alpha.",
+  "animation": "Four generated key poses per loop with separately rendered sway, squash, and timing frames.",
+  "clips": [
+    {
+      "id": "siasat-sambut",
+      "name": "Siasat",
+      "title": "Siasat menyapa",
+      "refs": [
+        "public/images/mascot/toon/greeting.webp"
+      ],
+      "action": "One Siasat per cell. Orange fox adult student with navy round glasses, bright cyan neck scarf, royal blue student jacket, lime lanyard and navy pants. Repeatable friendly wave with left hand as seen by viewer. Pose 1 raised hand is level with the shoulder, soft smile and eyes open. Pose 2 this same hand lifts by his ear, wrist upright and eyes brighten. Pose 3 the same wrist tilts outward slightly at ear height, eyes close in happy crescent with cheerful smile. Pose 4 the same wrist tilts slightly inward as the eyes reopen, still raised by ear. Other hand stays casually near hip, feet remain approximately in the same positions, scarf end tilts subtly with the movement.",
+      "file": "output/gif-maskot-mbd/siasat-sambut.gif",
+      "bytes": 995860,
+      "frames": 32,
+      "width": 384,
+      "height": 384,
+      "durationMs": 2560
+    },
+    {
+      "id": "rara-sketsa",
+      "name": "Rara",
+      "title": "Rara mendapat ide",
+      "refs": [
+        "public/images/mascot/friends/rara/fokus.webp",
+        "public/images/mascot/friends/rara/merayakan.webp"
+      ],
+      "action": "One Rara per cell, copper female fox with cream muzzle and tail tip, teal hair clip, violet round glasses, green varsity jacket, straight navy pants and turquoise sneakers. Same small teal tablet clasped by her left arm and tiny navy stylus in right hand throughout. Pose 1 looks down at tablet and stylus near screen, focused. Pose 2 wrist draws one short stroke lower, eye brows knit. Pose 3 looks up with a bright excited realization and tilts stylus up just above the tablet. Pose 4 has a satisfied sideways grin and eyes returning towards screen as stylus lowers, ready for another sketch stroke. Keep shoulders, hips and legs aligned between drawings, no extra symbol above the character.",
+      "file": "output/gif-maskot-mbd/rara-sketsa.gif",
+      "bytes": 861185,
+      "frames": 32,
+      "width": 384,
+      "height": 384,
+      "durationMs": 2560
+    },
+    {
+      "id": "kiko-teliti",
+      "name": "Kiko",
+      "title": "Kiko meneliti bukti",
+      "refs": [
+        "public/images/mascot/friends/kiko/curiga.webp",
+        "public/images/mascot/friends/kiko/percaya-diri.webp"
+      ],
+      "action": "One Kiko per cell, compact charcoal black cat, amber eyes, cheek fur spikes, golden yellow hoodie, navy chinos, ivory sneakers. He holds one small cream illustrated report with three plain graph bars in the same left hand throughout and a round compact magnifying lens in the same right hand throughout. Pose 1 arched skeptical brow, lens just above the report. Pose 2 leans his head and lens a little closer, furrows brow. Pose 3 eyes widen in recognition, mouth small delighted o, lens still close. Pose 4 pulls his head a touch back into a sly satisfied smile and lowers the lens slightly, then can loop. Tail gently changes angle with attention. Foot position, report size and held object's hand stay consistent.",
+      "file": "output/gif-maskot-mbd/kiko-teliti.gif",
+      "bytes": 932629,
+      "frames": 32,
+      "width": 384,
+      "height": 384,
+      "durationMs": 2560
+    },
+    {
+      "id": "bimo-paket",
+      "name": "Bimo",
+      "title": "Bimo menyeimbangkan paket",
+      "refs": [
+        "public/images/mascot/friends/bimo/bingung.webp",
+        "public/images/mascot/friends/bimo/acung-jempol.webp"
+      ],
+      "action": "One Bimo per cell, cinnamon otter with cream muzzle, blue varsity jacket, olive trousers and off-white sneakers. He continuously holds the same two clearly separate plain small kraft boxes stacked at chest height. Comedy balance loop with consistent position and same both hands supporting the base. Pose 1 boxes upright and content soft grin. Pose 2 stack tilts a little toward left, knees flex and eyebrows lift. Pose 3 boxes visibly tip a little right and he leans the other way with open mouth and wide eyes. Pose 4 he straightens to re-center boxes, relieved grin and shoulders back. Both feet on approximately the same ground baseline and right-most tail visible. Do not let package stack cover face or jump out of his hands.",
+      "file": "output/gif-maskot-mbd/bimo-paket.gif",
+      "bytes": 973937,
+      "frames": 32,
+      "width": 384,
+      "height": 384,
+      "durationMs": 2560
+    },
+    {
+      "id": "uli-membaca",
+      "name": "Uli",
+      "title": "Uli menemukan jawaban",
+      "refs": [
+        "public/images/mascot/friends/uli/membaca.webp",
+        "public/images/mascot/friends/uli/dapat-ide.webp"
+      ],
+      "action": "One Uli per cell, tawny owl with warm cream facial disc, oversized teal round spectacles, plum sweater vest, pale yellow shirt, full navy trousers and orange stylized owl feet. One open ivory book at stomach height held in both wings throughout, paper has light abstract marks without text. Pose 1 looks down behind glasses with beak closed, book open. Pose 2 head inclines slightly and one feather-tip turns a short page over the open book, studious eyes. Pose 3 sits back upright in delighted recognition with beak open and eyes bright, page just settled. Pose 4 looks down to the new page again with a calm gently amused smile, book position preserved and tail/feet centered.",
+      "file": "output/gif-maskot-mbd/uli-membaca.gif",
+      "bytes": 1018729,
+      "frames": 32,
+      "width": 384,
+      "height": 384,
+      "durationMs": 2560
+    },
+    {
+      "id": "piko-foto",
+      "name": "Piko",
+      "title": "Piko memotret produk",
+      "refs": [
+        "public/images/mascot/friends/piko/antusias.webp",
+        "public/images/mascot/friends/piko/bertekad.webp"
+      ],
+      "action": "One Piko per cell, cream rabbit with distinct unequal long ears, cinnamon nose, freckles, coral bomber over striped navy tee, teal trousers, cobalt sneakers. Same small navy camera on both paws throughout, directed slightly forward at imaginary product, no flash shapes in the artwork. Pose 1 crouched lightly with camera held at chest and one eyebrow raised, long ear mostly upright. Pose 2 raises camera toward existing eye line, ears bend slightly with concentration. Pose 3 closes one eye while pressing the shutter button, gentle proud grin, camera up. Pose 4 lowers camera back to chest and laughs, ears perk before loop. Keep paws, ears, outfit and camera identical from cell to cell, legs consistent.",
+      "file": "output/gif-maskot-mbd/piko-foto.gif",
+      "bytes": 822178,
+      "frames": 32,
+      "width": 384,
+      "height": 384,
+      "durationMs": 2560
+    },
+    {
+      "id": "kelompok-tos",
+      "name": "Tim Siasat",
+      "title": "Tim Siasat merayakan demo",
+      "refs": [
+        "public/images/mascot/friends/siasat-dan-teman.webp",
+        "public/images/mascot/friends/interactions/tos-setelah-demo.webp"
+      ],
+      "action": "Each of the four cells contains the SAME SIX individually readable mascot students all fully visible, in fixed order and shape, exactly six. Keep bodies compact and arrangement identical per cell. From left to right: cream rabbit Piko with tall floppy ears and coral jacket, tawny owl Uli with large teal glasses and plum sweater vest, orange fox Siasat with blue jacket and bright teal scarf, cinnamon otter Bimo in blue jacket and olive pants, copper FEMALE fox Rara with teal hairclip and emerald jacket, charcoal cat Kiko with mustard hoodie and gold eyes at right. Siasat and Bimo in middle share a small high five. Others respond enthusiastically in place rather than jumping. Cell 1 smiling anticipation, paws lifted only to shoulder height. Cell 2 Siasat and Bimo lean a little toward each other and raise those two paws, others in same poses with changing eyes. Cell 3 those two paws meet, owlish delighted eyes and cream rabbit grins, a tiny ochre impact mark over meeting paws only. Cell 4 their hands descend and others soften into gentle grins. Same eye level, outfit, recognizable visual identity in each cell, six adult students including full trousers. Use a wide figure arrangement within each cell so all six read, no auxiliary figures.",
+      "file": "output/gif-maskot-mbd/kelompok-tos.gif",
+      "bytes": 1990495,
+      "frames": 32,
+      "width": 544,
+      "height": 320,
+      "durationMs": 2560
+    }
+  ]
+}

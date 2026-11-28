@@ -1,5 +1,7 @@
+import { uiCopy } from '@/lib/i18n-copy'
+import type { Locale } from '@/lib/i18n'
 import Image from '@/components/ui/CmsImage'
-import Link from 'next/link'
+import { LocaleLink as Link } from '@/components/providers/LocaleProvider'
 import { PrimaryCta, SecondaryActions } from '@/components/cta/CtaLinks'
 import { Fin, StarField, Wave } from '@/components/patterns/Patterns'
 import { Icon } from '@/components/ui/Icon'
@@ -13,6 +15,7 @@ import { ReducedMotionToggle } from './ReducedMotionToggle'
 export type FooterColumn = { title: string; links: { label: string; href: string; newTab?: boolean }[] }
 
 export function Footer({
+  locale,
   columns,
   logoUrl,
   settings,
@@ -20,6 +23,7 @@ export function Footer({
   privacyHref,
   termsHref,
 }: {
+  locale: Locale
   columns: FooterColumn[]
   logoUrl: string | null
   settings: Record<string, any>
@@ -27,6 +31,7 @@ export function Footer({
   privacyHref: string
   termsHref: string
 }) {
+  const copy = (text: string) => uiCopy(locale, text)
   const socials = (settings.socials as { platform: string; url: string }[]) ?? []
   const badge = asMedia(settings.accreditationBadge)
   const year = new Date().getFullYear()
@@ -51,7 +56,7 @@ export function Footer({
               )}
               <div>
                 <p className="font-display text-[clamp(1.875rem,4vw,3.25rem)] leading-none font-extrabold tracking-[-0.04em]">
-                  {PROGRAM_NAME}
+                  {copy(PROGRAM_NAME)}
                 </p>
                 <p className="label-mono mt-3 text-lime">{settings.institutionName || INSTITUTION_NAME}</p>
               </div>
@@ -82,18 +87,18 @@ export function Footer({
               </nav>
             ))}
             <div className="sm:col-span-2 lg:col-span-3">
-              <h2 className="label-mono text-white/60">Kontak</h2>
+              <h2 className="label-mono text-white/60">{copy("Kontak")}</h2>
               <address className="mt-4 grid gap-3 not-italic text-white/90 sm:grid-cols-2">
                 <p className="flex gap-3">
                   <Icon name="map-pin" size={20} className="mt-0.5 shrink-0 text-lime" />
                   <span>
-                    <TextOr value={settings.address} show={showPlaceholders} hint="alamat kampus" />
+                    <TextOr value={settings.address} show={showPlaceholders} hint={copy("alamat kampus")} />
                   </span>
                 </p>
                 <p className="flex gap-3">
                   <Icon name="phone" size={20} className="mt-0.5 shrink-0 text-lime" />
                   <span>
-                    <TextOr value={settings.phone} show={showPlaceholders} hint="telepon" />
+                    <TextOr value={settings.phone} show={showPlaceholders} hint={copy("telepon")} />
                   </span>
                 </p>
                 <p className="flex gap-3">
@@ -105,13 +110,13 @@ export function Footer({
                 <p className="flex gap-3">
                   <Icon name="clock" size={20} className="mt-0.5 shrink-0 text-lime" />
                   <span>
-                    <TextOr value={settings.serviceHours} show={showPlaceholders} hint="jam layanan" />
+                    <TextOr value={settings.serviceHours} show={showPlaceholders} hint={copy("jam layanan")} />
                   </span>
                 </p>
               </address>
               <div className="mt-6 flex flex-wrap items-center gap-4">
                 {socials.length ? (
-                  <ul className="flex flex-wrap gap-2" aria-label="Media sosial">
+                  <ul className="flex flex-wrap gap-2" aria-label={copy("Media sosial")}>
                     {socials.map((social) => (
                       <li key={social.url}>
                         <a
@@ -127,14 +132,14 @@ export function Footer({
                     ))}
                   </ul>
                 ) : showPlaceholders ? (
-                  <PendingChip hint="tautan media sosial" />
+                  <PendingChip hint={copy("tautan media sosial")} />
                 ) : null}
                 <div className="flex items-center gap-3">
                   {badge ? (
-                    <Image src={badge.url!} alt={badge.alt || 'Badge akreditasi'} width={120} height={48} className="h-12 w-auto rounded bg-white p-1" />
+                    <Image src={badge.url!} alt={badge.alt || copy("Badge akreditasi")} width={120} height={48} className="h-12 w-auto rounded bg-white p-1" />
                   ) : null}
                   <span className="text-sm text-white/75">
-                    <TextOr value={settings.accreditationText} show={showPlaceholders} hint="status akreditasi" />
+                    <TextOr value={settings.accreditationText} show={showPlaceholders} hint={copy("status akreditasi")} />
                   </span>
                 </div>
               </div>
@@ -146,15 +151,9 @@ export function Footer({
             © {year} {settings.institutionName || INSTITUTION_NAME}.
           </p>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            <Link href="/siasat" className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">
-              Galeri Siasat
-            </Link>
-            <Link href={privacyHref} className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">
-              Kebijakan privasi
-            </Link>
-            <Link href={termsHref} className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">
-              Syarat dan ketentuan
-            </Link>
+            <Link href="/siasat" className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">{copy("Galeri Siasat")}</Link>
+            <Link href={privacyHref} className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">{copy("Kebijakan privasi")}</Link>
+            <Link href={termsHref} className="inline-flex min-h-11 items-center text-sm font-semibold text-white/85 hover:text-lime">{copy("Syarat dan ketentuan")}</Link>
             <ReducedMotionToggle />
           </div>
         </div>

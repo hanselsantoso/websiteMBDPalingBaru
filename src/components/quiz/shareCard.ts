@@ -71,11 +71,16 @@ export async function renderShareCard({
   archetype,
   match,
   band,
+  assessment = false,
+  locale = 'id',
 }: {
   archetype: string
   match: number
   band: string
+  assessment?: boolean
+  locale?: 'id' | 'en'
 }): Promise<Blob | null> {
+  const en = locale === 'en'
   const canvas = document.createElement('canvas')
   canvas.width = 1080
   canvas.height = 1350
@@ -104,7 +109,7 @@ export async function renderShareCard({
 
   ctx.fillStyle = lime
   ctx.font = `600 34px ${mono}`
-  ctx.fillText('ARKETIPE STRATEGISKU', 90, 190)
+  ctx.fillText(assessment ? (en ? "MBD QUIZ RESULTS" : 'HASIL KUIS MBD') : (en ? "MY STRATEGY ARCHETYPE" : 'ARKETIPE STRATEGISKU'), 90, 190)
 
   ctx.fillStyle = '#FFFFFF'
   ctx.font = `800 116px ${display}`
@@ -117,13 +122,13 @@ export async function renderShareCard({
   ctx.fillText(`${match}%`, 82, top + 120)
   ctx.fillStyle = '#FFFFFF'
   ctx.font = `600 36px ${mono}`
-  ctx.fillText('KECOCOKAN DENGAN MBD', 90, top + 190)
+  ctx.fillText(assessment ? (en ? "CASE STUDY SCORE" : 'SKOR STUDI KASUS') : (en ? "MATCH WITH MBD" : 'KECOCOKAN DENGAN MBD'), 90, top + 190)
   ctx.font = `700 56px ${display}`
   ctx.fillText(band, 90, top + 270)
 
   ctx.fillStyle = '#FFFFFF'
   ctx.font = `700 40px ${display}`
-  ctx.fillText(PROGRAM_NAME, 90, 1300, 760)
+  ctx.fillText(en ? 'Digital Business Management' : PROGRAM_NAME, 90, 1300, 760)
   ctx.font = `500 26px ${mono}`
   ctx.textAlign = 'right'
   ctx.fillText(INSTITUTION_NAME, 990, 1298)

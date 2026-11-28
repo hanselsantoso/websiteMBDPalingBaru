@@ -1,6 +1,8 @@
+import { uiCopy } from '@/lib/i18n-copy'
+import type { Locale } from '@/lib/i18n'
 import Image from '@/components/ui/CmsImage'
 import type { ReactNode } from 'react'
-import Link from 'next/link'
+import { LocaleLink as Link } from '@/components/providers/LocaleProvider'
 import { Icon } from '@/components/ui/Icon'
 import { PendingChip, TextOr } from '@/components/ui/Isi'
 import { BLOG_COVER_ART, FACULTY_ART } from '@/lib/brand/artwork'
@@ -16,6 +18,7 @@ export function facultyDisplayName(member: Doc): string {
 }
 
 export function Portrait({
+  locale = 'id',
   photo,
   name,
   mask = 'fin',
@@ -23,6 +26,7 @@ export function Portrait({
   className,
   priority,
 }: {
+  locale?: Locale
   photo: unknown
   name: string
   mask?: 'fin' | 'round'
@@ -48,7 +52,7 @@ export function Portrait({
         <>
           <Image src={FACULTY_ART} alt="" fill sizes={sizes} priority={priority} className="object-cover" />
           <span className="absolute bottom-3 left-3 rounded-full bg-navy px-3 py-1 text-xs font-semibold text-white">
-            Foto belum tersedia
+            {uiCopy(locale, 'Foto belum tersedia')}
           </span>
         </>
       )}
@@ -56,20 +60,20 @@ export function Portrait({
   )
 }
 
-export function FacultyCard({ member, showPlaceholders, mask = 'fin', priority }: { member: Doc; showPlaceholders: boolean; mask?: 'fin' | 'round'; priority?: boolean }) {
+export function FacultyCard({ member, showPlaceholders, mask = 'fin', priority, locale = 'id' }: { locale?: Locale; member: Doc; showPlaceholders: boolean; mask?: 'fin' | 'round'; priority?: boolean }) {
   const name = facultyDisplayName(member)
   const expertise = ((member.expertise as string[]) ?? []).filter((tag) => showPlaceholders || !isPlaceholder(tag))
   return (
     <article className="group relative grid gap-4">
-      <Portrait photo={member.photo} name={String(member.name ?? '')} mask={mask} sizes="(min-width: 1024px) 280px, (min-width: 640px) 45vw, 90vw" priority={priority} className="transition-transform duration-200 group-hover:-translate-y-1" />
+      <Portrait locale={locale} photo={member.photo} name={String(member.name ?? '')} mask={mask} sizes="(min-width: 1024px) 280px, (min-width: 640px) 45vw, 90vw" priority={priority} className="transition-transform duration-200 group-hover:-translate-y-1" />
       <div>
         <h3 className="text-xl leading-tight font-bold">
           <Link href={`/dosen/${member.slug}`} className="after:absolute after:inset-0 hover:text-blue">
-            <TextOr value={name} show={showPlaceholders} hint="nama dosen" />
+            <TextOr value={name} show={showPlaceholders} hint={uiCopy(locale, 'nama dosen')} />
           </Link>
         </h3>
         <p className="mt-1 text-ink-600">
-          <TextOr value={member.position} show={showPlaceholders} hint="jabatan akademik" />
+          <TextOr value={member.position} show={showPlaceholders} hint={uiCopy(locale, 'jabatan akademik')} />
         </p>
         {expertise.length ? (
           <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Bidang keahlian">
@@ -95,23 +99,23 @@ export function PostCover({ post, sizes, priority, className }: { post: Doc; siz
         fill
         sizes={sizes}
         priority={priority}
-        className="object-cover"
+        className={cover?.url ? 'object-cover' : 'object-contain p-4'}
         style={cover ? { objectPosition: `${cover.focalX ?? 50}% ${cover.focalY ?? 50}%` } : undefined}
       />
     </div>
   )
 }
 
-export function PostMeta({ post, dark }: { post: Doc; dark?: boolean }) {
+export function PostMeta({ post, dark, locale = 'id' }: { locale?: Locale; post: Doc; dark?: boolean }) {
   return (
     <p className={cn('label-mono flex flex-wrap items-center gap-x-3 gap-y-1', dark ? 'text-white/70' : 'text-ink-600')}>
-      {post.publishedAt ? <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time> : null}
-      {post.readingMinutes ? <span>· {post.readingMinutes} menit baca</span> : null}
+      {post.publishedAt ? <time dateTime={post.publishedAt}>{formatDate(post.publishedAt, 'long', locale)}</time> : null}
+      {post.readingMinutes ? <span>· {post.readingMinutes} {locale === 'en' ? 'min read' : 'menit baca'}</span> : null}
     </p>
   )
 }
 
-export function PostCard({ post, featured = false, priority }: { post: Doc; featured?: boolean; priority?: boolean }) {
+export function PostCard({ post, featured = false, priority, locale = 'id' }: { locale?: Locale; post: Doc; featured?: boolean; priority?: boolean }) {
   const category = typeof post.category === 'object' ? post.category : null
   return (
     <article className={cn('sticker sticker-press group relative flex h-full flex-col overflow-hidden', featured && 'lg:flex-row')}>
@@ -130,7 +134,7 @@ export function PostCard({ post, featured = false, priority }: { post: Doc; feat
         </h3>
         {post.excerpt && featured ? <p className="text-ink-600">{post.excerpt}</p> : null}
         <div className="mt-auto pt-2">
-          <PostMeta post={post} />
+          <PostMeta locale={locale} post={post} />
         </div>
       </div>
     </article>

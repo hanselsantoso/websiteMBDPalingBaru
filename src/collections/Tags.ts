@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isLoggedIn, write } from '@/access'
+import { allow, isLoggedIn, write } from '@/access'
 
 export const Tags: CollectionConfig = {
   slug: 'tags',
@@ -9,7 +9,7 @@ export const Tags: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: isLoggedIn,
+    read: (args) => isLoggedIn(args) || allow('media', 'lihat')(args),
     create: write('media', 'buat'),
     update: write('media', 'ubah'),
     delete: write('media', 'hapus'),

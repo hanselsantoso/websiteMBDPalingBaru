@@ -1,5 +1,9 @@
+'use client'
+
+import { uiCopy } from '@/lib/i18n-copy'
+import { LocaleLink as Link, useLocale } from '@/components/providers/LocaleProvider'
 import Image from '@/components/ui/CmsImage'
-import Link from 'next/link'
+
 import { PROGRAM_WORDMARK, PROGRAM_WORDMARK_DARK } from '@/lib/brand/artwork'
 import { INSTITUTION_NAME, PROGRAM_NAME } from '@/lib/brand/identity'
 import { cn } from '@/lib/utils'
@@ -15,8 +19,9 @@ export function Wordmark({
   className?: string
   onNavigate?: () => void
 }) {
+  const locale = useLocale()
   return (
-    <Link href="/" className={cn('inline-flex min-h-11 min-w-0 items-center gap-2.5 rounded-xl', className)} onClick={onNavigate} aria-label={`${PROGRAM_NAME} ${INSTITUTION_NAME}, ke beranda`}>
+    <Link href="/" className={cn('inline-flex min-h-11 min-w-0 items-center gap-2.5 rounded-xl', className)} onClick={onNavigate} aria-label={`${uiCopy(locale, PROGRAM_NAME)} ${INSTITUTION_NAME}, ${locale === 'en' ? 'home' : 'ke beranda'}`}>
       {logoUrl ? (
         <Image src={logoUrl} alt="" width={180} height={40} className="h-9 w-auto" priority />
       ) : (

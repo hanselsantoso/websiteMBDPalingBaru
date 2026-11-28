@@ -1,9 +1,11 @@
+import { getContentTranslator, translateContent } from '@/lib/content-translations'
 import type { Endpoint, PayloadRequest } from 'payload'
 import { addDataAndFileToRequest } from 'payload'
 import type { z } from 'zod'
 import { getPermissions } from '@/access'
 import { slugify } from '@/lib/domain/curriculum'
 import { can } from '@/lib/domain/permissions'
+import { QUIZ_ASSESSMENT_VERSION } from '@/lib/domain/quiz'
 import * as queries from '@/lib/queries'
 import {
   brochureSchema,
@@ -206,7 +208,8 @@ export const v1Endpoints: Endpoint[] = [
         slugify(String(req.routeParams?.code ?? '')),
       )
       if (!course) return fail(404, 'not_found', 'Mata kuliah tidak ditemukan.')
-      return ok(course, {}, PUBLIC_CACHE)
+      const locale = req.query?.locale === 'en' ? 'en' : 'id'
+      return ok(translateContent(course, await getContentTranslator(locale)), {}, PUBLIC_CACHE)
     },
   },
   {
@@ -277,7 +280,7 @@ export const v1Endpoints: Endpoint[] = [
   {
     path: '/v1/quiz',
     method: 'get',
-    handler: async (req) => ok(await queries.fetchQuiz(req.payload), {}, PUBLIC_CACHE),
+    handler: async (req) => ok(await queries.fetchQuiz(req.payload, req.query?.assessment === QUIZ_ASSESSMENT_VERSION), {}, PUBLIC_CACHE),
   },
   {
     path: '/v1/search',

@@ -4,6 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { submitConsultationAction, submitContactAction } from '@/app/(frontend)/actions'
+import { useLocale } from '@/components/providers/LocaleProvider'
+import { englishFormMessage } from './form-messages'
 import { useSite } from '@/components/providers/SiteProvider'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -28,7 +30,22 @@ import {
   Turnstile,
 } from './fields'
 
+const EN_TOPICS: Record<string, string> = {
+  'info-pmb': 'Admissions information',
+  kurikulum: 'Curriculum and courses',
+  beasiswa: 'Scholarships and fees',
+  'kerja-sama': 'Collaboration and partnerships',
+  lainnya: 'Other',
+}
+
+const EN_TIME_SLOTS: Record<string, string> = {
+  pagi: 'Morning (09:00–11:00 WIB)',
+  siang: 'Early afternoon (13:00–15:00 WIB)',
+  sore: 'Late afternoon (15:00–17:00 WIB)',
+}
+
 export function ContactForm() {
+  const en = useLocale() === 'en'
   const site = useSite()
   const [pending, startTransition] = useTransition()
   const [serverError, setServerError] = useState<string | null>(null)
@@ -67,13 +84,13 @@ export function ContactForm() {
   if (sentTo !== null) {
     return (
       <SuccessPanel
-        title={`Pesanmu sudah kami terima${sentTo ? `, ${sentTo.split(' ')[0]}` : ''}!`}
+        title={`${en ? 'We received your message' : 'Pesanmu sudah kami terima'}${sentTo ? `, ${sentTo.split(' ')[0]}` : ''}!`}
       >
         <p className="max-w-md text-ink-600">
-          Tim kami akan membalas lewat email atau WhatsApp pada jam layanan.
+          {en ? "Our team will reply by email or WhatsApp during office hours." : "Tim kami akan membalas lewat email atau WhatsApp pada jam layanan."}
         </p>
         <Button variant="secondary" onClick={() => setSentTo(null)}>
-          Kirim pesan lain
+          {en ? "Send another message" : "Kirim pesan lain"}
         </Button>
       </SuccessPanel>
     )
@@ -90,7 +107,7 @@ export function ContactForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <TextField
           id="kontak-name"
-          label="Nama lengkap"
+          label={en ? "Full name" : "Nama lengkap"}
           autoComplete="name"
           error={errors.name?.message}
           {...form.register('name')}
@@ -105,7 +122,7 @@ export function ContactForm() {
         />
         <TextField
           id="kontak-phone"
-          label="Nomor WhatsApp"
+          label={en ? "WhatsApp number" : "Nomor WhatsApp"}
           type="tel"
           inputMode="tel"
           autoComplete="tel"
@@ -115,15 +132,15 @@ export function ContactForm() {
         />
         <SelectField
           id="kontak-topic"
-          label="Topik"
-          options={[...CONTACT_TOPICS]}
+          label={en ? "Topic" : "Topik"}
+          options={CONTACT_TOPICS.map((option) => ({ ...option, label: en ? EN_TOPICS[option.value] : option.label }))}
           error={errors.topic?.message}
           {...form.register('topic')}
         />
       </div>
       <TextareaField
         id="kontak-message"
-        label="Pesan"
+        label={en ? "Message" : "Pesan"}
         rows={6}
         error={errors.message?.message}
         {...form.register('message')}
@@ -140,7 +157,7 @@ export function ContactForm() {
         onToken={(token) => form.setValue('turnstileToken', token)}
       />
       <Button type="submit" disabled={pending} className="w-full sm:w-fit">
-        {pending ? 'Mengirim…' : 'Kirim pesan'}
+        {pending ? (en ? "Sending…" : 'Mengirim…') : (en ? "Send message" : 'Kirim pesan')}
         <Icon name="arrow-right" size={18} strokeWidth={2.5} />
       </Button>
     </form>
@@ -148,6 +165,7 @@ export function ContactForm() {
 }
 
 export function ConsultationForm() {
+  const en = useLocale() === 'en'
   const site = useSite()
   const [pending, startTransition] = useTransition()
   const [serverError, setServerError] = useState<string | null>(null)
@@ -190,12 +208,12 @@ export function ConsultationForm() {
 
   if (done) {
     return (
-      <SuccessPanel title="Jadwal konsultasi tercatat!">
+      <SuccessPanel title={en ? "Consultation request received!" : "Jadwal konsultasi tercatat!"}>
         <p className="max-w-md text-ink-600">
-          Tim kami akan mengonfirmasi jadwalnya lewat WhatsApp.
+          {en ? "Our team will confirm your appointment on WhatsApp." : "Tim kami akan mengonfirmasi jadwalnya lewat WhatsApp."}
         </p>
         <Button variant="secondary" onClick={() => setDone(false)}>
-          Atur jadwal lain
+          {en ? "Schedule another consultation" : "Atur jadwal lain"}
         </Button>
       </SuccessPanel>
     )
@@ -212,7 +230,7 @@ export function ConsultationForm() {
       <div className="grid gap-5 sm:grid-cols-3">
         <TextField
           id="konsul-name"
-          label="Nama lengkap"
+          label={en ? "Full name" : "Nama lengkap"}
           autoComplete="name"
           error={errors.name?.message}
           {...form.register('name')}
@@ -227,7 +245,7 @@ export function ConsultationForm() {
         />
         <TextField
           id="konsul-phone"
-          label="Nomor WhatsApp"
+          label={en ? "WhatsApp number" : "Nomor WhatsApp"}
           type="tel"
           inputMode="tel"
           autoComplete="tel"
@@ -238,14 +256,14 @@ export function ConsultationForm() {
       <div className="grid gap-5 sm:grid-cols-[minmax(0,14rem)_1fr]">
         <TextField
           id="konsul-date"
-          label="Tanggal"
+          label={en ? "Date" : "Tanggal"}
           type="date"
           min={minDate}
           error={errors.preferredDate?.message}
           {...form.register('preferredDate')}
         />
         <fieldset className="grid gap-1.5">
-          <legend className="font-semibold">Slot waktu</legend>
+          <legend className="font-semibold">{en ? 'Time slot' : 'Slot waktu'}</legend>
           <div className="mt-1.5 grid gap-2 sm:grid-cols-3">
             {TIME_SLOTS.map((option) => (
               <label
@@ -261,18 +279,18 @@ export function ConsultationForm() {
                   className="size-4 accent-[var(--brand-lime)]"
                   {...form.register('timeSlot')}
                 />
-                {option.label}
+                {en ? EN_TIME_SLOTS[option.value] : option.label}
               </label>
             ))}
           </div>
           {errors.timeSlot?.message ? (
-            <p className="text-sm font-semibold text-danger">{errors.timeSlot.message}</p>
+            <p className="text-sm font-semibold text-danger">{en ? englishFormMessage(errors.timeSlot.message) : errors.timeSlot.message}</p>
           ) : null}
         </fieldset>
       </div>
       <TextareaField
         id="konsul-message"
-        label="Yang ingin dibahas"
+        label={en ? "What would you like to discuss?" : "Yang ingin dibahas"}
         optional
         rows={3}
         error={errors.message?.message}
@@ -290,7 +308,7 @@ export function ConsultationForm() {
         onToken={(token) => form.setValue('turnstileToken', token)}
       />
       <Button type="submit" disabled={pending} className="w-full sm:w-fit">
-        {pending ? 'Menyimpan…' : 'Jadwalkan konsultasi'}
+        {pending ? (en ? "Saving…" : 'Menyimpan…') : (en ? "Schedule a consultation" : 'Jadwalkan konsultasi')}
         <Icon name="calendar" size={18} strokeWidth={2.5} />
       </Button>
     </form>

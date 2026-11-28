@@ -1,4 +1,5 @@
 import type { Access, FieldAccess, PayloadRequest, Where } from 'payload'
+import { isMcpContentAccount, mcpContentMode, MCP_PERMISSIONS } from '@/lib/domain/mcp-content'
 import {
   can,
   NO_PERMISSIONS,
@@ -24,6 +25,10 @@ export const isAdminUser = (user: unknown): user is AdminUser =>
  * Cached on `req.context` so repeated access checks in one request hit the DB once.
  */
 export async function getPermissions(req: PayloadRequest): Promise<ResolvedPermissions | null> {
+  if (isMcpContentAccount(req.user)) {
+    const mode = req.payloadAPI === 'MCP' ? mcpContentMode(req.user) : null
+    return mode ? MCP_PERMISSIONS[mode] : NO_PERMISSIONS
+  }
   const user = req.user as AdminUser | null
   if (!isAdminUser(user)) return null
   if (user.status === 'nonaktif') return NO_PERMISSIONS
@@ -98,6 +103,7 @@ export const publicOr =
 export const staffRead =
   (moduleKey: ModuleKey, options: { ownerField?: string } = {}): Access =>
   async ({ req }) => {
+    if (isMcpContentAccount(req.user)) return false
     const scope = scopeFor(await getPermissions(req), moduleKey, 'lihat')
     if (!scope) return false
     if (scope === 'own' && options.ownerField && req.user) {
